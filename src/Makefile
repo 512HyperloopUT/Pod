@@ -23,7 +23,15 @@ SOURCES := $(wildcard $(SDIR)/*.cpp)
 OBJECTS := $(SOURCES:$(SDIR)/%.cpp=$(ODIR)/%.o)
 
 # redeclare rm to force removal
-rm = rm -f
+rmdir = rm -rf
+
+# default target
+all: init $(BDIR)/$(TARGET)
+
+# init compiler directories
+init:
+	@mkdir -p $(ODIR)
+	@mkdir -p $(BDIR)
 
 # compile .cpp to .o
 $(BDIR)/$(TARGET): $(OBJECTS)
@@ -38,11 +46,11 @@ $(OBJECTS): $(ODIR)/%.o : $(SDIR)/%.cpp
 # clean .o files
 .PHONY: clean
 clean:
-	@$(rm) $(OBJECTS)
+	@$(rmdir) $(ODIR)
 	@echo "Cleanup complete!"
 
 # remove executable
 .PHONY: remove
 remove: clean
-	@$(rm) $(BDIR)/$(TARGET)
-	@echo "Executable removed!"
+	@$(rmdir) $(BDIR)
+	@echo "Executable directory removed!"
