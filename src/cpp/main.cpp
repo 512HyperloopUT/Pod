@@ -1,6 +1,12 @@
 #include <stdio.h>
 
+#include "sensor.h"
+
 int main() {
-	printf("Hello world!\n");
+
+	Sensor sensor;
+
+	printf("%i\n", sensor.getValue());
+
 	return 0;
 }
