@@ -1,7 +1,7 @@
 # 512 Hyperloop Pod
 
 ## Intro
-There is a single Makefile in the <code>src</code> directory that compiles all <code>.cpp</code> and <code>.h</code> files. The entry point can be found in <code>main.cpp</code>. When compiled, the output file will be called <code>podex<code> (as in "pod executable") in the <code>bin</code> directory.
+There is a single Makefile in the <code>src</code> directory that compiles all <code>.cpp</code> and <code>.h</code> files. The entry point can be found in <code>main.cpp</code>. When compiled, the output file will be called <code>podex</code> (as in "pod executable") in the <code>bin</code> directory.
 
 ## Folders
 All the code is in the <code>src</code> folder. Once inside that, the following folders will appear:
