@@ -1,4 +1,5 @@
 TARGET = podex
+TPRINT = [$(TARGET)]:\t
 
 # include directory
 IDIR = ./include
@@ -22,7 +23,7 @@ INCLUDE := $(wildcard $(IDIR)/*.h)
 SOURCES := $(wildcard $(SDIR)/*.cpp)
 OBJECTS := $(SOURCES:$(SDIR)/%.cpp=$(ODIR)/%.o)
 
-# redeclare rm to force removal
+# declare rmdir to remove nonempty directories
 rmdir = rm -rf
 
 # default target
@@ -36,21 +37,21 @@ init:
 # compile .cpp to .o
 $(BDIR)/$(TARGET): $(OBJECTS)
 	@$(LINKER) $@ $(LFLAGS) $(OBJECTS)
-	@echo "Linking complete!"
+	@echo "$(TPRINT)Linking "$@
 
 # compile .o to podex
 $(OBJECTS): $(ODIR)/%.o : $(SDIR)/%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "Compiled "$<" successfully!"
+	@echo "$(TPRINT)Compiled "$<
 
 # clean .o files
 .PHONY: clean
 clean:
 	@$(rmdir) $(ODIR)
-	@echo "Cleanup complete!"
+	@echo "$(TPRINT)Cleanup complete"
 
 # remove executable
 .PHONY: remove
 remove: clean
 	@$(rmdir) $(BDIR)
-	@echo "Executable directory removed!"
+	@echo "$(TPRINT)Executable directory removed"
