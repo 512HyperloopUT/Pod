@@ -1,57 +1,83 @@
+# setup
+
 TARGET = podex
 TPRINT = [$(TARGET)]:\t
 
-# include directory
-IDIR = ./include
-# src directory
-SDIR = ./cpp
-# object directory
-ODIR = ./obj
-# binary directory
-BDIR = ./bin
+SDIR = cpp
+ODIR = obj
+BDIR = bin
+IDIR = include
 
-# cpp compiler flags
-CC = g++
-CFLAGS = -Wall -I$(IDIR)
+CFlags = -Wall -O3
+LDFlags =
+libs =
+libDir =
 
-# cpp linker flags
-LINKER = g++ -o
-LFLAGS = -Wall -I$(IDIR)
+# COMPILE BASED ON THE PARAMETERS DEFINED ABOVE
 
-# add all .h and .cpp files
-INCLUDE := $(wildcard $(IDIR)/*.h)
-SOURCES := $(wildcard $(SDIR)/*.cpp)
-OBJECTS := $(SOURCES:$(SDIR)/%.cpp=$(ODIR)/%.o)
+# set up compiler options
+inc := $(addprefix -I,$(IDIR))
+libs := $(addprefix -l,$(libs))
+libDir := $(addprefix -L,$(libDir))
+CFlags += -c $(inc) $(libDir) $(libs)
 
-# declare rmdir to remove nonempty directories
+# find all source files
+sources := $(shell find $(SDIR) -name '*.cpp')
+srcDirs := $(shell find . -name '*.cpp' -exec dirname {} \; | uniq)
+objects := $(patsubst %.cpp,$(ODIR)/%.o,$(sources))
+
+# using cpp
+CC = $(CXX)
+
+# delete folder recursively
 rmdir = rm -rf
+print = echo -e "[$(TARGET)]:\t"
+
+.phony: all clean buildrepo
 
 # default target
-all: init $(BDIR)/$(TARGET)
+all: $(BDIR)/$(TARGET) finish
 
-# init compiler directories
-init:
-	@mkdir -p $(ODIR)
-	@mkdir -p $(BDIR)
+$(BDIR)/$(TARGET): buildrepo $(objects)
+	@mkdir -p `dirname $@`
+	@echo "$(TPRINT)Linking $@..."
+	@$(CC) $(objects) $(LDFlags) -o $@
 
-# compile .cpp to .o
-$(BDIR)/$(TARGET): $(OBJECTS)
-	@$(LINKER) $@ $(LFLAGS) $(OBJECTS)
-	@echo "$(TPRINT)Linking "$@
+$(ODIR)/%.o: %.cpp
+	@echo "$(TPRINT)Generating dependencies for $<..."
+	@$(call make-depend,$<,$@,$(subst .o,.d,$@))
+	@echo "$(TPRINT)Compiling $<..."
+	@$(CC) $(CFlags) $< -o $@
 
-# compile .o to podex
-$(OBJECTS): $(ODIR)/%.o : $(SDIR)/%.cpp
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "$(TPRINT)Compiled "$<
-
-# clean .o files
-.PHONY: clean
+# remove object directory
 clean:
 	@$(rmdir) $(ODIR)
-	@echo "$(TPRINT)Cleanup complete"
 
-# remove executable
-.PHONY: remove
+# clean and remove executable directory
 remove: clean
 	@$(rmdir) $(BDIR)
-	@echo "$(TPRINT)Executable directory removed"
+
+# state that podex is up to date when make has finished
+finish:
+	@echo "$(TPRINT)podex is up to date"
+
+# create obj subdirectories for compiling
+buildrepo:
+	@$(call make-repo)
+
+define make-repo
+	for dir in $(srcDirs); \
+	do \
+		mkdir -p $(ODIR)/$$dir; \
+	done
+endef
+
+# usage: $(call make-depend,src,obj,dependency)
+define make-depend
+  $(CC) -MM       \
+        -MF $3    \
+        -MP       \
+        -MT $2    \
+        $(CFlags) \
+        $1
+endef
