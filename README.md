@@ -16,4 +16,4 @@ Once in the <code>src/</code> directory (the directory with the Makefile), the f
 
 - <code>make</code> - build podex
 - <code>make clean</code> - remove the <code>obj/</code> directory
-- <code>make remove</code> - clean the project and remove the <code>bin/</code> directories
+- <code>make remove</code> - clean the project and remove the <code>bin/</code> directory
