@@ -1,4 +1,4 @@
-#include "sensor.h"
+#include "sensor/sensor.h"
 
 Sensor::Sensor() {
 	value = 100;
