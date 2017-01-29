@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <typeinfo>
 
 #include "sensor/sensor.h"
 #include "pod/pod.h"
