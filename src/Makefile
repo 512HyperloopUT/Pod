@@ -30,7 +30,7 @@ objects := $(patsubst %.cpp,$(ODIR)/%.o,$(sources))
 CC = $(CXX)
 
 # delete folder recursively
-rmdir = rm -rf
+rmf = rm -rf
 print = echo -e "[$(TARGET)]:\t"
 
 .phony: all clean buildrepo
@@ -51,11 +51,12 @@ $(ODIR)/%.o: %.cpp
 
 # remove object directory
 clean:
-	@$(rmdir) $(ODIR)
+	@$(rmf) *~
+	@$(rmf) $(ODIR)
 
 # clean and remove executable directory
 remove: clean
-	@$(rmdir) $(BDIR)
+	@$(rmf) $(BDIR)
 
 # state that podex is up to date when make has finished
 finish:
