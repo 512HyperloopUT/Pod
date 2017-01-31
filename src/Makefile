@@ -1,19 +1,29 @@
-# setup
+# SETUP
 
-TARGET = podex
-TPRINT = [$(TARGET)]:\t
+# target name
+TARGET = proj1
 
+# directories
 SDIR = cpp
 ODIR = obj
 BDIR = bin
 IDIR = include
 
+# flags
 CFlags = -Wall -O3
 LDFlags =
 libs =
 libDir =
 
+# compiler
+CC = $(CXX)
+# src file extension
+FEX = cpp
+
 # COMPILE BASED ON THE PARAMETERS DEFINED ABOVE
+
+# print standard
+TPRINT = "[$(TARGET)]: "
 
 # set up compiler options
 inc := $(addprefix -I,$(IDIR))
@@ -22,16 +32,12 @@ libDir := $(addprefix -L,$(libDir))
 CFlags += -c $(inc) $(libDir) $(libs)
 
 # find all source files
-sources := $(shell find $(SDIR) -name '*.cpp')
-srcDirs := $(shell find . -name '*.cpp' -exec dirname {} \; | uniq)
-objects := $(patsubst %.cpp,$(ODIR)/%.o,$(sources))
-
-# using cpp
-CC = $(CXX)
+sources := $(shell find $(SDIR) -name '*.$(FEX)')
+srcDirs := $(shell find . -name '*.$(FEX)' -exec dirname {} \; | uniq)
+objects := $(patsubst %.$(FEX),$(ODIR)/%.o,$(sources))
 
 # delete folder recursively
 rmf = rm -rf
-print = echo -e "[$(TARGET)]:\t"
 
 .phony: all clean buildrepo
 
@@ -43,7 +49,7 @@ $(BDIR)/$(TARGET): buildrepo $(objects)
 	@echo "$(TPRINT)Linking $@..."
 	@$(CC) $(objects) $(LDFlags) -o $@
 
-$(ODIR)/%.o: %.cpp
+$(ODIR)/%.o: %.$(FEX)
 	@echo "$(TPRINT)Generating dependencies for $<..."
 	@$(call make-depend,$<,$@,$(subst .o,.d,$@))
 	@echo "$(TPRINT)Compiling $<..."
@@ -58,9 +64,14 @@ clean:
 remove: clean
 	@$(rmf) $(BDIR)
 
+exec: all
+	@echo $(TPRINT)Starting $(TARGET)...
+	@./$(BDIR)/$(TARGET)
+	@echo $(TPRINT)Finished
+
 # state that podex is up to date when make has finished
 finish:
-	@echo "$(TPRINT)podex is up to date"
+	@echo "$(TPRINT)$(TARGET) is up to date"
 
 # create obj subdirectories for compiling
 buildrepo:
