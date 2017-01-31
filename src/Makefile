@@ -1,7 +1,7 @@
 # SETUP
 
 # target name
-TARGET = proj1
+TARGET = podex
 
 # directories
 SDIR = cpp
