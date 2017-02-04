@@ -2,6 +2,7 @@
 
 #include "sensor/sensor.h"
 #include "pod/pod.h"
+#include "filter/filter.h"
 
 int main() {
 	Sensor s1, s2, s3;

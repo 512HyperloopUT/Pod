@@ -57,7 +57,7 @@ $(ODIR)/%.o: %.$(FEX)
 
 # remove object directory
 clean:
-	@$(rmf) *~
+	@$(rmf) **/*~
 	@$(rmf) $(ODIR)
 
 # clean and remove executable directory
