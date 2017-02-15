@@ -1,10 +1,12 @@
 #pragma once
 
+#include "filter/filter.h"
+
 class Sensor {
 private:
 	int value;
 public:
 	Sensor();
 	~Sensor();
-	int getValue();
+	virtual int getValue();
 };

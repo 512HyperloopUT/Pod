@@ -17,6 +17,11 @@ int main() {
 		printf("%d\n", it->getValue());
 	}
 
+	AbsFilter afilter;
+	std::vector<double> sample_inputs;
+	sample_inputs.push_back(-11.0);
+	printf("%f\n", afilter.process(sample_inputs).at(0));
+
 	delete pod;
 
 	return 0;

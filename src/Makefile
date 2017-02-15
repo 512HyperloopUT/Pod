@@ -10,13 +10,13 @@ BDIR = bin
 IDIR = include
 
 # flags
-CFlags = -Wall -O3
+CFlags = -Wall -O3 -std=c++11
 LDFlags =
 libs =
 libDir =
 
 # compiler
-CC = $(CXX)
+CC = g++
 # src file extension
 FEX = cpp
 
