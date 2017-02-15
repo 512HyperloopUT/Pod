@@ -5,11 +5,9 @@
 #include "filter/filter.h"
 
 int main() {
-	Sensor s1, s2, s3;
+	Sensor s1;
 	Pod* pod = Pod::getInstance();
 	pod->addSensor(s1);
-	pod->addSensor(s2);
-	pod->addSensor(s3);
 
 	std::vector<Sensor> sensors = pod->getSensors();
 
@@ -17,11 +15,12 @@ int main() {
 		printf("%d\n", it->getValue());
 	}
 
+/*
 	AbsFilter afilter;
 	std::vector<double> sample_inputs;
 	sample_inputs.push_back(-11.0);
 	printf("%f\n", afilter.process(sample_inputs).at(0));
-
+*/
 	delete pod;
 
 	return 0;

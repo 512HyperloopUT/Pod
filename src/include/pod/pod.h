@@ -1,6 +1,8 @@
-#include <vector>
+#pragma once
 
 #include "sensor/sensor.h"
+
+#include <vector>
 
 class Pod {
 private:
