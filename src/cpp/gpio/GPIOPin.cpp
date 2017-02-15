@@ -1,4 +1,5 @@
-#include "input/GPIOPin.h"
+#include "gpio/GPIOPin.h"
+#include "gpio/GPIOConstants.h"
 
 #include <stdio.h>
 
