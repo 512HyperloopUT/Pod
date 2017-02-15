@@ -7,10 +7,10 @@ private:
 	//pod privates
 	std::vector<Sensor> sensors;
 	Pod();
-	~Pod();
 	//singleton privates
-	static Pod instance;
+	static Pod* instance;
 public:
+	~Pod();
 	void addSensor(Sensor sensor);
 	std::vector<Sensor> getSensors();
 	//singleton access

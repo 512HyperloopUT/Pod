@@ -1,6 +1,8 @@
 #include "pod/pod.h"
 
-Pod Pod::instance = *(new Pod);
+#include <stdio.h>
+
+Pod* Pod::instance = 0;
 
 Pod::Pod() {
 }
@@ -18,6 +20,9 @@ std::vector<Sensor> Pod::getSensors() {
 }
 
 Pod* Pod::getInstance() {
-	return &Pod::instance;
+	if (!instance) {
+		instance = new Pod;
+	}
+	return instance;
 }
 

@@ -17,5 +17,7 @@ int main() {
 		printf("%d\n", it->getValue());
 	}
 
+	delete pod;
+
 	return 0;
 }
