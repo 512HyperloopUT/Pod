@@ -6,8 +6,8 @@
 #include "gpio/GPIOPin.h"
 
 int main() {
-#ifndef RPI
-	printf("WARNING: not running on Raspberry PI\n");
+#ifndef __arm__
+	printf("not running on Raspberry PI\n");
 	return 0;
 #endif
 
