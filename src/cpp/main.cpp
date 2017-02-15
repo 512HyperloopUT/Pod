@@ -6,10 +6,11 @@
 #include "gpio/GPIOPin.h"
 
 int main() {
-#ifndef __arm__
-	printf("please run on Raspberry PI\n");
+#ifndef RPI
+	printf("WARNING: not running on Raspberry PI\n");
 	return 0;
 #endif
+
 	GPIOPin pin(4);
 /*
 	Sensor s1;
