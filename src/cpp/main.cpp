@@ -8,7 +8,7 @@ int main() {
 	printf("probably not running on Raspberry PI\n");
 	//return 0;
 #endif
-	DigitalReader dr(4);
+	DigitalReader dr(11);
 
 	Pod* pod = Pod::getInstance();
 	pod->addSensor(&dr);
