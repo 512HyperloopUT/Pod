@@ -1,36 +1,20 @@
 #include <stdio.h>
 
-#include "sensor/sensor.h"
 #include "pod/pod.h"
-#include "filter/filter.h"
-#include "gpio/GPIOPin.h"
+#include "sensor/sensor_types.h"
 
 int main() {
 #ifndef __arm__
-	printf("not running on Raspberry PI\n");
+	printf("probably not running on Raspberry PI\n");
 	return 0;
 #endif
 
-	GPIOPin pin(4);
-/*
-	Sensor s1;
+	DigitalReader dr(4);
+
 	Pod* pod = Pod::getInstance();
-	pod->addSensor(s1);
+	pod->addSensor(&dr);
 
-	std::vector<Sensor> sensors = pod->getSensors();
-
-	for (std::vector<Sensor>::iterator it = sensors.begin(); it != sensors.end(); it++) {
-		printf("%d\n", it->getValue());
-	}
-*/
-
-/*
-	AbsFilter afilter;
-	std::vector<double> sample_inputs;
-	sample_inputs.push_back(-11.0);
-	printf("%f\n", afilter.process(sample_inputs).at(0));
-*/
-	//delete pod;
+	delete pod;
 
 	return 0;
 }

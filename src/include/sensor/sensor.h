@@ -3,10 +3,6 @@
 #include "filter/filter.h"
 
 class Sensor {
-private:
-	int value;
 public:
-	Sensor();
-	~Sensor();
-	virtual int getValue();
+	virtual double getValue() = 0;
 };

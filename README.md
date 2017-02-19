@@ -14,7 +14,6 @@ The <code>bin/</code> and <code>obj</code> directories will be created by make w
 ## Commands
 Once in the <code>src/</code> directory (the directory with the Makefile), the following commands can be run:
 
-- <code>make</code> - build podex
-- <code>make clean</code> - remove the <code>obj/</code> directory
-- <code>make remove</code> - clean the project and remove the <code>bin/</code> directory
+- <code>make</code> - builds podex
+- <code>make clean</code> - remove binaries, object files, and temp files
 - <code>make exec</code> - builds and executes podex

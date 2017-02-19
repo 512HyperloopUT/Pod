@@ -42,7 +42,7 @@ rmf = rm -rf
 .phony: all clean buildrepo
 
 # default target
-all: $(BDIR)/$(TARGET) finish
+all: clean $(BDIR)/$(TARGET) finish
 
 $(BDIR)/$(TARGET): buildrepo $(objects)
 	@mkdir -p `dirname $@`
@@ -55,15 +55,13 @@ $(ODIR)/%.o: %.$(FEX)
 	@echo "$(TPRINT)Compiling $<..."
 	@$(CC) $(CFlags) $< -o $@
 
-# remove object directory
+# clean directory of binaries, object files, and temp files
 clean:
 	@find . -type f -name '*~' -delete
 	@$(rmf) $(ODIR)
-
-# clean and remove executable directory
-remove: clean
 	@$(rmf) $(BDIR)
 
+# make and execute file
 exec: all
 	@echo $(TPRINT)Starting $(TARGET)...
 	@./$(BDIR)/$(TARGET)

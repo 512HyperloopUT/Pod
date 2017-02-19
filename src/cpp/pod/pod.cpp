@@ -11,11 +11,11 @@ Pod::~Pod() {
 	sensors.clear();
 }
 
-void Pod::addSensor(Sensor sensor) {
+void Pod::addSensor(Sensor* sensor) {
 	sensors.push_back(sensor);
 }
 
-std::vector<Sensor> Pod::getSensors() {
+std::vector<Sensor*> Pod::getSensors() {
 	return sensors;
 }
 
