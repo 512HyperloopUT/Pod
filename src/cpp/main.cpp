@@ -6,15 +6,17 @@
 int main() {
 #ifndef __arm__
 	printf("probably not running on Raspberry PI\n");
-	return 0;
+	//return 0;
 #endif
-
 	DigitalReader dr(4);
 
 	Pod* pod = Pod::getInstance();
 	pod->addSensor(&dr);
+	while (getchar() != 'q') {
+		printf("%f\n", dr.getValue());
+	}
 
-	delete pod;
+	//delete pod;
 
 	return 0;
 }
