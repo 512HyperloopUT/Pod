@@ -1,15 +1,15 @@
 # Generated Files
-bin/
-obj/
+*/bin
+*/obj
 
 
 # Temp Files
 */*~
 
 # CCS Files
-.jxbrowser-data/
-.metadata/
-.launches/
-RemoteSystemsTempFiles/
-Debug/
-.settings/
+.jxbrowser-data
+.metadata
+.launches
+RemoteSystemsTempFiles
+Debug
+.settings
