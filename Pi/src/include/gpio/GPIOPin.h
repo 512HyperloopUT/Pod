@@ -1,14 +1,19 @@
 #pragma once
 
+enum GPIODir {
+	INPUT,
+	OUTPUT
+};
+
 class GPIOPin {
 private:
 	int port;
 	bool exported;
+	GPIODir currentDir;
 public:
 	GPIOPin(int port);
 	bool exportGPIO();
 	bool unexportGPIO();
-	enum GPIODir{INPUT, OUTPUT};
 	//just do the thing
 	void setDirection(GPIODir dir);
 	void setValue(bool val);

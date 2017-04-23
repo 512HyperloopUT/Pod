@@ -1,20 +1,13 @@
 #pragma once
 
-#include "sensor/sensor.h"
-
-#include <vector>
-
 class Pod {
-private:
-	//pod privates
-	std::vector<Sensor*> sensors;
-	Pod();
-	//singleton privates
-	static Pod* instance;
 public:
+	Pod();
 	~Pod();
-	void addSensor(Sensor* sensor);
-	std::vector<Sensor*> getSensors();
-	//singleton access
-	static Pod* getInstance();
+
+	void init();//initalize sensors & pod
+	void update();//update sensors (IO, algorithms, etc)
+	void shutdown();//shutdown (delete pointers, sensors, etc)
+
+	void addSensor();//add sensor
 };

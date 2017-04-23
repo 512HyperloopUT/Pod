@@ -1,28 +1,19 @@
 #include "pod/pod.h"
 
-#include <stdio.h>
-
-Pod* Pod::instance = 0;
-
 Pod::Pod() {
 }
 
 Pod::~Pod() {
-	sensors.clear();
 }
 
-void Pod::addSensor(Sensor* sensor) {
-	sensors.push_back(sensor);
+void Pod::init() {
 }
 
-std::vector<Sensor*> Pod::getSensors() {
-	return sensors;
+void Pod::update() {
 }
 
-Pod* Pod::getInstance() {
-	if (!instance) {
-		instance = new Pod;
-	}
-	return instance;
+void Pod::shutdown() {
 }
 
+void Pod::addSensor() {
+}

@@ -1,10 +1,10 @@
 # Generated Files
-*/bin
-*/obj
+**/bin
+**/obj
 
 
 # Temp Files
-*/*~
+**/*~
 
 # CCS Files
 **/.jxbrowser-data
