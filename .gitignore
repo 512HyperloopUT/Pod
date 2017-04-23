@@ -10,3 +10,5 @@
 */.jxbrowser-data/
 */.metadata/
 */RemoteSystemsTempFiles/
+*/Debug/
+*/.settings/
