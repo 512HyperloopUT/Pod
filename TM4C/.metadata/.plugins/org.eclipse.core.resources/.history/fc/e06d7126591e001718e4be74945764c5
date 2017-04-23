@@ -1,1 +1,0 @@
-"./hello.obj" "./startup_ccs.obj" "./drivers/pinout.obj" "./utils/uartstdio.obj" "../hello_ccs.cmd" -llibc.a -l"C:/TICCS/TM4C1294XL Kit/driverlib/ccs/Debug/driverlib.lib" 
