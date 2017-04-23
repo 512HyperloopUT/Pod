@@ -1,1 +1,0 @@
-"./blinky.obj" "./startup_ccs.obj" "../blinky_ccs.cmd" -llibc.a -l"C:/TICCS/TM4C1294XL Kit/driverlib/ccs/Debug/driverlib.lib" 

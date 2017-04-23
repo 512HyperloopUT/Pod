@@ -7,9 +7,9 @@
 */*~
 
 # CCS Files
-*/.jxbrowser-data
-*/.metadata
-*/.launches
-*/RemoteSystemsTempFiles
-*/Debug
-*/.settings
+**/.jxbrowser-data
+**/.metadata
+**/.launches
+**/RemoteSystemsTempFiles
+**/Debug
+**/.settings
