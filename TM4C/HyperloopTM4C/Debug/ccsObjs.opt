@@ -1,0 +1,1 @@
+"./main.obj" "./startup_ccs.obj" "./drivers/pinout.obj" "./utils/uartstdio.obj" "../HyperloopTM4C_ccs.cmd" -llibc.a -l"C:/TICCS/TM4C1294XL Kit/driverlib/ccs/Debug/driverlib.lib" 
