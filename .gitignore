@@ -4,11 +4,12 @@ obj/
 
 
 # Temp Files
-*~
+*/*~
 
 # CCS Files
 .jxbrowser-data/
 .metadata/
+.launches/
 RemoteSystemsTempFiles/
 Debug/
 .settings/
