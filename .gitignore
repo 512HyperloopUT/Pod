@@ -13,3 +13,6 @@
 **/RemoteSystemsTempFiles
 **/Debug
 **/.settings
+
+# Some lib directory
+TM4C/lib
