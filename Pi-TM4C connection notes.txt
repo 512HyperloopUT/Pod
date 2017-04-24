@@ -1,0 +1,81 @@
+valS -> cmd
+valT -> idata
+s
+valP -> odata
+
+                          +-------+
+                 +---> 16 | idata | --------------+
+                 |        +-------+               |                                      +--------+
+ +----+          |        +-------+               |          +------+          +-----> ? | motors |
+ |    | 23 ------+--->  7 |  cmd  | ---------------+----> 23 |      |          |         +--------+
+ |    |                   +-------+                          |      | ? -------+
+ | Pi |                                                      | TM4C |
+ |    |                   +-------+                          |      | ? <------+
+ |    | 17 <-+-------- 16 | odata | <---------+---------- 17 |      |          |         +---------+
+ +----+      |            +-------+           |              +------+          +------ ? | sensors |
+             |            +-------+           |                                          +---------+
+             +--------  1 |   s   | <---------+
+                          +-------+
+
+
+
+Reading from peripherals (initial):
+Pi                                      TM4C
+1) cmd = 0
+2) idata = encodings[sensorID]          1) read cmd, idata
+Waiting for TM4C to clear (s = 0)       2) s = 0
+3) cmd = 1                              
+Waiting for TM4C to read                1) read cmd, idata
+                                        2) read port, depending on idata
+                                        3) odata = reading
+                                        4) s = 1
+4) return odata reading
+
+Reading from peripherals (repeat):
+
+Pi
+1) Wait for s = 1
+2) return odata reading
+
+TM4C
+1) s = 0
+1) read port
+2) set odata to reading
+3) s = 1
+
+Note: repeat on the TM4C has a delay of 25 system ticks (aiming for 25 milliseconds)
+
+Writing to peripherals:
+Pi                                      TM4C
+1) cmd = 0
+2) idata = intensity                    1) read cmd, idata
+Waiting for TM4C to clear (s = 0)       2) s = 0
+3) cmd = write_encodings[sensorID]
+Waiting for TM4C to read                1) read cmd, idata
+                                        2) write to port the provided value
+                                        3) s = 1
+4) return (write complete)
+
+TM4C PIN MAPPINGS (note: ordered starting from bit 0)
+output:
+    stt
+        PA7
+    odata
+        PM6, PM7, PN2, PN3,
+        PP2, PP3, PP4, PP5,
+        PQ1, PB2 ?, PB3 ?, PD3 ?
+        PG1 ?, PN4 ?, PN5 ?, PQ0 ?
+input:
+    cmd
+        PL3, PL4, PL5, PM0,
+        PM1, PM2, PM3
+    idata
+        PC7, PF1, PF2, PF3,
+        PG0, PH0, PH1, PH2
+        PH3, PK4, PK5, PK6
+        PK7, PL0, PL1, PL2
+
+TM4C peripheral input encodings:
+    ????????
+TM4C peripheral output encodings:
+    ????????
