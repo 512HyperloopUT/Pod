@@ -1,6 +1,6 @@
 #pragma once
 
-#include "comm/half.hpp"
+#include "comm/half.h"
 
 float read(int id);
 
