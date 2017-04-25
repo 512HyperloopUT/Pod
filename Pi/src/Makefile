@@ -10,7 +10,7 @@ BDIR = bin
 IDIR = include
 
 # flags
-CFlags = -Wall -std=c++11
+CFlags = -std=c++11
 LDFlags =
 libs =
 libDir =
