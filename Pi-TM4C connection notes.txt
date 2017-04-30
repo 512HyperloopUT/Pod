@@ -11,7 +11,7 @@ valP -> odata
  |    |                   +-------+                          |      | ? -------+
  | Pi |                                                      | TM4C |
  |    |                   +-------+                          |      | ? <------+
- |    | 17 <-+-------- 16 | odata | <---------+---------- 17 |      |          |         +---------+
+ |    | 13 <-+-------- 12 | odata | <---------+---------- 13 |      |          |         +---------+
  +----+      |            +-------+           |              +------+          +------ ? | sensors |
              |            +-------+           |                                          +---------+
              +--------  1 |   s   | <---------+
@@ -56,24 +56,20 @@ Waiting for TM4C to read                1) read cmd, idata
                                         3) s = 1
 4) return (write complete)
 
-TM4C PIN MAPPINGS (note: ordered starting from bit 0)
+TM4C PIN MAPPINGS (note: ordered starting from bit 0 (LSb -> MSb)
 output:
     stt
         PA7
     odata
         PM6, PM7, PN2, PN3,
         PP2, PP3, PP4, PP5,
-        PQ1, PB2 ?, PB3 ?, PD3 ?
-        PG1 ?, PN4 ?, PN5 ?, PQ0 ?
+        PQ1, PL3, PL4, PL5
 input:
-    cmd
-        PL3, PL4, PL5, PM0,
-        PM1, PM2, PM3
+    cmd PM0, PM1, PM2, PM3
     idata
         PC7, PF1, PF2, PF3,
-        PG0, PH0, PH1, PH2
+        PG0, PH0, PH1, PH2,
         PH3, PK4, PK5, PK6
-        PK7, PL0, PL1, PL2
 
 TM4C peripheral input encodings:
     ????????
