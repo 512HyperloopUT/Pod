@@ -11,6 +11,8 @@
 #include "utils/uartstdio.h"
 #include "inc/tm4c1294ncpdt.h"
 
+#define PIDEBUG0
+
 /*****************
 The error routine that is called if the driver library encounters an error
 *****************/
@@ -66,10 +68,64 @@ void MassWrite(uint32_t *ports, uint8_t *pins, uint8_t len, uint64_t data) {
 /*****************
 Analog Pin IO
 *****************/
-#error TODO
+#ifndef PIDEBUG0
+    #error TODO
+#endif
 
 /*****************
+Configure communication with the Raspberry Pi, pin mappings and method.
+*****************/
+/*****************
 PIN MAPPINGS (LSb -> MSb)
+
+PWM OUT
+PM3
+PF1
+PF2
+PF3
+PG0
+PM7
+PG1
+PK4
+PK5
+PM0
+
+BRAKE OUT
+PC6
+
+TIMER CAPTURE
+PM1
+PM2
+
+
+PC7
+PH2
+PH3
+PN2
+PN3
+PP2
+
+
+ANALOG IN
+???? -> PA6
+AIN0 -> PE3
+AIN1 -> PE2
+AIN2 -> PE1
+AIN3 -> PE0
+AIN4 -> PD7
+
+
+AIN8 -> PE5
+AIN9 -> PE4
+AIN13 -> PD2
+AIN10 -> PB4
+AIN11 -> PB5
+AIN16 -> 
+AIN17 -> 
+AIN18 -> 
+AIN19 -> 
+
+
 output:
     stt
         PA7
@@ -116,10 +172,6 @@ uint8_t idata_pins[] = {
     {PIN(0)}, {PIN(0)}, {PIN(1)}, {PIN(2)},
     {PIN(3)}, {PIN(4)}, {PIN(5)}, {PIN(6)}
 };
-
-/*****************
-Configure communication with the Raspberry Pi, pin mappings and method.
-*****************/
 void ConfigurePiComm(void) {
     /* cmd */
     GPIOMassInit(cmd_ports, cmd_pins, cmd_width, PIN_IN);
@@ -129,6 +181,17 @@ void ConfigurePiComm(void) {
     GPIOMassInit(stt_ports, stt_pins, stt_width, PIN_OUT);
     /* odata */
     GPIOMassInit(odata_ports, odata_pins, odata_width, PIN_OUT);
+}
+
+/*****************
+Configure output
+*****************/
+uint32_t tx_ports[] = {};
+uint32_t tx_pins[] = {};
+uint32_t rx_ports[] = {};
+uint32_t rx_pins[] = {};
+void ConfigureOuput(void) {
+    /* Analog outputs */
 }
 
 /*****************
@@ -179,7 +242,7 @@ void Setup() {
     /* Initialize the communication pins */
     ConfigureUART(); //UART
     ConfigurePiComm(); //Pi
-    #error TODO
+    ConfigureOuput(); //Output to home
     ConfigureTiming(); //Timing
 }
 
@@ -197,16 +260,17 @@ uint8_t curr_stt = 0;
 void ReadCmd(void) {
     /* Read cmd */
     last_cmd = curr_cmd;
-    curr_cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, 7);
+    curr_cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
     /* Read idata */
     last_idata = curr_idata;
-    curr_idata = (uint16_t) MassRead(idata_ports, idata_pins, 16);
+    curr_idata = (uint16_t) MassRead(idata_ports, idata_pins, idata_width);
 }
 /* Execute instructions */
 uint64_t last_exec = 0;
 uint16_t exec_sep = 25;
 void ExecCmd(void) {
-    #error TODO
+    #ifndef PIDEBUG0
+        #error TODO
     if (
             (curr_cmd != last_cmd || curr_idata != last_idata)
             || (curr_time - last_exec >= exec_sep || exec_beat == 0)
@@ -223,23 +287,33 @@ void ExecCmd(void) {
             curr_stt = 0;
             break;
         case 1: /* Full instruction */
+            #ifndef PIDEBUG0
             if (curr_idata < 0x8000) { /* Simple value fetch */
-                #error TODO
+                #ifndef PIDEBUG0
+                    #error TODO
+                #endif
             } else { /* Preset instruction */
                 CustomFunct(curr_idata);
             }
+            #endif
             break;
         default: /* Writing to motors */
-            #error TODO
+            #ifndef PIDEBUG0
+                #error TODO
+            #endif
         }
         /* Read necessary data */
         #error TODO
         curr_odata = /* ????? */;
         /* Write valp */
-        MassWrite(odata_ports, odata_pins, 16, curr_odata);
+        MassWrite(odata_ports, odata_pins, odata_width, curr_odata);
         /* Write s */
         WritePin(stt_ports[0], stt_pins[0], curr_stt);
     }
+    
+    #endif
+    
+    MassWrite(stt_ports, stt_pins, stt_width, !cmd);
 }
 
 /*****************
@@ -249,11 +323,9 @@ uint64_t last_beat = 0;
 uint16_t heartbeat_sep = 250;
 uint8_t beat = 0;
 void Heartbeat(void) {
-    #error TODO
     if (curr_time - last_beat >= heartbeat_sep || last_beat == 0) {
         /* Flip state and toggle led */
         beat = !beat;
-        #error TODO
         last_beat = /* how does one get the current time */;
         LEDWrite(CLP_D1, on);
     }
