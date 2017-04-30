@@ -7,7 +7,7 @@ valP -> odata
                  +---> 12 | idata | --------------+
                  |        +-------+               |                                      +--------+
  +----+          |        +-------+               |          +------+          +-----> ? | motors |
- |    | 16 ------+--->  4 |  cmd  | ---------------+----> 16 |      |          |         +--------+
+ |    | 16 ------+--->  4 |  cmd  | --------------+-----> 16 |      |          |         +--------+
  |    |                   +-------+                          |      | ? -------+
  | Pi |                                                      | TM4C |
  |    |                   +-------+                          |      | ? <------+
@@ -21,39 +21,37 @@ valP -> odata
 
 Reading from peripherals (initial):
 Pi                                      TM4C
-1) cmd = 0
-2) idata = encodings[sensorID]          1) read cmd, idata
-Waiting for TM4C to clear (s = 0)       2) s = 0
-3) cmd = 1                              
+2) idata = encodings[sensorID]
+3) cmd = !s
 Waiting for TM4C to read                1) read cmd, idata
+                                        Proceeds if cmd < 2
                                         2) read port, depending on idata
                                         3) odata = reading
-                                        4) s = 1
+                                        4) s = cmd
 4) return odata reading
 
 Reading from peripherals (repeat):
 
 Pi
-1) Wait for s = 1
+1) Wait for s == cmd
 2) return odata reading
 
 TM4C
-1) s = 0
+1) s = !cmd
 1) read port
 2) set odata to reading
-3) s = 1
+3) s = cmd
 
 Note: repeat on the TM4C has a delay of 25 system ticks (aiming for 25 milliseconds)
 
 Writing to peripherals:
 Pi                                      TM4C
-1) cmd = 0
-2) idata = intensity                    1) read cmd, idata
-Waiting for TM4C to clear (s = 0)       2) s = 0
+2) idata = intensity
 3) cmd = write_encodings[sensorID]
 Waiting for TM4C to read                1) read cmd, idata
+                                        Proceed if cmd > 1
                                         2) write to port the provided value
-                                        3) s = 1
+                                        3) s = !s
 4) return (write complete)
 
 TM4C PIN MAPPINGS (note: ordered starting from bit 0 (LSb -> MSb)
