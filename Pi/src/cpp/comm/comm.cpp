@@ -24,3 +24,8 @@ float read(int id) {
 
 void write(float val, int id) {
 }
+
+float b12tof(uint16_t x) {
+	return (float)x/(1<<11) - 1.0;
+}
+
