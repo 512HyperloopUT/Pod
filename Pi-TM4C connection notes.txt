@@ -5,10 +5,10 @@ valP -> odata
 
                           +-------+
                  +---> 12 | idata | --------------+
-                 |        +-------+               |                                      +--------+
- +----+          |        +-------+               |          +------+          +-----> ? | motors |
- |    | 16 ------+--->  4 |  cmd  | --------------+-----> 16 |      |          |         +--------+
- |    |                   +-------+                          |      | ? -------+
+                 |        +-------+               |                                      +-------------+
+ +----+          |        +-------+               |          +------+          +-----> 5 | Some target |
+ |    | 16 ------+--->  4 |  cmd  | --------------+-----> 16 |      |          |         +-------------+
+ |    |                   +-------+                          |      | 5 -------+
  | Pi |                                                      | TM4C |
  |    |                   +-------+                          |      | ? <------+
  |    | 13 <-+-------- 12 | odata | <---------+---------- 13 |      |          |         +---------+
@@ -55,21 +55,28 @@ Waiting for TM4C to read                1) read cmd, idata
 4) return (write complete)
 
 TM4C PIN MAPPINGS (note: ordered starting from bit 0 (LSb -> MSb)
-output:
     stt
         PA7
-    odata
-        PM6, PM7, PN2, PN3,
-        PP2, PP3, PP4, PP5,
-        PQ1, PL3, PL4, PL5
-input:
-    cmd PM0, PM1, PM2, PM3
     idata
-        PC7, PF1, PF2, PF3,
-        PG0, PH0, PH1, PH2,
-        PH3, PK4, PK5, PK6
-
-TM4C peripheral input encodings:
-    ????????
-TM4C peripheral output encodings:
-    ????????
+        PC6, PC7, PN3, PF2,
+        PF3, PG0, PG1, PH0,
+        PH1, PH2, PH3, PK4
+    odata
+        PL1, PL2, PL3, PL4,
+        PL5, PM0, PM1, PM2,
+        PM3, PM6, PM7, PN2
+    cmd
+        PK5, PK6, PK7, PL0
+tx
+    PF1
+tx_targ
+    PP2, PP3, PP5, PQ1
+rx
+    PA6 -> ????, PB4 -> AIN10,
+    PB5 -> AIN11, PD2 -> AIN13,
+    PD7 -> AIN4, PE0 -> AIN3,
+    PE1 -> AIN2, PE2 -> AIN1,
+    PE3 -> AIN0, PE4 -> AIN9,
+    PE5 -> AIN8, PK0 -> AIN16,
+    PK1 -> AIN17, PK2 -> AIN18,
+    PK3 -> AIN19
