@@ -1,7 +1,4 @@
-valS -> cmd
-valT -> idata
-s
-valP -> odata
+Layout of wiring
 
                           +-------+
                  +---> 12 | idata | --------------+
