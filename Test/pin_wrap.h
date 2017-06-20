@@ -8,7 +8,6 @@
 #ifndef PIN_WRAP_H_
 #define PIN_WRAP_H_
 
-
 #define PeriphEnable SysCtlPeripheralEnable
 #define PeriphReady SysCtlPeripheralReady
 /*****************

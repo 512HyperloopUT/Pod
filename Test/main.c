@@ -1,3 +1,11 @@
+/* Custom pin lib/macros */
+#include "pin_wrap.h"
+#include "mapping_constants.h"
+#include "gpio_wrap.h"
+#include "adc_wrap.h"
+#include "pwm_wrap.h"
+#include "cmd_wrap.h"
+
 /* C libraries */
 #include <stdint.h>
 #include <stdbool.h>
@@ -21,9 +29,6 @@
 /* UART */
 #include "utils/uartstdio.h"
 
-/* Custom pin lib/macros */
-#include "pin_wrap.h"
-
 /*****************
 The error routine that is called if the driver library encounters an error
 *****************/
@@ -41,116 +46,31 @@ uint32_t clock_freq;
 uint64_t curr_time = 0;
 
 /*****************
-Configure communication with the Raspberry Pi, pin mappings and method.
-
-Listed from listed significant to most significant bit
-*****************/
-//State of cmd execution
-uint8_t stt_width = 1;
-uint32_t stt_ports[] = {PORT(A)};
-uint8_t stt_pins[] = {PIN(7)};
-//Data retrieved
-uint8_t odata_width = 12;
-uint32_t odata_ports[] = {
-    PORT(C), PORT(C), PORT(N), PORT(F),
-    PORT(F), PORT(G), PORT(G), PORT(H),
-    PORT(H), PORT(H), PORT(H), PORT(H)
-};
-uint8_t odata_pins[] = {
-    PIN(6), PIN(7), PIN(3), PIN(2),
-    PIN(3), PIN(0), PIN(1), PIN(0),
-    PIN(1), PIN(2), PIN(3), PIN(4)
-};
-//Command to execute, 0&1 are the reading toggle values, and 2-15 are the write commands
-uint8_t cmd_width = 4;
-uint32_t cmd_ports[] = {
-    PORT(K), PORT(K), PORT(K), PORT(L)
-};
-uint8_t cmd_pins[] = {
-    PIN(5), PIN(6), PIN(7), PIN(0)
-};
-//Data for supplementing the command,
-//  sensor number (0-0x7ff) or preprogrammed action (0x800-0xfff) when reading,
-//  intensity when writing
-uint8_t idata_width = 12;
-uint32_t idata_ports[] = {
-    PORT(L), PORT(L), PORT(L), PORT(L),
-    PORT(L), PORT(M), PORT(M), PORT(M),
-    PORT(M), PORT(M), PORT(M), PORT(N)
-};
-uint8_t idata_pins[] = {
-    PIN(1), PIN(2), PIN(3), PIN(4),
-    PIN(5), PIN(0), PIN(1), PIN(2),
-    PIN(3), PIN(6), PIN(7), PIN(2)
-};
-//Used GPIO ports
-uint8_t picomm_port_count = 11;
-uint32_t picomm_ports[] = {
-    GPIOPORT(A), GPIOPORT(C), GPIOPORT(F), GPIOPORT(G),
-    GPIOPORT(H), GPIOPORT(K), GPIOPORT(L), GPIOPORT(M),
-    GPIOPORT(N)
-};
-//Transmission to motors/linear actuators/other things
-uint8_t tx_width = 1;
-uint32_t tx_ports[] = {
-    //PORT(F)
-};
-uint8_t tx_pins[] = {
-    //PIN(1)
-};
-//Transmission target selection
-uint8_t tx_targ_width = 4;
-uint32_t tx_targ_ports[] = {
-    //PORT(P), PORT(P), PORT(P), PORT(Q)
-};
-uint8_t tx_targ_pins[] = {
-    //PIN(2), PIN(3), PIN(5), PIN(1)
-};
-uint8_t tx_output_ports_cnt = 2;
-uint32_t tx_output_ports[] = {
-    //PORT(P), PORT(Q)
-};
-//Reception from sensors/other things
-uint8_t rx_width = 6;
-
-/*****************
-Compile time capability selection
-*****************/
-/* Analog read is needed */
-#define ADC_REQ 0
-/* Analog write is needed */
-#define PWM_REQ 0
-/* Only stt and cmd IO ports */
-#define PI_SIMPLE 1
-/* All 4 ports needed */
-#define PI_ADVANCED 0
-/* Custom functions needed */
-#define CSTM_FN 0
-
-#include "gpio_wrap.h"
-#include "pwm_wrap.h"
-#include "adc_wrap.h"
-#include "cmd_wrap.h"
-
-/*****************
 Configure I/O
 *****************/
 void ConfigurePiComm(void) {
     /* GPIO ports */
+    UARTprintf("Enabling GPIO peripherals.\n");
     MassPeriphInit(picomm_ports, picomm_port_count);
     /* cmd */
+    UARTprintf("Initializing command pins.\n");
     GPIOMassInit(cmd_ports, cmd_pins, cmd_width, PIN_IN);
     /* idata */
+    UARTprintf("Initializing input data pins pins.\n");
     GPIOMassInit(idata_ports, idata_pins, idata_width, PIN_IN);
     /* stt */
+    UARTprintf("Initializing state pins.\n");
     GPIOMassInit(stt_ports, stt_pins, stt_width, PIN_OUT);
     /* odata */
+    UARTprintf("Initializing output data pins.\n");
     GPIOMassInit(odata_ports, odata_pins, odata_width, PIN_OUT);
 }
 void ConfigureOuput(void) {
+    UARTprintf("Now configuring ADC\n");
     EnableADC();
+    UARTprintf("Now configuring PWM\n");
     EnablePWM();
-
+    UARTprintf("Now configuring PWM target selection -- additional info for receiver to redirect signals\n");
     /* Target output */
     MassPeriphInit(tx_output_ports, tx_output_ports_cnt);
     GPIOMassInit(tx_targ_ports, tx_targ_pins, tx_targ_width, PIN_OUT);
@@ -194,19 +114,21 @@ ConfigureHeartbeat() {
 /*****************
 Configure SysTick for use with timing data
 *****************/
-void SysTick_IntHandler(void) { curr_time++; }
+void SysTick_IntHandler(void) {
+    ++curr_time;
+    if (curr_time % 100 == 0) UARTprintf("SysTick triggered, now at %ul.\n", curr_time);
+}
 void ConfigureTiming(void) {
-    /* Settle clock */
+    UARTprintf("Settling clock.\n");
     uint32_t clock = SysCtlClockGet();
-    /* Make a function available for handling the SysTick */
+    UARTprintf("Configuring SysTick interrupt function.\n");
     SysTickIntRegister(SysTick_IntHandler);
-    /* Equivalent Clock speed and SysTick */
+    UARTprintf("Set SysTick period to clock speed.\n");
     SysTickPeriodSet(clock_freq);
-    /* Enable interrupts */
+    UARTprintf("Enable all interrupts then enable SysTick interrupt.\n");
     IntMasterEnable();
-    /* Enables SysTick interrupts */
     SysTickIntEnable();
-    /* Enable the SysTick itself */
+    UARTprintf("Enable SysTick.\n");
     SysTickEnable();
 }
 
@@ -222,9 +144,11 @@ void Setup() {
                                             120 * 1000 * 1000);
     /* Initialize the communication pins */
     ConfigureUART(); //UART
-    UARTprintf("Hello. We are now configuring.");
+    UARTprintf("Hello. UART configured. Continuing with general configuration.\nConfiguring general I/O with ADC and PWM.\n");
     ConfigureOuput(); //Output to pins
+    UARTprintf("Configuring Pi I/O.\n");
     ConfigurePiComm(); //Pi communications
+    UARTprintf("Configuring SysTick timing mechanism.\n");
     ConfigureTiming(); //Systick setup
     UARTprintf("Configuration complete. We are ready to begin.");
 }
