@@ -6,6 +6,7 @@
  */
 
 #include "pwm_wrap.h"
+#include "pin_wrap.h"
 
 /* C libraries */
 #include <stdint.h>
@@ -18,9 +19,9 @@
 
 
 void EnablePWM() {
-#if PWM_REQ == 1
+#if PWM_REQ == 0
     /* Analog outputs */
-    #error "Analog output must be configured."
+    //#error "Analog output must be configured."
     //TODO
     PeriphEnable(SYSCTL_PERIPH_PWM0);
     while(!PeriphReady(SYSCTL_PERIPH_PWM0));
@@ -37,9 +38,11 @@ void EnablePWM() {
 }
 
 void WritePWM(uint32_t ui32Port, uint8_t ui8Pins, uint16_t value) {
+#if PWM_REQ == 0
     //TODO
     // Set the pulse width of PWM0 for a 25% duty cycle.
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0, 100);
     // Set the pulse width of PWM1 for a 75% duty cycle.
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_1, 300);
+#endif
 }
