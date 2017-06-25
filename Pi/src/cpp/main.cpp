@@ -1,14 +1,19 @@
 //#include <stdio.h>
 
 #include "comm/comm.h"
+#include "gpio/GPIOPin.h"
 
 int main() {
-//#ifndef __arm__
-//	printf("ERROR: probably not compiled on Raspberry PI\n");
-//	return 0;
-//#endif
+	int current = 0;
 
-	read(10);
+	GPIOPin readPin(1);
+	GPIOPin writePin(2);
 
+	while (true) {
+		if (current != readPin.getValue()) {
+			current = readPin.getValue();
+			writePin.setValue(!writePin.getValue());
+		}
+	}
 	return 0;
 }

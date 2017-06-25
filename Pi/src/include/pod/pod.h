@@ -5,9 +5,7 @@ public:
 	Pod();
 	~Pod();
 
-	void init();//initalize sensors & pod
-	void update();//update sensors (IO, algorithms, etc)
-	void shutdown();//shutdown (delete pointers, sensors, etc)
-
-	void addSensor();//add sensor
+	void init();
+	void update();
+	void shutdown();
 };

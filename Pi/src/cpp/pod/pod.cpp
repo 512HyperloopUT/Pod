@@ -14,6 +14,3 @@ void Pod::update() {
 
 void Pod::shutdown() {
 }
-
-void Pod::addSensor() {
-}
