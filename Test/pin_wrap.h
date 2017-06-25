@@ -8,6 +8,11 @@
 #ifndef PIN_WRAP_H_
 #define PIN_WRAP_H_
 
+#define PI_SIMPLE 1
+#define PI_ADVANCED 0
+#define PWM_REQ 1
+#define ADC_REQ 1
+
 #define PeriphEnable SysCtlPeripheralEnable
 #define PeriphReady SysCtlPeripheralReady
 /*****************

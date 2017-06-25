@@ -11,6 +11,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "pin_wrap.h"
+
 #ifndef ADC_REQ
 #define ADC_REQ 0
 #endif

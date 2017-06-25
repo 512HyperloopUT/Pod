@@ -51,29 +51,6 @@ void PresetFunc(uint16_t cmd) {
     }
 }
 
-#if PWM_REQ == 1 || ADC_REQ == 1
-uint32_t DecodeIData(uint16_t port, uint8_t mode) {
-    uint8_t cnt;
-    uint8_t cmtx;
-    if (mode == 0) {
-        cnt = rcnt;
-        cmtx = rcmtx;
-    } else if (mode == 1) {
-        cnt = wcnt;
-        cmtx = wcmtx;
-    } else {
-        while(1);
-    }
-    int i;
-    for (i = 0; i < rcnt; i++) {
-        if (port%cnt == cmtx[i][0]) {
-            return cmtx[i][1];
-        }
-    }
-    UARTprintf("Error %s port %u. Port not found.", mode?"reading from":"writing to", conv);
-    return 0;
-}
-#endif
 /* Execute instructions */
 uint64_t last_exec = 0;
 uint16_t exec_sep = 25;
@@ -132,15 +109,18 @@ void ExecCmd(void) {
     UARTprintf("Command read:\n\tcmd: %ud\n", curr_cmd, curr_idata);
     MassWrite(stt_ports, stt_pins, stt_width, !curr_cmd);
 
-    if (increment) {
-        lastpwm++;
-        increment = lastpwm < 400;
-    } else {
-        lastpwm--;
-        increment = lastpwm <= 0;
+    lastpwm += 10;
+    if (lastpwm > 1000) {
+        lastpwm = 0;
     }
     WritePWM(tx_ports[0], tx_pins[0], lastpwm);
     UARTprintf("PWM pin set to %d\n", lastpwm);
+    if (lastpwm == 0) {
+        SysCtlDelay(50000000);
+    }
+
+    //Now read ADC
+
 #else
     #error "No Pi communication protocol established"
 #endif

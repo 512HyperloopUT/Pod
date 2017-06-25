@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "pin_wrap.h"
 #include "mapping_constants.h"
 
 #ifndef PI_ADVANCED

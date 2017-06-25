@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include "pin_wrap.h"
+
 /*****************
 Listed from least significant to most significant bit
 *****************/
@@ -40,6 +42,16 @@ extern const uint8_t idata_pins[];
 extern const uint8_t picomm_port_count;
 extern const uint32_t picomm_ports[];
 
+#if ADC_REQ == 1
+//Reception from sensors/other things
+extern const uint8_t rx_width;
+
+extern const uint8_t rcnt;
+extern const uint8_t rcmtx[][];
+#endif
+#if PWM_REQ == 1
+extern const uint16_t pwm_limit;
+
 //Transmission to motors/linear actuators/other things
 extern const uint8_t tx_width;
 extern const uint32_t tx_ports[];
@@ -51,18 +63,6 @@ extern const uint32_t tx_targ_ports[];
 extern const uint8_t tx_targ_pins[];
 extern const uint8_t tx_output_ports_cnt;
 extern const uint32_t tx_output_ports[];
-
-//Reception from sensors/other things
-extern const uint8_t rx_width;
-
-#if ADC_REQ == 1
-extern const uint8_t rcnt;
-extern const uint8_t rcmtx[][];
-#endif
-#if PWM_REQ == 1
-extern const uint8_t wcnt;
-extern const uint8_t wc2mtx[];
-extern const uint8_t wcmtx[][];
 #endif
 
 
