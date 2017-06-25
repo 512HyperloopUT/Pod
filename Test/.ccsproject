@@ -7,7 +7,7 @@
 	<deviceEndianness value="little"/>
 	<codegenToolVersion value="16.9.3.LTS"/>
 	<isElfFormat value="true"/>
-	<connection value="common/targetdb/connections/segger_j-link_connection.xml"/>
+	<connection value="common/targetdb/connections/Stellaris_ICDI_Connection.xml"/>
 	<linkerCommandFile value="tm4c1292ncpdt.cmd"/>
 	<rts value="libc.a"/>
 	<createSlaveProjects value=""/>

@@ -78,6 +78,9 @@ uint32_t DecodeIData(uint16_t port, uint8_t mode) {
 uint64_t last_exec = 0;
 uint16_t exec_sep = 25;
 uint32_t adcbuffer[8];
+
+int lastpwm = 0;
+int increment = 1;
 void ExecCmd(void) {
 #if PI_ADVANCED == 1
     if (
@@ -128,6 +131,16 @@ void ExecCmd(void) {
 #elif PI_SIMPLE == 1
     UARTprintf("Command read:\n\tcmd: %ud\n", curr_cmd, curr_idata);
     MassWrite(stt_ports, stt_pins, stt_width, !curr_cmd);
+
+    if (increment) {
+        lastpwm++;
+        increment = lastpwm < 400;
+    } else {
+        lastpwm--;
+        increment = lastpwm <= 0;
+    }
+    WritePWM(tx_ports[0], tx_pins[0], lastpwm);
+    UARTprintf("PWM pin set to %d\n", lastpwm);
 #else
     #error "No Pi communication protocol established"
 #endif

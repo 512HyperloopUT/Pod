@@ -7,8 +7,10 @@
 #include "cmd_wrap.h"
 
 /* C libraries */
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 /* Other, TM4C libraries */
 /* hardware specific */
 #include "inc/hw_memmap.h"
@@ -34,8 +36,7 @@ The error routine that is called if the driver library encounters an error
 *****************/
 #ifdef DEBUG
 void
-__error__(char *pcFilename, uint32_t ui32Line) {
-}
+__error__(char *pcFilename, uint32_t ui32Line) {}
 #endif
 
 /*****************
@@ -73,6 +74,7 @@ void ConfigureOuput(void) {
     UARTprintf("Now configuring PWM target selection -- additional info for receiver to redirect signals\n");
     /* Target output */
     MassPeriphInit(tx_output_ports, tx_output_ports_cnt);
+    UARTprintf("Peripheral init complete. Now looking at pins.\n");
     GPIOMassInit(tx_targ_ports, tx_targ_pins, tx_targ_width, PIN_OUT);
 }
 
@@ -115,8 +117,7 @@ ConfigureHeartbeat() {
 Configure SysTick for use with timing data
 *****************/
 void SysTick_IntHandler(void) {
-    ++curr_time;
-    if (curr_time % 100 == 0) UARTprintf("SysTick triggered, now at %ul.\n", curr_time);
+    curr_time++;
 }
 void ConfigureTiming(void) {
     UARTprintf("Settling clock.\n");
@@ -144,7 +145,7 @@ void Setup() {
                                             120 * 1000 * 1000);
     /* Initialize the communication pins */
     ConfigureUART(); //UART
-    UARTprintf("Hello. UART configured. Continuing with general configuration.\nConfiguring general I/O with ADC and PWM.\n");
+    UARTprintf("Hello. UART configured.\nClock at %ul Hz.\nContinuing with general configuration.\nConfiguring general I/O with ADC and PWM.\n", clock_freq);
     ConfigureOuput(); //Output to pins
     UARTprintf("Configuring Pi I/O.\n");
     ConfigurePiComm(); //Pi communications
@@ -183,7 +184,10 @@ inline void Loop(void) {
 
 int main(void) {
     Setup();
+    char buff[20];
     for (;;) {
+        sprintf(buff, "%" PRIu64 , curr_time);
+        UARTprintf("SysTick current: %s.\n", buff);
         Loop();
     }
 }

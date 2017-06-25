@@ -14,14 +14,18 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/gpio.h"
 
+#include "utils/uartstdio.h"
+
 /*****************
 Peripheral enabling
 *****************/
 void MassPeriphInit(const uint32_t* ports, uint8_t len) {
     int i;
     for (i = 0; i < len; ++i) {
+        UARTprintf("Began init: %d\n", i);
         PeriphEnable(ports[i]);
         while (!PeriphReady(ports[i]));
+        UARTprintf("Completed init: %d\n", i);
     }
 }
 /*****************
@@ -36,7 +40,9 @@ Pin GPIO Init Macros and Functions
 void GPIOMassInit(const uint32_t *ports, const uint8_t *pins, uint8_t len, uint8_t direction) {
     int i;
     for (i = 0; i < len; ++i) {
+        UARTprintf("Began init: %d, port: %d, pin: %d\n", i, ports[i], pins[i]);
         GPIOPinInit(ports[i], pins[i], direction);
+        UARTprintf("Finished init: %d, port: %d, pin: %d\n", i, ports[i], pins[i]);
     }
 }
 /*****************
@@ -50,7 +56,9 @@ uint64_t MassRead(const uint32_t *ports, const uint8_t *pins, uint8_t len) {
     int i;
     uint64_t val = 0;
     for (i = 0; i < len; ++i) {
-        val |= (DigiReadPin(ports[i], pins[i]) ? 1 : 0) << i;
+        int justnow = (DigiReadPin(ports[i], pins[i]) ? 1 : 0);
+        val |= justnow << i;
+        UARTprintf("Just read from port %d, pin %d: %d\n", justnow);
     }
     return val;
 }
