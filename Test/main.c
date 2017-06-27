@@ -61,7 +61,8 @@ void ConfigurePiComm(void) {
     GPIOMassInit(idata_ports, idata_pins, idata_width, PIN_IN);
     /* stt */
     UARTprintf("Initializing state pins.\n");
-    GPIOMassInit(stt_ports, stt_pins, stt_width, PIN_OUT);
+    GPIOMassInit(tistt_ports, tistt_pins, tistt_width, PIN_OUT);
+    GPIOMassInit(pistt_ports, pistt_pins, pistt_width, PIN_IN);
     /* odata */
     UARTprintf("Initializing output data pins.\n");
     GPIOMassInit(odata_ports, odata_pins, odata_width, PIN_OUT);

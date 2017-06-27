@@ -111,6 +111,16 @@
 			<locationURI>PARENT-6-PROJECT_LOC/TI/TivaWare_C_Series-2.1.4.178/driverlib/systick.h</locationURI>
 		</link>
 		<link>
+			<name>driverlib/timer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/TI/TivaWare_C_Series-2.1.4.178/driverlib/timer.c</locationURI>
+		</link>
+		<link>
+			<name>driverlib/timer.h</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/TI/TivaWare_C_Series-2.1.4.178/driverlib/timer.h</locationURI>
+		</link>
+		<link>
 			<name>driverlib/uart.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/TI/TivaWare_C_Series-2.1.4.178/driverlib/uart.c</locationURI>

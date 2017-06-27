@@ -9,15 +9,7 @@
 #define PWM_WRAP_H_
 
 #include <stdint.h>
-
-#ifndef PWM_REQ
-#define PWM_REQ 0
-#endif
-
-#if PWM_REQ == 1
-    #error "Analog writes on the TODO list"
-#endif
-
+#include "pin_wrap.h"
 
 void EnablePWM();
 void WritePWM(uint32_t ui32Port, uint8_t ui8Pins, uint16_t value);
