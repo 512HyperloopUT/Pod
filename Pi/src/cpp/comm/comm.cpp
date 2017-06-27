@@ -102,50 +102,49 @@ void cmdWrite(int val) {
 	cmd3.setValue(val & 0b1000);
 }
 
+/// Also, make id unsigned 16 byte int (uint16_t) if possible to limit the allowed values ///
 float read(int id) {
 	//pi sends 0 - reset
-	cmdWrite(0);
+	pistate.setValue(0);
 
 	//pi reads 0 - reset finished
-	while (tistate.getValue() != false) {}
+	while (tistate.getValue()) {}
 
 	//pi writes cmd - read cmd
-	cmdWrite(1);
+	cmdWrite(0);
 
 	//pi writes idata - sensor id
 	idataWrite(id);
 
 	//pi sends 1 - start command
-	pistate.setValue(!pistate.getValue());
+	pistate.setValue(1);
 
 	//wait for cmd to finish
-	while (pistate.getValue() != tistate.getValue()) {}
+	while (!tistate.getValue()) {}
 
 	//pi reads odata
 	return odataRead();
 }
 
+/// Note the limit of id is 14 since the max we can write is 16 and 0 and 1 are taken and we need to add 1 to the value ///
+/// Also, make val and id unsigned 16 byte ints (uint16_t) if possible to limit the allowed values ///
 void write(int val, int id) {
 	//pi sends 0 - reset
-	cmdWrite(0);
+	pistate.setValue(0);
 
 	//pi reads 0 - reset finished
-	while (tistate.getValue() != false) {}
+	while (tistate.getValue()) {}
 
 	//pi writes cmd - write cmd > 1
-	cmdWrite(id);
+	cmdWrite(id + 1);
 
 	//pi writes idata - write value
 	idataWrite(val);
 
 	//pi sends 1 - start command
-	pistate.setValue(!pistate.getValue());
+	pistate.setValue(1);
 
-	//wait for cmd to finish - NOT NECESSARY?
-	while (pistate.getValue() != tistate.getValue()) {}
-}
-
-float b12tof(uint16_t x) {
-	return (float)x/(1<<11) - 1.0;
+	//wait for cmd to finish - yes, it is necessary if there's issues on the tm4c's side. We need to know when we cause a stall and resolve that later on
+	while (!tistate.getValue()) {}
 }
 

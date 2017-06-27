@@ -30,38 +30,38 @@ const uint8_t tistt_width = 1;
 const uint32_t tistt_ports[] = {PORT(A)};
 const uint8_t tistt_pins[] = {PIN(7)};
 //Data retrieved
-const uint8_t odata_width = 12;
+const uint8_t odata_width = 10;
 const uint32_t odata_ports[] = {
     PORT(C), PORT(C), PORT(N), PORT(F),
     PORT(F), PORT(G), PORT(G), PORT(H),
-    PORT(H), PORT(H), PORT(H), PORT(H)
+    PORT(H), PORT(H)
 };
 const uint8_t odata_pins[] = {
     PIN(6), PIN(7), PIN(3), PIN(2),
     PIN(3), PIN(0), PIN(1), PIN(0),
-    PIN(1), PIN(2), PIN(3), PIN(4)
+    PIN(1), PIN(2)
 };
 //Command to execute, 0&1 are the reading toggle values, and 2-15 are the write commands
 const uint8_t cmd_width = 4;
 const uint32_t cmd_ports[] = {
-    PORT(K), PORT(K), PORT(K), PORT(L)
+    PORT(H), PORT(H), PORT(K), PORT(K)
 };
 const uint8_t cmd_pins[] = {
-    PIN(5), PIN(6), PIN(7), PIN(0)
+    PIN(3), PIN(4), PIN(5), PIN(6)
 };
 //Data for supplementing the command,
 //  sensor number (0-0x7ff) or preprogrammed action (0x800-0xfff) when reading,
 //  intensity when writing
 const uint8_t idata_width = 12;
 const uint32_t idata_ports[] = {
-    PORT(L), PORT(L), PORT(L), PORT(L),
-    PORT(L), PORT(M), PORT(M), PORT(M),
-    PORT(M), PORT(M), PORT(M), PORT(N)
+    PORT(K), PORT(L), PORT(L), PORT(L),
+    PORT(L), PORT(L), PORT(L), PORT(M),
+    PORT(M), PORT(M)
 };
 const uint8_t idata_pins[] = {
-    PIN(1), PIN(2), PIN(3), PIN(4),
-    PIN(5), PIN(0), PIN(1), PIN(2),
-    PIN(3), PIN(6), PIN(7), PIN(2)
+    PIN(7), PIN(0), PIN(1), PIN(2),
+    PIN(3), PIN(4), PIN(5), PIN(0),
+    PIN(1), PIN(2)
 };
 
 const uint8_t pistt_width = 1;
@@ -86,10 +86,10 @@ const uint16_t pwm_limit = 1000;
 //Transmission target selection
 const uint8_t tx_targ_width = 4;
 const uint32_t tx_targ_ports[] = {
-    PORT(P), PORT(P), PORT(P), PORT(Q)
+    PORT(M), PORT(M), PORT(M), PORT(N)
 };
 const uint8_t tx_targ_pins[] = {
-    PIN(2), PIN(3), PIN(5), PIN(1)
+    PIN(3), PIN(6), PIN(7), PIN(2)
 };
 const uint8_t tx_output_ports_cnt = 2;
 const uint32_t tx_output_ports[] = {

@@ -27,18 +27,21 @@
 Instruction management
 *****************/
 /* Past and current values */
+uint8_t valid = 0;
 uint8_t cmd = 0;
 uint16_t idata = 0;
+uint8_t new = 0;
 
 /* Fetch instructions */
 void ReadCmd(void) {
     /* Read cmd & idata */
-    if (DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
+    if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
+        int last_cmd = cmd, int last_idata = idata;
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
         idata = (uint16_t) MassRead(idata_ports, idata_pins, idata_width);
-    } else {
-        cmd = 0;
-        idata = 0;
+        if (cmd != last_cmd || idata != last_idata) {
+            new = 1;
+        }
     }
     UARTprintf("Command read:\n\tcmd: %ud\n\tidata: %ud\n", cmd, idata);
 }
@@ -47,12 +50,13 @@ void ReadCmd(void) {
 //TODO uint32_t adcbuffer[8]; /* For reading from the ADC */
 
 void ExecCmd(void) {
-    if (!cmd) {
+    if (!valid) {
         UARTprintf("Reset command.\n");
         DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
-    } else { /* Do cmd */
+    } else if (new || !cmd) { /* Do cmd if is new or if is read */
+        new = 0;
         UARTprintf("Actual command.\n");
-        if (cmd == 1) { //Read or special function
+        if (!cmd) { //Read or special function
             if (idata > 0xff) { /* idata >= 0 && idata < 0x200*/
                 //TODO Read the selected sensor
                 UARTprintf("Reading dummy sensor %d.\n", idata);
