@@ -11,10 +11,6 @@
 #include <stdint.h>
 #include "pin_wrap.h"
 
-#ifndef PWM_REQ
-#define PWM_REQ 0
-#endif
-
 void EnablePWM();
 void WritePWM(uint32_t ui32Port, uint8_t ui8Pins, uint16_t value);
 

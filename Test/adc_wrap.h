@@ -13,10 +13,6 @@
 
 #include "pin_wrap.h"
 
-#ifndef ADC_REQ
-#define ADC_REQ 0
-#endif
-
 void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer);
 void EnableADC();
 

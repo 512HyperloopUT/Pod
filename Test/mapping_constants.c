@@ -63,6 +63,14 @@ const uint8_t idata_pins[] = {
     PIN(5), PIN(0), PIN(1), PIN(2),
     PIN(3), PIN(6), PIN(7), PIN(2)
 };
+
+const uint32_t pistt_pins[] = {
+    PIN(1)
+};
+const uint32_t pistt_ports[] = {
+    PORT(A);
+};
+
 //Used GPIO ports
 const uint8_t picomm_port_count = 9;
 const uint32_t picomm_ports[] = {
@@ -71,17 +79,8 @@ const uint32_t picomm_ports[] = {
     GPIOPORT(N)
 };
 
-#if PWM_REQ == 1
 //Transmission to motors/linear actuators/other things
 const uint16_t pwm_limit = 1000;
-
-const uint8_t tx_width = 0;
-const uint32_t tx_ports[] = {
-    //PORT(D)
-};
-const uint8_t tx_pins[] = {
-    //PIN(0)
-};
 
 //Transmission target selection
 const uint8_t tx_targ_width = 4;
@@ -95,15 +94,4 @@ const uint8_t tx_output_ports_cnt = 2;
 const uint32_t tx_output_ports[] = {
     GPIOPORT(P), GPIOPORT(Q)
 };
-#endif
-
-#if ADC_REQ == 1
-//Reception from sensors/other things
-const uint8_t rx_width = 6;
-const uint8_t rcnt = 0;
-const uint8_t rcmtx[][] = {
-    // Some format of input to pin
-    {}
-};
-#endif
 

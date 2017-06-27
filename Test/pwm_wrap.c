@@ -22,7 +22,6 @@
 
 
 void EnablePWM() {
-#if PWM_REQ == 1
     unsigned long ulPeriod, dutyCycle;
     ulPeriod = 1000;
     dutyCycle = 250;
@@ -38,11 +37,8 @@ void EnablePWM() {
     TimerLoadSet(TIMER0_BASE, TIMER_A, ulPeriod -1);
     TimerMatchSet(TIMER0_BASE, TIMER_A, dutyCycle); // PWM
     TimerEnable(TIMER0_BASE, TIMER_A);
-#endif
 }
 
 void WritePWM(uint32_t ui32Port, uint8_t ui8Pins, uint16_t value) {
-#if PWM_REQ == 1
     TimerMatchSet(TIMER0_BASE, TIMER_A, value);
-#endif
 }

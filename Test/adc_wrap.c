@@ -12,8 +12,12 @@
 #include <stdbool.h>
 
 /* Other, TM4C libraries */
+#include "inc/hw_types.h"
+#include "inc/hw_memmap.h"
+
 #include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
+#include "driverlib/gpio.h"
 #include "driverlib/adc.h"
 
 #include "utils/uartstdio.h"
@@ -30,26 +34,60 @@ void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer) {
 
 void EnableADC() {
 #if ADC_REQ == 1
-    /* ADC initialization*/
-    //Enable Peripheral
-    PeriphEnable(SYSCTL_PERIPH_ADC0);
-    while(!PeriphReady(SYSCTL_PERIPH_ADC0));
-    /* Disable the sequences that we will use, so we can configure */
-    ADCSequenceDisable(ADC0_BASE, 0);
-    /* ADC sequence configure, sequencer 0, triggered from processor */
-    ADCSequenceConfigure(ADC0_BASE, 0, ADC_TRIGGER_PROCESSOR, 0);
-    /* Configure sampling for the steps. */
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 0, ADC_CTL_CH0);
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 1, ADC_CTL_CH1);
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 2, ADC_CTL_CH2);
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 3, ADC_CTL_CH3);
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 4, ADC_CTL_CH4);
-    ADCSequenceStepConfigure(ADC0_BASE, 0, 5, ADC_CTL_CH5 | ADC_CTL_IE | ADC_CTL_END);
-    /* Enable interrupt and sequence for sequencer 0 */
-    ADCIntEnable(ADC0_BASE, 0);
-    ADCSequenceEnable(ADC0_BASE, 0);
-    ADCIntClear(ADC0_BASE, 0);
-    //And now we finally done for ADC. Next is PWM
+    //
+    // The ADC0 peripheral must be enabled for use.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+
+    //
+    // For this example ADC0 is used with AIN0 on port E7.
+    // The actual port and pins used may be different on your part, consult
+    // the data sheet for more information.  GPIO port E needs to be enabled
+    // so these pins can be used.
+    // TODO: change this to whichever GPIO port you are using.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+
+    //
+    // Select the analog ADC function for these pins.
+    // Consult the data sheet to see which functions are allocated per pin.
+    // TODO: change this to select the port/pin you are using.
+    //
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);
+
+    ADCSequenceDisable(ADC0_BASE, 3);
+
+    //
+    // Enable sample sequence 3 with a processor signal trigger.  Sequence 3
+    // will do a single sample when the processor sends a signal to start the
+    // conversion.  Each ADC module has 4 programmable sequences, sequence 0
+    // to sequence 3.  This example is arbitrarily using sequence 3.
+    //
+    ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
+
+    //
+    // Configure step 0 on sequence 3.  Sample channel 0 (ADC_CTL_CH0) in
+    // single-ended mode (default) and configure the interrupt flag
+    // (ADC_CTL_IE) to be set when the sample is done.  Tell the ADC logic
+    // that this is the last conversion on sequence 3 (ADC_CTL_END).  Sequence
+    // 3 has only one programmable step.  Sequence 1 and 2 have 4 steps, and
+    // sequence 0 has 8 programmable steps.  Since we are only doing a single
+    // conversion using sequence 3 we will only configure step 0.  For more
+    // information on the ADC sequences and steps, reference the datasheet.
+    //
+    ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE |
+                             ADC_CTL_END);
+
+    //
+    // Since sample sequence 3 is now configured, it must be enabled.
+    //
+    ADCSequenceEnable(ADC0_BASE, 3);
+
+    //
+    // Clear the interrupt status flag.  This is done to make sure the
+    // interrupt flag is cleared before we sample.
+    //
+    ADCIntClear(ADC0_BASE, 3);
 #endif
 }
 
