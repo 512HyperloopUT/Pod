@@ -1,10 +1,10 @@
-//#include <stdio.h>
-
 #include "comm/comm.h"
 #include "gpio/GPIOPin.h"
 
 int main() {
 	int current = 0;
+
+	initComms();
 
 	GPIOPin readPin(1);
 	GPIOPin writePin(2);
