@@ -15,11 +15,13 @@
 /* UART */
 #include "utils/uartstdio.h"
 
+#include "pin_wrap.h"
 #include "mapping_constants.h"
 #include "gpio_wrap.h"
 #include "adc_wrap.h"
 #include "pwm_wrap.h"
 
+#include "utils/UARTstdio.h"
 
 /*****************
 Instruction management
@@ -27,9 +29,6 @@ Instruction management
 /* Past and current values */
 uint8_t cmd = 0;
 uint16_t idata = 0;
-
-uint16_t curr_odata = 0;
-uint8_t curr_pistt = 0;
 
 /* Fetch instructions */
 void ReadCmd(void) {
@@ -41,34 +40,35 @@ void ReadCmd(void) {
         cmd = 0;
         idata = 0;
     }
-    UARTprintf("Command read:\n\tcmd: %ud\n\tidata: %ud\n", cmd, curr_idata);
+    UARTprintf("Command read:\n\tcmd: %ud\n\tidata: %ud\n", cmd, idata);
 }
 
 /* Execute instructions */
-uint64_t last_exec = 0;
-uint16_t exec_sep = 25; /* Maybe these should be shorter? Or longer? */
-uint32_t adcbuffer[8]; /* For reading from the ADC */
+//TODO uint32_t adcbuffer[8]; /* For reading from the ADC */
 
 void ExecCmd(void) {
     if (!cmd) {
+        UARTprintf("Reset command.\n");
         DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
     } else { /* Do cmd */
+        UARTprintf("Actual command.\n");
         if (cmd == 1) { //Read or special function
             if (idata > 0xff) { /* idata >= 0 && idata < 0x200*/
                 //TODO Read the selected sensor
-                UARTprintf("Reading dummy sensor %d.", idata);
+                UARTprintf("Reading dummy sensor %d.\n", idata);
             } else { /* idata >= 0x200 && idata < 0x400*/
                 //TODO Do a preset action
-                UARTprintf("No preset actions. Invalid command.");
+                UARTprintf("No preset actions. Invalid command.\n");
             }
         } else { /* Write */
             //TODO write target as 11, or some other out of bounds value
             MassWrite(tx_targ_ports, tx_targ_pins, tx_targ_width, 0xff /* Translate? */);
             //TODO write PWM
             MassWrite(tx_targ_ports, tx_targ_pins, tx_targ_width, cmd /* Translate? */);
-            UARTprintf("Writing dummy value %d to dummy motor %d.", idata, cmd);
+            UARTprintf("Writing dummy value %d to dummy motor %d.\n", idata, cmd);
         }
         /* Command has completed */
         DigiWritePin(tistt_ports[0], tistt_pins[0], -1);
     }
+    UARTprintf("Command executed.");
 }

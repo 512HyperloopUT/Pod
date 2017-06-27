@@ -26,9 +26,9 @@ Listed from listed significant to most significant bit
 *****************/
 
 //State of cmd execution
-const uint8_t stt_width = 1;
-const uint32_t stt_ports[] = {PORT(A)};
-const uint8_t stt_pins[] = {PIN(7)};
+const uint8_t tistt_width = 1;
+const uint32_t tistt_ports[] = {PORT(A)};
+const uint8_t tistt_pins[] = {PIN(7)};
 //Data retrieved
 const uint8_t odata_width = 12;
 const uint32_t odata_ports[] = {
@@ -64,11 +64,12 @@ const uint8_t idata_pins[] = {
     PIN(3), PIN(6), PIN(7), PIN(2)
 };
 
-const uint32_t pistt_pins[] = {
-    PIN(1)
-};
+const uint8_t pistt_width = 1;
 const uint32_t pistt_ports[] = {
-    PORT(A);
+    PORT(A)
+};
+const uint8_t pistt_pins[] = {
+    PIN(1)
 };
 
 //Used GPIO ports
