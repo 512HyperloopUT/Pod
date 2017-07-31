@@ -22,6 +22,12 @@
 
 #include "utils/uartstdio.h"
 
+int MapADCRead(uint32_t val) {
+	//TODO use ADCRead with some form of mapping
+	UARTprintf("Dummy adc read of sensor mapped to %d.\n", val);
+	return 0;
+}
+
 void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer) {
     UARTprintf("ADC read begin\nReading from base %ui, sequence %ui\n", base, seq_num);
     ADCIntClear(base, seq_num); //Clear interrupt flag
