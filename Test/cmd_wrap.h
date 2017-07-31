@@ -19,8 +19,6 @@ Instruction management
 *****************/
 /* Fetch instructions */
 void ReadCmd(void);
-/* Specialized function */
-void PresetFunc(uint16_t cmd);
 
 /* Execute instructions */
 void ExecCmd(void);
