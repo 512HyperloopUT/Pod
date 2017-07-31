@@ -1,79 +1,70 @@
-Layout of wiring
-
+Communication protocol v. 2.0
+                                                                                     +----------+
+	+----------------------------------------------------------------------------> ? |  motors  |
+    |                                                                                +----------+
+    |                     +-------+
+    |            +--->  1 | pistt | -----------+
+    ?            |        +-------+            | 
+ +----+          |        +-------+            |         +------+
+ |    | 16 ------+--->  5 |  cmd  | -----------+-----> 6 |      |
+ |    |                   +-------+                      |      |
+ | Pi |                                                  | TM4C |
+ |    |                   +--------+                     |      | ? <------+
+ |    | 1&usb ---+--- usb |  uart  | <------+--------- 1 |      |          |         +---------+
+ +----+          |        +--------+        |            +------+          +------ ? | sensors |
+                 |        +-------+         |                                        +---------+
+                 +---  1  | tistt | <-------+
                           +-------+
-                 +---> 12 | idata | --------------+
-                 |        +-------+               |                                      +-------------+
- +----+          |        +-------+               |          +------+          +-----> 5 | Some target |
- |    | 16 ------+--->  4 |  cmd  | --------------+-----> 16 |      |          |         +-------------+
- |    |                   +-------+                          |      | 5 -------+
- | Pi |                                                      | TM4C |
- |    |                   +-------+                          |      | ? <------+
- |    | 13 <-+-------- 12 | odata | <---------+---------- 13 |      |          |         +---------+
- +----+      |            +-------+           |              +------+          +------ ? | sensors |
-             |            +-------+           |                                          +---------+
-             +--------  1 |   s   | <---------+
-                          +-------+
 
 
 
-Reading from peripherals (initial):
+Reading from peripherals (initial, closer to parallel):
 Pi                                      TM4C
-2) idata = encodings[sensorID]
-3) cmd = !s
-Waiting for TM4C to read                1) read cmd, idata
-                                        Proceeds if cmd < 2
-                                        2) read port, depending on idata
-                                        3) odata = reading
-                                        4) s = cmd
-4) return odata reading
+1) pistt = 0
+wait while tistt == 1                   if pistt == 0
+                                        1) tistt = 0
+2) cmd = encodings[sensorID]
+3) pistt = 1
+wait while tistt == 0                   if pistt == 1
+                                        1) tistt = 0
+                                        2) print analog_read(unmap(cmd))
+                                        3) tistt = 1
+4) read uart
 
-Reading from peripherals (repeat):
+Reading from peripherals (repeat, closer to serial):
 
 Pi
-1) Wait for s == cmd
-2) return odata reading
+1) pistt = 0
+wait while tistt == 1
+2) cmd = encodings[sensorID]
+3) pistt = 1
+wait while tistt == 0
+4) read uart
 
 TM4C
-1) s = !cmd
-1) read port
-2) set odata to reading
-3) s = cmd
-
-Note: repeat on the TM4C has a delay of 25 system ticks (aiming for 25 milliseconds)
-
-Writing to peripherals:
-Pi                                      TM4C
-2) idata = intensity
-3) cmd = write_encodings[sensorID]
-Waiting for TM4C to read                1) read cmd, idata
-                                        Proceed if cmd > 1
-                                        2) write to port the provided value
-                                        3) s = !s
-4) return (write complete)
+if pistt == 0
+	1) tistt = 0
+if pistt == 1
+	1) tistt = 0
+	2) print analog_read(unmap(cmd))
+	3) tistt = 1
 
 TM4C PIN MAPPINGS (note: ordered starting from bit 0 (LSb -> MSb)
-    stt
+GPIO pins
+    pistt
         PA7
-    idata
-        PC6, PC7, PN3, PF2,
-        PF3, PG0, PG1, PH0,
-        PH1, PH2, PH3, PK4
-    odata
-        PL1, PL2, PL3, PL4,
-        PL5, PM0, PM1, PM2,
-        PM3, PM6, PM7, PN2
     cmd
-        PK5, PK6, PK7, PL0
-tx
-    PF1
-tx_targ
-    PP2, PP3, PP5, PQ1
-rx
-    PA6 -> ????, PB4 -> AIN10,
-    PB5 -> AIN11, PD2 -> AIN13,
-    PD7 -> AIN4, PE0 -> AIN3,
-    PE1 -> AIN2, PE2 -> AIN1,
-    PE3 -> AIN0, PE4 -> AIN9,
-    PE5 -> AIN8, PK0 -> AIN16,
-    PK1 -> AIN17, PK2 -> AIN18,
-    PK3 -> AIN19
+        PC6, PC7, PF2, PF3,
+		PG0
+    tistt
+        PG1
+Analog pins
+	rx
+		PA6 -> ????, PB4 -> AIN10,
+		PB5 -> AIN11, PD2 -> AIN13,
+		PD7 -> AIN4, PE0 -> AIN3,
+		PE1 -> AIN2, PE2 -> AIN1,
+		PE3 -> AIN0, PE4 -> AIN9,
+		PE5 -> AIN8, PK0 -> AIN16,
+		PK1 -> AIN17, PK2 -> AIN18,
+		PK3 -> AIN19
