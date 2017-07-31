@@ -2,149 +2,58 @@
 #include "gpio/GPIOPin.h"
 
 #include <vector>
+#include <algorithm>
+#include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <termios.h>
+#include <unistd.h>
 
 using namespace std;
 
-GPIOPin idata0(0);
-GPIOPin idata1(0);
-GPIOPin idata2(0);
-GPIOPin idata3(0);
-GPIOPin idata4(0);
-GPIOPin idata5(0);
-GPIOPin idata6(0);
-GPIOPin idata7(0);
-GPIOPin idata8(0);
-GPIOPin idata9(0);
+struct pin_manager {
+	//comm ports
+	vector<GPIOPin> id_block;//for writing sensor ID
+	GPIOPin r_pin;//for starting read command
+	GPIOPin e_pin;//for ending reading command
 
-GPIOPin odata0(0);
-GPIOPin odata1(0);
-GPIOPin odata2(0);
-GPIOPin odata3(0);
-GPIOPin odata4(0);
-GPIOPin odata5(0);
-GPIOPin odata6(0);
-GPIOPin odata7(0);
-GPIOPin odata8(0);
-GPIOPin odata9(0);
+	//anything else
+	vector<GPIOPin> dwrite_block;//for writing to digital outputs
+} pm;
 
-GPIOPin pistate(0);
-
-GPIOPin tistate(0);
-
-GPIOPin cmd0(0);
-GPIOPin cmd1(0);
-GPIOPin cmd2(0);
-GPIOPin cmd3(0);
+class uart_manager {
+} uart;
 
 void initComms() {
-	idata0.setDirection(INPUT);
-	idata1.setDirection(INPUT);
-	idata2.setDirection(INPUT);
-	idata3.setDirection(INPUT);
-	idata4.setDirection(INPUT);
-	idata5.setDirection(INPUT);
-	idata6.setDirection(INPUT);
-	idata7.setDirection(INPUT);
-	idata8.setDirection(INPUT);
-	idata9.setDirection(INPUT);
+	pm.id_block.push_back(GPIOPin(0));
+	pm.id_block.push_back(GPIOPin(0));
+	for_each(pm.id_block.begin(), pm.id_block.end(), [](GPIOPin& pin){
+		pin.setDirection(OUTPUT);
+	});
 
-	odata0.setDirection(OUTPUT);
-	odata1.setDirection(OUTPUT);
-	odata2.setDirection(OUTPUT);
-	odata3.setDirection(OUTPUT);
-	odata4.setDirection(OUTPUT);
-	odata5.setDirection(OUTPUT);
-	odata6.setDirection(OUTPUT);
-	odata7.setDirection(OUTPUT);
-	odata8.setDirection(OUTPUT);
-	odata9.setDirection(OUTPUT);
+	pm.r_pin.setPort(0);
+	pm.r_pin.setDirection(OUTPUT);
 
-	pistate.setDirection(OUTPUT);
-
-	tistate.setDirection(INPUT);
-
-	cmd0.setDirection(OUTPUT);
-	cmd1.setDirection(OUTPUT);
-	cmd2.setDirection(OUTPUT);
-	cmd3.setDirection(OUTPUT);
+	pm.e_pin.setPort(0);
+	pm.e_pin.setDirection(INPUT);
 }
 
-void idataWrite(int val) {
-	idata0.setValue(val & 0b0000000001);
-	idata1.setValue(val & 0b0000000010);
-	idata2.setValue(val & 0b0000000100);
-	idata3.setValue(val & 0b0000001000);
-	idata4.setValue(val & 0b0000010000);
-	idata5.setValue(val & 0b0000100000);
-	idata6.setValue(val & 0b0001000000);
-	idata7.setValue(val & 0b0010000000);
-	idata8.setValue(val & 0b0100000000);
-	idata9.setValue(val & 0b1000000000);
+void setRead(int id) {
+	int off = 0;
+	for_each(pm.id_block.begin(), pm.id_block.end(), [id, off](GPIOPin& pin) {
+		pin.setValue((id >> off) & 0x1);
+	});
 }
 
-int odataRead() {
-	return odata0.getValue() |
-		odata1.getValue() << 1 |
-		odata2.getValue() << 2 |
-		odata3.getValue() << 3 |
-		odata4.getValue() << 4 |
-		odata5.getValue() << 5 |
-		odata6.getValue() << 6 |
-		odata7.getValue() << 7 |
-		odata8.getValue() << 8 |
-		odata9.getValue() << 9;
+float read() {
 }
 
-void cmdWrite(int val) {
-	cmd0.setValue(val & 0b0001);
-	cmd1.setValue(val & 0b0010);
-	cmd2.setValue(val & 0b0100);
-	cmd3.setValue(val & 0b1000);
+void write(bool val, int id) {
+	if (id < 0 || id >= pm.dwrite_block.size()) {
+		return;
+	}
+
+	pm.dwrite_block[id].setValue(val);
 }
-
-/// Also, make id unsigned 16 byte int (uint16_t) if possible to limit the allowed values ///
-float read(int id) {
-	//pi sends 0 - reset
-	pistate.setValue(0);
-
-	//pi reads 0 - reset finished
-	while (tistate.getValue()) {}
-
-	//pi writes cmd - read cmd
-	cmdWrite(0);
-
-	//pi writes idata - sensor id
-	idataWrite(id);
-
-	//pi sends 1 - start command
-	pistate.setValue(1);
-
-	//wait for cmd to finish
-	while (!tistate.getValue()) {}
-
-	//pi reads odata
-	return odataRead();
-}
-
-/// Note the limit of id is 14 since the max we can write is 16 and 0 and 1 are taken and we need to add 1 to the value ///
-/// Also, make val and id unsigned 16 byte ints (uint16_t) if possible to limit the allowed values ///
-void write(int val, int id) {
-	//pi sends 0 - reset
-	pistate.setValue(0);
-
-	//pi reads 0 - reset finished
-	while (tistate.getValue()) {}
-
-	//pi writes cmd - write cmd > 1
-	cmdWrite(id + 1);
-
-	//pi writes idata - write value
-	idataWrite(val);
-
-	//pi sends 1 - start command
-	pistate.setValue(1);
-
-	//wait for cmd to finish - yes, it is necessary if there's issues on the tm4c's side. We need to know when we cause a stall and resolve that later on
-	while (!tistate.getValue()) {}
-}
-
