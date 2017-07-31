@@ -35,9 +35,9 @@ uint8_t new = 0;
 void ReadCmd(void) {
     /* Read cmd & idata */
     if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
-        int last_cmd = cmd, int last_idata = idata;
+        int last_cmd = cmd;
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
-        if (cmd != last_cmd || idata != last_idata) {
+        if (cmd != last_cmd) {
             new = 1;
         }
 		UARTprintf("Command read:\n\tcmd: %ud\n", cmd);
