@@ -91,6 +91,9 @@ public code
 void initComms() {
 	id_block.push_back(GPIOPin(0));
 	id_block.push_back(GPIOPin(0));
+	id_block.push_back(GPIOPin(0));
+	id_block.push_back(GPIOPin(0));
+	id_block.push_back(GPIOPin(0));
 	for_each(id_block.begin(), id_block.end(), [](GPIOPin& pin){
 		pin.setDirection(OUTPUT);
 	});
@@ -114,6 +117,7 @@ void setRead(int id) {
 float read() {
 	char buf[100];
 	int n = read(curr_fd, buf, sizeof(buf));
+	//TODO: 4-byte float read protocol (check for terminating character)
 }
 
 void write(bool val, int id) {
