@@ -61,12 +61,6 @@ clean:
 	@$(rmf) $(ODIR)
 	@$(rmf) $(BDIR)
 
-# make and execute file
-exec: all
-	@echo $(TPRINT)Starting $(TARGET)...
-	@./$(BDIR)/$(TARGET)
-	@echo $(TPRINT)Finished
-
 # state that podex is up to date when make has finished
 finish:
 	@echo "$(TPRINT)$(TARGET) is up to date"

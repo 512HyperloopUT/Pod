@@ -16,7 +16,6 @@ Once in the <code>src/</code> directory (the directory with the Makefile), the f
 
 - <code>make</code> - builds podex
 - <code>make clean</code> - remove binaries, object files, and temp files
-- <code>make exec</code> - builds and executes podex
 
 ## Files
 We have two python files meant to be the frontend interaction for SpaceX.
