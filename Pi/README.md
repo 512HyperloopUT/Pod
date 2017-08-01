@@ -17,3 +17,9 @@ Once in the <code>src/</code> directory (the directory with the Makefile), the f
 - <code>make</code> - builds podex
 - <code>make clean</code> - remove binaries, object files, and temp files
 - <code>make exec</code> - builds and executes podex
+
+## Files
+We have two python files meant to be the frontend interaction for SpaceX.
+
+- <code>back.py</code> Tkinter GUI for monitoring (and e-stopping) the pod
+- <code>cli.py</code> UDP wrapper for sending data from the pod executable to the Network Access Panel (provided by SpaceX) meant to comminucate with the GUI
