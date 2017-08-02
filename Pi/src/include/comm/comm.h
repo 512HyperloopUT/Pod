@@ -4,6 +4,6 @@ void initComms();
 
 void setRead(int id);
 
-float read();
+float readPort();
 
 void write(bool val, int id);
