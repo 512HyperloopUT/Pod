@@ -1,0 +1,3 @@
+install: $(cd Pi/src/ & cmake .)
+
+script: $(cd Pi/src/ & make)
