@@ -1,3 +1,6 @@
-install: (cd Pi/src/ && cmake .)
+install:
+	- sudo apt-get install libboost-all-dev
 
-script: (cd Pi/src/ && make)
+script:
+	- (cd Pi/src/ && cmake .)
+	- (cd Pi/src/ && make)
