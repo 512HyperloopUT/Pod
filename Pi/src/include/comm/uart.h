@@ -10,4 +10,4 @@ int open_com(std::string portname);
 
 static int AVAL = -1;//for l-value default param overloading
 
-std::string read_port(int com_id, int buf_size, int& read_cnt = AVAL);
+std::string read_uart(int com_id, int buf_size, int& read_cnt = AVAL);

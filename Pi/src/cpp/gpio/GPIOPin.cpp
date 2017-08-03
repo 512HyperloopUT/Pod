@@ -10,8 +10,9 @@
 GPIOPin::GPIOPin() {
 }
 
-GPIOPin::GPIOPin(int _port) {
-	setPort(_port);
+GPIOPin::GPIOPin(int port, GPIODir dir) {
+	setPort(port);
+	setDirection(dir);
 }
 
 void GPIOPin::setPort(int _port) {

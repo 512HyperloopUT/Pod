@@ -62,7 +62,7 @@ int open_com(std::string portname) {
 	set_blocking(fd, 0);
 }
 
-std::string read_port(int com_id, int buf_size, int& read_cnt) {
+std::string read_uart(int com_id, int buf_size, int& read_cnt) {
 	char buf[buf_size];
 	int cnt = read(com_id, buf, buf_size);
 	if (read_cnt != AVAL) {

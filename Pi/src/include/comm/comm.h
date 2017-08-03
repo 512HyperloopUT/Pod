@@ -7,3 +7,7 @@ void setRead(int id);
 float readPort();
 
 void write(bool val, int id);
+
+void writeUpdate(int* data);
+
+void destroyComms();

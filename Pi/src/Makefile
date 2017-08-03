@@ -150,6 +150,33 @@ cpp/comm/comm.cpp.s:
 	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/comm/comm.cpp.s
 .PHONY : cpp/comm/comm.cpp.s
 
+cpp/comm/network.o: cpp/comm/network.cpp.o
+
+.PHONY : cpp/comm/network.o
+
+# target to build an object file
+cpp/comm/network.cpp.o:
+	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/comm/network.cpp.o
+.PHONY : cpp/comm/network.cpp.o
+
+cpp/comm/network.i: cpp/comm/network.cpp.i
+
+.PHONY : cpp/comm/network.i
+
+# target to preprocess a source file
+cpp/comm/network.cpp.i:
+	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/comm/network.cpp.i
+.PHONY : cpp/comm/network.cpp.i
+
+cpp/comm/network.s: cpp/comm/network.cpp.s
+
+.PHONY : cpp/comm/network.s
+
+# target to generate assembly for a file
+cpp/comm/network.cpp.s:
+	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/comm/network.cpp.s
+.PHONY : cpp/comm/network.cpp.s
+
 cpp/comm/uart.o: cpp/comm/uart.cpp.o
 
 .PHONY : cpp/comm/uart.o
@@ -258,6 +285,33 @@ cpp/pod/pod.cpp.s:
 	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/pod/pod.cpp.s
 .PHONY : cpp/pod/pod.cpp.s
 
+cpp/utils/utils.o: cpp/utils/utils.cpp.o
+
+.PHONY : cpp/utils/utils.o
+
+# target to build an object file
+cpp/utils/utils.cpp.o:
+	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/utils/utils.cpp.o
+.PHONY : cpp/utils/utils.cpp.o
+
+cpp/utils/utils.i: cpp/utils/utils.cpp.i
+
+.PHONY : cpp/utils/utils.i
+
+# target to preprocess a source file
+cpp/utils/utils.cpp.i:
+	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/utils/utils.cpp.i
+.PHONY : cpp/utils/utils.cpp.i
+
+cpp/utils/utils.s: cpp/utils/utils.cpp.s
+
+.PHONY : cpp/utils/utils.s
+
+# target to generate assembly for a file
+cpp/utils/utils.cpp.s:
+	$(MAKE) -f CMakeFiles/podex.dir/build.make CMakeFiles/podex.dir/cpp/utils/utils.cpp.s
+.PHONY : cpp/utils/utils.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -270,6 +324,9 @@ help:
 	@echo "... cpp/comm/comm.o"
 	@echo "... cpp/comm/comm.i"
 	@echo "... cpp/comm/comm.s"
+	@echo "... cpp/comm/network.o"
+	@echo "... cpp/comm/network.i"
+	@echo "... cpp/comm/network.s"
 	@echo "... cpp/comm/uart.o"
 	@echo "... cpp/comm/uart.i"
 	@echo "... cpp/comm/uart.s"
@@ -282,6 +339,9 @@ help:
 	@echo "... cpp/pod/pod.o"
 	@echo "... cpp/pod/pod.i"
 	@echo "... cpp/pod/pod.s"
+	@echo "... cpp/utils/utils.o"
+	@echo "... cpp/utils/utils.i"
+	@echo "... cpp/utils/utils.s"
 .PHONY : help
 
 

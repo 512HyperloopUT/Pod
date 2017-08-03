@@ -12,7 +12,7 @@ private:
 	GPIODir currentDir;
 public:
 	GPIOPin();
-	GPIOPin(int _port);
+	GPIOPin(int port, GPIODir dir);
 	//inits
 	void setPort(int _port);
 	bool exportGPIO();
