@@ -9,7 +9,6 @@ measurementList = "Distance Speed Acceleration - - - - - - -".split()
 defaultValues = [0] * len(measurementList)
 
 PORT_NUMBER = 3000
-SIZE = 1024
 hostName = gethostbyname('0.0.0.0')
 mySocket = socket(AF_INET, SOCK_DGRAM)
 mySocket.bind((hostName, PORT_NUMBER))
@@ -59,7 +58,7 @@ def updateData(frame, newData):
 
 def cmdStop():
     """Function used to send stop signal"""
-    mySocket.sendto('s'*35, (SERVER_IP, PORT_NUMBER))
+    mySocket.sendto('s'*35, SERVER_IP)
 
 
 def count():
