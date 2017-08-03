@@ -36,9 +36,9 @@ void ReadCmd(void) {
     /* Read cmd & idata */
     if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
-		UARTprintf("Command read:\n\tcmd: %ud\n", cmd);
+		UARTprintf("Command read: %ud\n", cmd);
     } else {
-		UARTprintf("Command not yet valid.\n");
+		UARTprintf("Command not valid.\n");
 	}
 }
 
@@ -53,9 +53,10 @@ void ExecCmd(void) {
         new = 0;
         UARTprintf("Executing actual command.\n\tReading dummy sensor %d.\n", cmd);
 		//TODO Read the selected sensor
-		int adc_value = MapADCRead(cmd);
+		uint32_t adc_value = MapADCRead(cmd);
+		UARTprintf("\n%c%c%c%c%c%c\n", 242, (char) ((adc_value >> 24) & 0xff), (char) ((adc_value >> 16) & 0xff), (char) ((adc_value >> 8) & 0xff), (char) (adc_value & 0xff), 242);
         /* Command has completed */
         DigiWritePin(tistt_ports[0], tistt_pins[0], -1);
-		UARTprintf("Command executed.");
+		UARTprintf("Command executed.\n");
     }
 }

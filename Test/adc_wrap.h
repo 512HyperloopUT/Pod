@@ -13,7 +13,7 @@
 
 #include "pin_wrap.h"
 
-int MapADCRead(uint32_t val);
+uint32_t MapADCRead(uint32_t val);
 void EnableADC();
 
 #endif /* ADC_WRAP_H_ */

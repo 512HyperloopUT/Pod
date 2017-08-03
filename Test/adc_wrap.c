@@ -22,10 +22,10 @@
 
 #include "utils/uartstdio.h"
 
-int MapADCRead(uint32_t val) {
+uint32_t MapADCRead(uint32_t val) {
 	//TODO use ADCRead with some form of mapping
 	UARTprintf("Dummy adc read of sensor mapped to %d.\n", val);
-	return 0;
+	return 512;
 }
 
 void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer) {
