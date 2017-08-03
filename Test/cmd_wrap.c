@@ -29,50 +29,34 @@ Instruction management
 /* Past and current values */
 uint8_t valid = 0;
 uint8_t cmd = 0;
-uint16_t idata = 0;
 uint8_t new = 0;
 
 /* Fetch instructions */
 void ReadCmd(void) {
     /* Read cmd & idata */
     if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
-        int last_cmd = cmd, int last_idata = idata;
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
-        idata = (uint16_t) MassRead(idata_ports, idata_pins, idata_width);
-        if (cmd != last_cmd || idata != last_idata) {
-            new = 1;
-        }
-    }
-    UARTprintf("Command read:\n\tcmd: %ud\n\tidata: %ud\n", cmd, idata);
+		UARTprintf("Command read: %ud\n", cmd);
+    } else {
+		UARTprintf("Command not valid.\n");
+	}
 }
 
 /* Execute instructions */
-//TODO uint32_t adcbuffer[8]; /* For reading from the ADC */
 
 void ExecCmd(void) {
     if (!valid) {
+		new = 1;
         UARTprintf("Reset command.\n");
         DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
-    } else if (new || !cmd) { /* Do cmd if is new or if is read */
+    } else if (new) { /* Do cmd if is new */
         new = 0;
-        UARTprintf("Actual command.\n");
-        if (!cmd) { //Read or special function
-            if (idata > 0xff) { /* idata >= 0 && idata < 0x200*/
-                //TODO Read the selected sensor
-                UARTprintf("Reading dummy sensor %d.\n", idata);
-            } else { /* idata >= 0x200 && idata < 0x400*/
-                //TODO Do a preset action
-                UARTprintf("No preset actions. Invalid command.\n");
-            }
-        } else { /* Write */
-            //TODO write target as 11, or some other out of bounds value
-            MassWrite(tx_targ_ports, tx_targ_pins, tx_targ_width, 0xff /* Translate? */);
-            //TODO write PWM
-            MassWrite(tx_targ_ports, tx_targ_pins, tx_targ_width, cmd /* Translate? */);
-            UARTprintf("Writing dummy value %d to dummy motor %d.\n", idata, cmd);
-        }
+        UARTprintf("Executing actual command.\n\tReading dummy sensor %d.\n", cmd);
+		//TODO Read the selected sensor
+		uint32_t adc_value = MapADCRead(cmd);
+		UARTprintf("\n%c%c%c%c%c%c\n", 242, (char) ((adc_value >> 24) & 0xff), (char) ((adc_value >> 16) & 0xff), (char) ((adc_value >> 8) & 0xff), (char) (adc_value & 0xff), 242);
         /* Command has completed */
         DigiWritePin(tistt_ports[0], tistt_pins[0], -1);
+		UARTprintf("Command executed.\n");
     }
-    UARTprintf("Command executed.");
 }

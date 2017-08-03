@@ -11,7 +11,10 @@ private:
 	bool exported;
 	GPIODir currentDir;
 public:
-	GPIOPin(int port);
+	GPIOPin();
+	GPIOPin(int port, GPIODir dir);
+	//inits
+	void setPort(int _port);
 	bool exportGPIO();
 	bool unexportGPIO();
 	//just do the thing

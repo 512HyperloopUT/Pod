@@ -1,9 +1,13 @@
 #pragma once
 
-#include "comm/half.h"
-
 void initComms();
 
-float read(int id);
+void setRead(int id);
 
-void write(float val, int id);
+float readPort();
+
+void write(bool val, int id);
+
+void writeUpdate(int* data);
+
+void destroyComms();

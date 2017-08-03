@@ -7,8 +7,16 @@
 #include <fstream>
 #include <sstream>
 
-GPIOPin::GPIOPin(int _port): port(_port) {
-	exported = false;
+GPIOPin::GPIOPin() {
+}
+
+GPIOPin::GPIOPin(int port, GPIODir dir) {
+	setPort(port);
+	setDirection(dir);
+}
+
+void GPIOPin::setPort(int _port) {
+	port = _port;
 }
 
 bool GPIOPin::exportGPIO() {
@@ -42,23 +50,14 @@ bool GPIOPin::unexportGPIO() {
 }
 
 void GPIOPin::setDirection(GPIODir dir) {
-	if (!exported) {
-		return;
-	}
 	setDirection_s(dir);
 }
 
 void GPIOPin::setValue(bool val) {
-	if (!exported) {
-		return;
-	}
 	setValue_s(val);
 }
 
 bool GPIOPin::getValue() {
-	if (!exported) {
-		return 0;
-	}
 	bool ret;
 	getValue_s(ret);
 	return ret;

@@ -13,7 +13,7 @@
 
 #include "pin_wrap.h"
 
-void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer);
+uint32_t MapADCRead(uint32_t val);
 void EnableADC();
 
 #endif /* ADC_WRAP_H_ */

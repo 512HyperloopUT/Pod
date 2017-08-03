@@ -49,34 +49,21 @@ uint64_t curr_time = 0;
 /*****************
 Configure I/O
 *****************/
-void ConfigurePiComm(void) {
+void ConfigureGPIO(void) {
     /* GPIO ports */
     UARTprintf("Enabling GPIO peripherals.\n");
     MassPeriphInit(picomm_ports, picomm_port_count);
     /* cmd */
     UARTprintf("Initializing command pins.\n");
     GPIOMassInit(cmd_ports, cmd_pins, cmd_width, PIN_IN);
-    /* idata */
-    UARTprintf("Initializing input data pins pins.\n");
-    GPIOMassInit(idata_ports, idata_pins, idata_width, PIN_IN);
     /* stt */
     UARTprintf("Initializing state pins.\n");
     GPIOMassInit(tistt_ports, tistt_pins, tistt_width, PIN_OUT);
     GPIOMassInit(pistt_ports, pistt_pins, pistt_width, PIN_IN);
-    /* odata */
-    UARTprintf("Initializing output data pins.\n");
-    GPIOMassInit(odata_ports, odata_pins, odata_width, PIN_OUT);
 }
-void ConfigureOuput(void) {
+void ConfigureAnalog(void) {
     UARTprintf("Now configuring ADC\n");
     EnableADC();
-    UARTprintf("Now configuring PWM\n");
-    EnablePWM();
-    UARTprintf("Now configuring PWM target selection -- additional info for receiver to redirect signals\n");
-    /* Target output */
-    MassPeriphInit(tx_output_ports, tx_output_ports_cnt);
-    UARTprintf("Peripheral init complete. Now looking at pins.\n");
-    GPIOMassInit(tx_targ_ports, tx_targ_pins, tx_targ_width, PIN_OUT);
 }
 
 /*****************
@@ -146,10 +133,10 @@ void Setup() {
                                             120 * 1000 * 1000);
     /* Initialize the communication pins */
     ConfigureUART(); //UART
-    UARTprintf("Hello. UART configured.\nClock at %ul Hz.\nContinuing with general configuration.\nConfiguring general I/O with ADC and PWM.\n", clock_freq);
-    ConfigureOuput(); //Output to pins
-    UARTprintf("Configuring Pi I/O.\n");
-    ConfigurePiComm(); //Pi communications
+    UARTprintf("Hello. UART configured.\nClock at %ul Hz.\nContinuing with general configuration.\nConfiguring analog I/O.\n", clock_freq);
+    ConfigureAnalog();
+    UARTprintf("Configuring General Purpose I/O.\n");
+    ConfigureGPIO(); //Pi communications
     UARTprintf("Configuring SysTick timing mechanism.\n");
     ConfigureTiming(); //Systick setup
     UARTprintf("Configuration complete. We are ready to begin.");
