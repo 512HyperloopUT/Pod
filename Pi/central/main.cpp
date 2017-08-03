@@ -37,12 +37,9 @@ public:
 //Regular actions
 class timed_action {
 public:
-	timed_action(uint64_t ns, int call_on_create) {
+	timed_action(uint64_t ns) {
 		ns_per_call = ns;
 		last = std::chrono::high_resolution_clock::now();
-		if (call_on_create) {
-			call();
-		}
 	}
 	virtual ~timed_action();
 public:
