@@ -4,60 +4,14 @@
 #include <stdint>
 #include <chrono>
 
-//Pod interface
-class sensor {
-public:
-	sensor();
-	virtual ~sensor();
-public:
-	static sensor* make_sensor(std::string sensor);
-	virtual void update_sensor(client *clt) = 0;
-};
-class client {
-public:
-	client();
-	virtual ~client();
-public:
-	virtual void write(std::uint64_t id, std::uint64_t value) = 0;
-	virtual uint32_t read(std::uint64_t id) = 0;
-};
-
-//UDP/GUI classes
-class master_packet {
-public:
-	master_packet();
-	virtual ~master_packet();
-};
-class master {
-public:
-	virtual void send(master_packet& packet) = 0;
-	virtual master_packet receive(void) = 0;
-};
-
-//Regular actions
-class timed_action {
-public:
-	timed_action(uint64_t ns) {
-		ns_per_call = ns;
-		last = std::chrono::high_resolution_clock::now();
-	}
-	virtual ~timed_action();
-public:
-	uint64_t ns_per_call;
-private:
-	time_point<high_resolution_clock> last;
-public:
-	int check_act(void) {
-		int temp = last;
-		return (last = std::chrono::high_resolution_clock::now() - temp) > ns_per_call;
-	}
-	virtual void act(pod &p) = 0;
-};
+#include "periph.h"
+#include "spacexnet.h"
 
 //pod centralization class
 class pod {
 public:
-	std::vector<sensor*> data;
+	std::vector<sensor*> sensors;
+	std::vector<actuator*> motors;
 	client* cl;
 	master* ms;
 	std::vector<timed_action*> actions;
@@ -67,6 +21,7 @@ public:
 	~pod();
 public:
 	void update_sensors();
+	void update_actuators();
 private:
 	void log();
 };
@@ -75,7 +30,9 @@ void pre_init(void){
 	//TODO
 }
 pod init_pod(pod &p){
-	//TODO add necessary sensors
+	//TODO add sensors
+	//TODO add actuators
+	//TODO add actions
 }
 client init_client(){
 	//TODO client initialization
@@ -91,15 +48,14 @@ void init() {
 	p = pod();
 	p.cl = init_client();
 	p.ms = init_master();
-	//TODO add sensors
-	//TODO add actions
+	init_pod(p);
 }
 void loop() {
 	p.update_sensors();
 	//TODO insert processing here
 }
 
-int emergency_check_stop(void) {
+int stop_check(void) {
 	master_packet* p.master.receive(); //TODO clear out the queue for the socket
 	//TODO check for emergency stop
 	//TODO check for other stops
@@ -111,12 +67,17 @@ int shutdown_check(void) {
 	return 0;
 }
 
+void graceful_shutdown(void) {
+	//TODO, probably uninitialize
+}
+
 //Basic loop
 int main() {
 	init();
 	
 	std::uint8_t stop;
 	std::uint8_t shutdown = 0;
+	
 	while (!shutdown) {
 		stop = 0;
 		while (!stop) {
@@ -126,5 +87,6 @@ int main() {
 		shutdown = shutdown_check();
 	}
 	
+	graceful_shutdown();
 	return 0;
 }
