@@ -48,26 +48,41 @@ void init() {
 	p.cl = init_client();
 	p.ms = init_master();
 	init_pod(p);
-}
-void loop() {
-	p.update_sensors();
-	//TODO insert processing here
+	//TODO any other inits
 }
 
-int stop_check(void) {
-	master_packet* p.master.receive(); //TODO clear out the queue for the socket
+std::uint8_t pre_start() {
+	//TODO recover from stop/begin moving
+	return 0;
+}
+
+std::uint8_t loop() {
+	p.update_sensors();
+	//TODO insert processing here
+	//TODO execute timed actions
+	return stop_check();
+}
+
+std::uint8_t stop_check(void) {
+	master_packet* packet = p.master.receive(); //TODO clear out the queue for the socket
 	//TODO check for emergency stop
 	//TODO check for other stops
 	return 0;
 }
 
-int shutdown_check(void) {
+void post_stop() {
+	//TODO cooldown after braking
+	return shutdown_check();
+}
+
+std::uint8_t shutdown_check(void) {
 	//TODO check to see if should shutdown
 	return 0;
 }
 
-void graceful_shutdown(void) {
+std::uint8_t graceful_shutdown(void) {
 	//TODO, probably uninitialize
+	return 0;
 }
 
 //Basic loop
@@ -78,14 +93,12 @@ int main() {
 	std::uint8_t shutdown = 0;
 	
 	while (!shutdown) {
-		stop = 0;
+		stop = pre_start();
 		while (!stop) {
-			loop();
-			stop = stop_check();
+			stop = loop();
 		}
-		shutdown = shutdown_check();
+		shutdown = post_stop();
 	}
 	
-	graceful_shutdown();
-	return 0;
+	return graceful_shutdown();;
 }

@@ -3,6 +3,8 @@
 #ifndef SPACEXNET_H
 #define SPACEXNET_H
 
+#include <string>
+
 /****************************UDP/GUI classes****************************/
 /*
 
@@ -21,7 +23,7 @@ public:
 class master {
 public:
 	virtual void send(master_packet &packet) = 0;
-	virtual master_packet receive(void) = 0;
+	virtual master_packet* receive(void) = 0;
 };
 
 #endif

@@ -27,8 +27,8 @@ public: //Should be private...
 public:
 	std::string name;
 public:
-	static sensor* make_sensor(std::string sensor);
-	virtual void update_sensor(client *clt) = 0;
+	static sensor* make_sensor(std::string sensor); //Factory method
+	virtual void update_sensor(client *clt) = 0; //Read method
 };
 
 class actuator {
@@ -38,8 +38,8 @@ public: //Should be private...
 public:
 	std::string name;
 public:
-	static actuator* make_actuator(std::string actuator);
-	virtual void update_actuator(client *clt, std::string input) = 0;
+	static actuator* make_actuator(std::string actuator); //Factory method
+	virtual void update_actuator(client *clt, std::string input) = 0; //Write method
 };
 
 class client {
@@ -48,7 +48,7 @@ public:
 	virtual ~client();
 public:
 	virtual void write(std::uint64_t id, std::uint64_t value) = 0;
-	virtual uint32_t read(std::uint64_t id) = 0;
+	virtual std::uint32_t read(std::uint64_t id) = 0;
 };
 
 #endif
