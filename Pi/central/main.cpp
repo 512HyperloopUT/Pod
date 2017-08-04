@@ -22,7 +22,6 @@ public:
 public:
 	void update_sensors();
 	void update_actuators();
-private:
 	void log();
 };
 
