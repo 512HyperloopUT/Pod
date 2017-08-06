@@ -20,7 +20,7 @@ int main() {
 	while (!kbhit()) {
 		writeUpdate(test);
 		//std::cout << "UDP WRITE: " << writeUpdate(test) << std::endl;
-		std::cout << "UART READ: " << readUARTRaw() << std::endl;
+		//std::cout << "UART READ: " << readUARTRaw() << std::endl;
 	}
 
 	/*
