@@ -15,8 +15,8 @@ internal code
 
 //comm ports
 std::vector<GPIOPin> id_block;//for writing sensor ID
-GPIOPin r_pin(0, OUTPUT);//for starting read command
-GPIOPin e_pin(0, INPUT);//for ending reading command
+GPIOPin r_pin(27, OUTPUT);//for starting read command
+GPIOPin e_pin(28, INPUT);//for ending reading command
 
 //anything else
 std::vector<GPIOPin> dwrite_block;//for writing to digital outputs
@@ -29,11 +29,11 @@ public code
 **********/
 
 void initComms() {
-	id_block.push_back(GPIOPin(0, OUTPUT));
-	id_block.push_back(GPIOPin(0, OUTPUT));
-	id_block.push_back(GPIOPin(0, OUTPUT));
-	id_block.push_back(GPIOPin(0, OUTPUT));
-	id_block.push_back(GPIOPin(0, OUTPUT));
+	id_block.push_back(GPIOPin(29, OUTPUT));
+	id_block.push_back(GPIOPin(31, OUTPUT));
+	id_block.push_back(GPIOPin(33, OUTPUT));
+	id_block.push_back(GPIOPin(35, OUTPUT));
+	id_block.push_back(GPIOPin(37, OUTPUT));
 
 #ifdef __arm__
 	com_id = open_com("/dev/ttyUSB1");//TODO:fix
