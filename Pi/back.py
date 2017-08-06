@@ -22,6 +22,8 @@ class Frame(Tkinter.Frame):
         self.parent = parent
         self.tree = ttk.Treeview(self.parent, columns='data')
         self.button = Button(self.parent, text="Emergency Stop", command=cmdStop)
+        self.entry = Entry(self.parent)
+        self.time_button = Button(self.parent, text="Send Time", command=cmdTime)
         self.initialize_user_interface()
         self.init_data()
 
@@ -38,12 +40,22 @@ class Frame(Tkinter.Frame):
         self.tree.column("#1", stretch=Tkinter.YES, anchor='e')
         self.tree.grid(row=0, columnspan=1, sticky='new')
         self.button.grid(row=1, columnspan=1, sticky='n')
+        self.entry.grid(row=2, columnspan=1, sticky='nw')
+        self.time_button.grid(row=2, columnspan=2, sticky='ne')
 
     def init_data(self):
         """ Initializes treeview with default numbers"""
         for i in range(len(measurementList)):
             self.tree.insert('', 'end', iid=i+1, text=measurementList[i], values=defaultValues[i])
 
+    def complain(self, string):
+        """ Prints out problems to user"""
+        top = Toplevel()
+        top.title("Error")
+        msg = Message(top, text=string, width=1000)
+        msg.pack(side="top", padx=10, pady=10)
+        button = Button(top, text="Dismiss", command=top.destroy)
+        button.pack()
 
 def updateData(frame, newData):
     """
@@ -58,8 +70,21 @@ def updateData(frame, newData):
 
 def cmdStop():
     """Function used to send stop signal"""
-    mySocket.sendto('s'*35, SERVER_IP)
+    try:
+        mySocket.sendto('s' * 35, SERVER_IP)
+    except TypeError:
+        mainFrame.complain('Not connected')
 
+
+def cmdTime():
+    """Function used to send time in seconds pod needs to run for before it may brake"""
+    try:
+        seconds = int(mainFrame.entry.get())
+        mySocket.sendto('s' * 35 + ' ' + str(seconds), SERVER_IP)
+    except ValueError:
+        mainFrame.complain('That is not an acceptable number.')
+    except TypeError:
+        mainFrame.complain('Not connected')
 
 def count():
     """Continuously receives data from client"""
