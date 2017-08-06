@@ -59,7 +59,7 @@ float readUART() {
 }
 
 std::string readUARTRaw() {
-	return read_uart(com_id, 1);
+	return read_uart(com_id, 5);
 }
 
 void write(bool val, int id) {

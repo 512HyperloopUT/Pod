@@ -59,7 +59,7 @@ int open_com(std::string portname) {
 	}
 
 	set_iface_attribs(fd, B115200, 0);
-	set_blocking(fd, 1);
+	set_blocking(fd, true);
 }
 
 std::string read_uart(int com_id, int buf_size, int& read_cnt) {
