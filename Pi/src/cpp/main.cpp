@@ -18,7 +18,8 @@ int main() {
 	std::cout << "Enter a key to stop." << std::endl;
 
 	while (!kbhit()) {
-		std::cout << "UDP WRITE: " << writeUpdate(test) << std::endl;
+		writeUpdate(test);
+		//std::cout << "UDP WRITE: " << writeUpdate(test) << std::endl;
 		std::cout << "UART READ: " << readUARTRaw() << std::endl;
 	}
 
