@@ -48,8 +48,8 @@ const uint8_t pistt_pins[] = {
     PIN(2)
 };
 //Used GPIO ports
-const uint8_t picomm_port_count = 9;
+const uint8_t picomm_port_count = 3;
 const uint32_t picomm_ports[] = {
-    GPIOPORT(A), GPIOPORT(C), GPIOPORT(F), GPIOPORT(G)
+    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K)
 };
 

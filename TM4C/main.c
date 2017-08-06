@@ -148,8 +148,6 @@ Heartbeat
 uint64_t last_beat = 0;
 uint8_t beat = 0;
 
-uint8_t limit = 20;
-uint8_t value = 0;
 void Heartbeat(void) {
     if (
             //Elapsed time exceeds time of separation
@@ -160,7 +158,7 @@ void Heartbeat(void) {
         /* Flip state and toggle led */
         beat = !beat;
         last_beat = curr_time;
-        DigiWritePin(PORT(N), PIN(1), beat?-1:0);
+        //DigiWritePin(PORT(N), PIN(1), beat?-1:0);
     }
 }
 
