@@ -68,5 +68,5 @@ std::string read_uart(int com_id, int buf_size, int& read_cnt) {
 	if (read_cnt != AVAL) {
 		read_cnt = cnt;
 	}
-	return std::string(reinterpret_cast<char const*>(buf), buf_size);
+	return std::string(buf, buf_size);
 }
