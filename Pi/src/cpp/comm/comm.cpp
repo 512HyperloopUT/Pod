@@ -6,7 +6,6 @@
 #include "boost/asio.hpp"
 
 #include <vector>
-#include <string>
 #include <algorithm>
 #include <functional>
 
@@ -67,11 +66,17 @@ void write(bool val, int id) {
 	dwrite_block[id].setValue(val);
 }
 
-void writeUpdate(int* data) {
-	std::string str;
-	std::transform(data, data + 10, std::back_inserter(str), [](int c){ return c+'0'; });
+int cnt = 0;
+
+std::string writeUpdate(int* data) {
+	std::string str = "";
+	for (int i = 0; i < 10; i++) {
+		str += std::to_string(data[i]) + " ";
+	}
 
 	send(str);
+
+	return str + std::to_string(cnt++);
 }
 
 void destroyComms() {

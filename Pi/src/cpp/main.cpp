@@ -11,14 +11,17 @@ int main() {
 #endif
 
 	initComms();
+	std::cout << "set up pod" << std::endl;
+
 	int test[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 	std::cout << "Enter a key to stop." << std::endl;
-	
+
 	while (!kbhit()) {
-		writeUpdate(test);
+		//std::cout << writeUpdate(test) << std::endl;
+		std::cout << readUART() << std::endl;
 	}
-	
+
 	/*
 	while (1) {
 		std::cout << "Would you like to (r)ead a sensor or (w)rite to a sensor? You can also (q)uit." << std::endl;
@@ -44,6 +47,7 @@ int main() {
 	*/
 
 	destroyComms();
+	std::cout << "freed pod resources" << std::endl;
 
 	return 0;
 }

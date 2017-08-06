@@ -1,13 +1,15 @@
 #pragma once
 
+#include <string>
+
 void initComms();
 
 void setRead(int id);
 
-float readPort();
+float readUART();
 
 void write(bool val, int id);
 
-void writeUpdate(int* data);
+std::string writeUpdate(int* data);
 
 void destroyComms();
