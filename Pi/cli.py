@@ -23,11 +23,11 @@ def fillData():
     :return: A string with the encoded data received from pod.
     """
     global inputData
-
+    inputData = []
     if isDebug:
-        for _ in 8:
+        for i in range(8):
             inputData.append(int(random.random() * 10))
-            time.sleep(.5)
+        time.sleep(.5)
     for i in range(10 - len(inputData)):
         inputData.append(0)
     packer = struct.Struct('! B B i i i i i i i I')
