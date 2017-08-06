@@ -21,6 +21,10 @@
 #include "driverlib/pin_map.h"
 
 
+
+//Transmission to motors/linear actuators/other things
+const uint16_t pwm_limit = 1000;
+
 void EnablePWM() {
     unsigned long ulPeriod, dutyCycle;
     ulPeriod = 1000;

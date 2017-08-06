@@ -11,9 +11,6 @@
 #include <stdint.h>
 #include "pin_wrap.h"
 
-//Transmission to motors/linear actuators/other things
-const uint16_t pwm_limit = 1000;
-
 void EnablePWM();
 void WritePWM(uint32_t ui32Port, uint8_t ui8Pins, uint16_t value);
 
