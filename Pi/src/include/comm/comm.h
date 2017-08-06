@@ -8,6 +8,8 @@ void setRead(int id);
 
 float readUART();
 
+std::string readUARTRaw();
+
 void write(bool val, int id);
 
 std::string writeUpdate(int* data);

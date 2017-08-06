@@ -58,6 +58,10 @@ float readUART() {
 	//TODO: 4-byte float read protocol (check for terminating character)
 }
 
+std::string readUARTRaw() {
+	return read_uart(com_id, 100);
+}
+
 void write(bool val, int id) {
 	if (id < 0 || id >= dwrite_block.size()) {
 		return;

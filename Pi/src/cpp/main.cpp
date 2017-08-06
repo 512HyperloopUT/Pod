@@ -19,7 +19,7 @@ int main() {
 
 	while (!kbhit()) {
 		//std::cout << writeUpdate(test) << std::endl;
-		std::cout << readUART() << std::endl;
+		std::cout << readUARTRaw() << std::endl;
 	}
 
 	/*
