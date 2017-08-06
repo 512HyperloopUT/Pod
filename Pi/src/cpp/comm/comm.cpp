@@ -36,7 +36,7 @@ void initComms() {
 	id_block.push_back(GPIOPin(37, OUTPUT));
 
 #ifdef __arm__
-	com_id = open_com("/dev/usb");//TODO:fix
+	com_id = open_com("/dev/ttyACM0");//TODO:fix
 #endif
 
 	initNetwork();

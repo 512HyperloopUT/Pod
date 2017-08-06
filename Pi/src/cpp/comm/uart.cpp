@@ -56,10 +56,13 @@ int open_com(std::string portname) {
 	int fd = open(portname.c_str(), O_RDWR | O_NOCTTY | O_SYNC);
 	if (fd < 0) {
 		printf("error %d opening %s: %s", errno, portname.c_str(), strerror(errno));
+		return -1;
 	}
 
 	set_iface_attribs(fd, B115200, 0);
 	set_blocking(fd, true);
+
+	return fd;
 }
 
 std::string read_uart(int com_id, int buf_size, int& read_cnt) {
@@ -68,5 +71,5 @@ std::string read_uart(int com_id, int buf_size, int& read_cnt) {
 	if (read_cnt != AVAL) {
 		read_cnt = cnt;
 	}
-	return std::to_string((int) buf[0]);
+	return std::string(reinterpret_cast<char const*>(buf), buf_size);
 }
