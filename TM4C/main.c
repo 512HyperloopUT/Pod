@@ -152,19 +152,15 @@ uint8_t limit = 20;
 uint8_t value = 0;
 void Heartbeat(void) {
     if (
-	/*
             //Elapsed time exceeds time of separation
             curr_time - last_beat >= heartbeat_sep ||
             //Is start
             last_beat == 0
-    */
-			limit <= ++value
 	) {
-		value = 0;
         /* Flip state and toggle led */
         beat = !beat;
         last_beat = curr_time;
-        DigiWritePin(PORT(N), PIN(1), PIN(1));
+        DigiWritePin(PORT(N), PIN(1), beat?-1:0);
     }
 }
 
