@@ -1,10 +1,15 @@
 import random
 import time
 import struct
+import RPi.GPIO as GPIO
 from socket import socket, AF_INET, SOCK_DGRAM, gethostbyname
 import threading
 
 isDebug = True
+
+GPIO.setMode(GPIO.BOARD)
+GPIO.setup(12, GPIO.OUT)
+GPIO.output(12, GPIO.LOW)
 
 SERVER_IP = '192.168.0.' + raw_input("Server IP: ")
 PORT_NUMBER = 3000
@@ -17,6 +22,7 @@ sendSocket = socket(AF_INET, SOCK_DGRAM)
 hostName = gethostbyname('0.0.0.0')
 mySocket.bind((hostName, PORT_NUMBER))
 inputData = []
+
 
 def fillData():
     """
@@ -34,10 +40,11 @@ def fillData():
     packeddata = packer.pack(*inputData)
     return packeddata
 
+
 def checkButton():
     """
     Continously checks for...
-        - Signal that emergency.
+        - Signal that emergency brake should activate.
         - A time update.
         - New output data from localhost
     """
@@ -53,9 +60,14 @@ def checkButton():
                     sendSocket.sendto('-1', SEND_PORT)
             else:
                 if isDebug:
-                    print seconds
+                    print seconds[1]
                 else:
-                    sendSocket.sendto(seconds[1], SEND_PORT)
+                    if seconds[1] == 'reset':
+                        GPIO.output(12, GPIO.HIGH)
+                        time.sleep(.1)
+                        GPIO.output(12, GPIO.LOW)
+                    else:
+                        sendSocket.sendto(seconds[1], SEND_PORT)
         else:
             inputData = seconds
 
@@ -71,4 +83,3 @@ while True:
         except:
             # Not a big deal just try again...
             time.sleep(.5)
-
