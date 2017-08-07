@@ -23,12 +23,13 @@ Pi                                      TM4C
 1) pistt = 0
 wait while tistt == 1                   if pistt == 0
                                         1) tistt = 0
-2) cmd = encodings[sensorID]
+2) cmd = encodings[sensorID] || cmd = 31
 3) pistt = 1
 wait while tistt == 0                   if pistt == 1
                                         1) tistt = 0
-                                        2) print analog_read(unmap(cmd))
+                                        2) if cmd != 31 print analog_read(unmap(cmd))
                                         3) tistt = 1
+										4) if cmd == 31 then soft reset
 4) read uart
 
 Reading from peripherals (repeat, closer to serial):
@@ -36,7 +37,7 @@ Reading from peripherals (repeat, closer to serial):
 Pi
 1) pistt = 0
 wait while tistt == 1
-2) cmd = encodings[sensorID]
+2) cmd = encodings[sensorID] || 31
 3) pistt = 1
 wait while tistt == 0
 4) read uart
@@ -46,10 +47,11 @@ if pistt == 0
 	1) tistt = 0
 if pistt == 1
 	1) tistt = 0
-	2) print analog_read(unmap(cmd))
+	2) if cmd != 31 print analog_read(unmap(cmd))
 	3) tistt = 1
+	4) if cmd == 31 soft reset
 
-TM4C PIN MAPPINGS (note: ordered starting from bit 0 (LSb -> MSb)
+TM4C PIN MAPPINGS (note: ordered starting from bit 0 (LSb -> MSb) //TODO fix to match proper settings
 GPIO pins
     pistt
         PA7
