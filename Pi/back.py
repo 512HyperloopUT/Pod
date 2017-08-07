@@ -77,7 +77,7 @@ def cmdStop():
     except TypeError:
         mainFrame.complain('Not connected')
 
-def resetStop():
+def cmdReset():
     try:
         mySocket.sendto('s' * 35 + ' reset', SERVER_IP)
     except TypeError:
