@@ -30,7 +30,7 @@ public code
 
 void initComms() {
 	id_block.push_back(GPIOPin(29, OUTPUT));
-	id_block.push_back(GPIOPin(32, OUTPUT));
+	id_block.push_back(GPIOPin(31, OUTPUT));
 	id_block.push_back(GPIOPin(33, OUTPUT));
 	id_block.push_back(GPIOPin(35, OUTPUT));
 	id_block.push_back(GPIOPin(37, OUTPUT));
