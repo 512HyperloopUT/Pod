@@ -11,8 +11,13 @@ GPIOPin::GPIOPin() {
 }
 
 GPIOPin::GPIOPin(int port, GPIODir dir) {
+	exportGPIO();
 	setPort(port);
 	setDirection(dir);
+}
+
+GPIOPin::~GPIOPin() {
+	unexportGPIO();
 }
 
 void GPIOPin::setPort(int _port) {

@@ -13,6 +13,7 @@ private:
 public:
 	GPIOPin();
 	GPIOPin(int port, GPIODir dir);
+	~GPIOPin();
 	//inits
 	void setPort(int _port);
 	bool exportGPIO();
