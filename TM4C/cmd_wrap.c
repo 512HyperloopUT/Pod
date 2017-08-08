@@ -23,6 +23,7 @@
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/sysctl.h"
+#include "driverlib/adc.h"
 /* UART */
 #include "utils/uartstdio.h"
 
