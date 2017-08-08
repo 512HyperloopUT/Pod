@@ -66,17 +66,12 @@ float readUART() {
 	while (read_uart(com_id, 1)[0] != COMM_EOC) {}
 
 	printf("reading buffer\n");
-	int cutoff = 4;
 
 	int val = 0;
-	int off = 24;
-	char curr;
-	while ((curr = read_uart(com_id, 1)[0]) != COMM_EOC) {
+
+	for (int off = 24; off >= 0; off -= 8) {
+		char curr = read_uart(com_id, 1)[0];
 		val = val | (curr << off);
-		off /= 2;
-		if (--cutoff <= 0) {
-			break;
-		}
 	}
 
 	return val;
