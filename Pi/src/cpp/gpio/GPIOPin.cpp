@@ -25,6 +25,7 @@ void GPIOPin::setPort(int _port) {
 }
 
 bool GPIOPin::exportGPIO() {
+	printf("%s\n", EXPORT.c_str());
 	ofstream exportstream(EXPORT.c_str());
 	if (!exportstream.is_open()) {
 		printf("Could not export GPIO pin %i\n", port);

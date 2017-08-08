@@ -8,7 +8,7 @@ enum GPIODir {
 class GPIOPin {
 private:
 	int port;
-	bool exported;
+	bool exported = false;
 	GPIODir currentDir;
 public:
 	GPIOPin();
