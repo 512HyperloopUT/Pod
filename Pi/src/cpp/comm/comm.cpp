@@ -30,7 +30,7 @@ public code
 
 void initComms() {
 	id_block.push_back(GPIOPin(29, OUTPUT));
-	id_block.push_back(GPIOPin(31, OUTPUT));
+	id_block.push_back(GPIOPin(32, OUTPUT));
 	id_block.push_back(GPIOPin(33, OUTPUT));
 	id_block.push_back(GPIOPin(35, OUTPUT));
 	id_block.push_back(GPIOPin(37, OUTPUT));
@@ -43,19 +43,43 @@ void initComms() {
 }
 
 void setRead(int id) {
+	printf("setting sensor pins\n");
 	int off = 0;
 	std::for_each(id_block.begin(), id_block.end(), [id, off](GPIOPin& pin) {
 		pin.setValue((id >> off) & 0x1);
 	});
+
+	r_pin.setValue(true);
+
+	printf("writing for TM4C response\n");
+	while (e_pin.getValue() != true) {}
 }
+
+const char COMM_EOC = (char) 242;
 
 float readUART() {
 #ifndef __arm__
 	return 0;
 #endif
-	int x = 0;
-	std::string output = read_uart(com_id, 100);
-	//TODO: 4-byte float read protocol (check for terminating character)
+
+	printf("waiting for COMM_EOC to start buffer\n");
+	while (read_uart(com_id, 1)[0] != COMM_EOC) {}
+
+	printf("reading buffer\n");
+	int cutoff = 4;
+
+	int val = 0;
+	int off = 24;
+	char curr;
+	while ((curr = read_uart(com_id, 1)[0]) != COMM_EOC) {
+		val = val | (curr << off);
+		off /= 2;
+		if (--cutoff <= 0) {
+			break;
+		}
+	}
+
+	return val;
 }
 
 std::string readUARTRaw() {

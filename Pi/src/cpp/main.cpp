@@ -17,10 +17,12 @@ int main() {
 
 	std::cout << "Enter a key to stop." << std::endl;
 
+	setRead(1);
+
 	while (!kbhit()) {
-		writeUpdate(test);
+		//writeUpdate(test);
 		//std::cout << "UDP WRITE: " << writeUpdate(test) << std::endl;
-		std::cout << "UART READ: " << readUARTRaw() << std::endl;
+		std::cout << "UART READ: " << readUART() << std::endl;
 	}
 
 	/*
