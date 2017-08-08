@@ -6,14 +6,14 @@ const char* EXPORT = "/sys/class/gpio/export";
 
 const char* UNEXPORT = "/sys/class/gpio/unexport";
 
-const std::string GPIO_PIN(int port) {
-	return "/sys/class/gpio/gpio" + std::to_string(port);
+void GPIO_PIN(char* str, int port) {
+	sprintf(str, "/sys/class/gpio/gpio%i", port);
 }
 
-const std::string DIR(int port) {
-	return GPIO_PIN(port) + "/direction";
+void DIR(char* str, int port) {
+	sprintf(str, "/sys/class/gpio/gpio%i/direction", port);
 }
 
-const std::string VAL(int port) {
-	return GPIO_PIN(port) + "/value";
+void VAL(char* str, int port) {
+	sprintf(str, "/sys/class/gpio/gpio%i/value", port);
 }

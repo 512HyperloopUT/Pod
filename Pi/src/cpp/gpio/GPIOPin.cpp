@@ -72,7 +72,9 @@ bool GPIOPin::setDirection_s(GPIODir dir) {
 	if (!exported) {
 		return true;
 	}
-	std::ofstream dirstream(DIR(port).c_str());
+	char str[50];
+	DIR(str, port);
+	std::ofstream dirstream(str);
 	if (!dirstream.is_open()) {
 		printf("Could not set direction of GPIO pin %i\n", port);
 		return true;
@@ -90,7 +92,9 @@ bool GPIOPin::setValue_s(bool val) {
 	if (!exported) {
 		return true;
 	}
-	std::ofstream valstream(VAL(port).c_str());
+	char str[50];
+	VAL(str, port);
+	std::ofstream valstream(str);
 	if (!valstream.is_open()) {
 		printf("Could not set value of GPIO pin %i\n", port);
 		return true;
@@ -106,7 +110,9 @@ bool GPIOPin::getValue_s(bool& val) {
 	if (!exported) {
 		return true;
 	}
-	std::ifstream valstream(VAL(port).c_str());
+	char str[50];
+	VAL(str, port);
+	std::ifstream valstream(str);
 	if (!valstream.is_open()) {
 		printf("Could not read value of GPIO pin %i\n", port);
 		return true;
