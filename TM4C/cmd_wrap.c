@@ -50,6 +50,9 @@ void ExecCmd(void) {
 		new = 1;
         UARTprintf("Reset command.\n");
         DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
+		
+			uint32_t adc_value = 1023;
+			UARTprintf("\n%c%c%c%c%c%c\n", 242, (char) ((adc_value >> 24) & 0xff), (char) ((adc_value >> 16) & 0xff), (char) ((adc_value >> 8) & 0xff), (char) (adc_value & 0xff), 242);
     } else if (new) { /* Do cmd if is new */
         new = 0;
         UARTprintf("Executing actual command.\n");
