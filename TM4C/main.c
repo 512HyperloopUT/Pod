@@ -167,7 +167,7 @@ Generic loop function and main function
 *****************/
 inline void Loop(void) {
     ReadCmd();
-    ExecCmd(curr_time);
+    ExecCmd();
     Heartbeat();
 }
 

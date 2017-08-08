@@ -21,6 +21,6 @@ Instruction management
 void ReadCmd(void);
 
 /* Execute instructions */
-void ExecCmd(uint64_t curr_time);
+void ExecCmd();
 
 #endif /* CMD_WRAP_H_ */

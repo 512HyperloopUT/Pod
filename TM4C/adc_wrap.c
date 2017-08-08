@@ -25,7 +25,7 @@
 uint32_t MapADCRead(uint32_t val) {
 	//TODO use ADCRead with some form of mapping
 	UARTprintf("Dummy adc read of sensor mapped to %d.\n", val);
-	return 512;
+	return val;
 }
 
 void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer) {
