@@ -74,6 +74,8 @@ float readUART() {
 		val = val | (curr << off);
 	}
 
+	read_uart(com_id, 1)[0];
+
 	return val;
 }
 

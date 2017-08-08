@@ -60,7 +60,7 @@ int open_com(std::string portname) {
 	}
 
 	set_iface_attribs(fd, B115200, 0);
-	set_blocking(fd, true);
+	set_blocking(fd, false);
 
 	return fd;
 }
