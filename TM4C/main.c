@@ -167,7 +167,7 @@ Generic loop function and main function
 *****************/
 inline void Loop(void) {
     ReadCmd();
-    ExecCmd();
+    ExecCmd(curr_time);
     Heartbeat();
 }
 
@@ -177,6 +177,6 @@ int main(void) {
     for (;;) {
         sprintf(buff, "%" PRIu64 , curr_time);
         UARTprintf("SysTick current: %s.\n", buff);
-        Loop(curr_time);
+        Loop();
     }
 }
