@@ -104,7 +104,7 @@ bool GPIOPin::setValue_s(bool val) {
 	}
 #endif
 
-	valstream << (val ? "1" : "0");//necessary?
+	valstream << (val ? "0" : "1");//necessary?
 	valstream.close();
 
 	return false;
