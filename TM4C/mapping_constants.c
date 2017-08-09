@@ -42,14 +42,14 @@ const uint8_t cmd_pins[] = {
 //State of cmd writing
 const uint8_t pistt_width = 1;
 const uint32_t pistt_ports[] = {
-    PORT(F)
+    PORT(L)
 };
 const uint8_t pistt_pins[] = {
-    PIN(1)
+    PIN(3)
 };
 //Used GPIO ports
-const uint8_t picomm_port_count = 3;
+const uint8_t picomm_port_count = 4;
 const uint32_t picomm_ports[] = {
-    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K)
+    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L)
 };
 
