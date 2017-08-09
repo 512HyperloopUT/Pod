@@ -71,9 +71,6 @@ bool GPIOPin::getValue() {
 }
 
 bool GPIOPin::setDirection_s(GPIODir dir) {
-	if (!exported) {
-		return true;
-	}
 	char str[50];
 	DIR(str, port);
 	std::ofstream dirstream(str);
@@ -92,9 +89,6 @@ bool GPIOPin::setDirection_s(GPIODir dir) {
 }
 
 bool GPIOPin::setValue_s(bool val) {
-	if (!exported) {
-		return true;
-	}
 	char str[50];
 	VAL(str, port);
 	std::ofstream valstream(str);
@@ -111,9 +105,6 @@ bool GPIOPin::setValue_s(bool val) {
 }
 
 bool GPIOPin::getValue_s(bool& val) {
-	if (!exported) {
-		return true;
-	}
 	char str[50];
 	VAL(str, port);
 	std::ifstream valstream(str);
