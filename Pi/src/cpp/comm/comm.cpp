@@ -42,6 +42,11 @@ void initComms() {
 }
 
 void setRead(int id) {
+	r_pin.setValue(false);
+
+	printf("resetting TM4C command\n");
+	while (e_pin.getValue() != false) {}
+
 	printf("setting sensor pins\n");
 	int off = 0;
 	std::for_each(id_block.begin(), id_block.end(), [id, off](GPIOPin& pin) {
