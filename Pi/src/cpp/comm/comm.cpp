@@ -37,6 +37,9 @@ void initComms() {
 	id_block.push_back(GPIOPin(13, OUTPUT));
 	id_block.push_back(GPIOPin(19, OUTPUT));
 	id_block.push_back(GPIOPin(26, OUTPUT));
+	std::for_each(id_block.begin(), id_block.end(), [](GPIOPin& pin) {
+		pin.setValue(false);
+	});
 
 	com_id = open_com("/dev/ttyACM0");
 }

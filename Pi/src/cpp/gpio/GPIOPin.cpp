@@ -115,9 +115,9 @@ bool GPIOPin::getValue_s(bool& val) {
 	}
 #endif
 
-	int rval;
-	valstream >> rval;
-	val = rval;//necessary?
+	std::string strval;
+	valstream >> strval;
+	val = strval != "0";
 
 	valstream.close();
 
