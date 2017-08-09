@@ -26,11 +26,6 @@ void GPIOPin::setPort(int _port) {
 
 bool GPIOPin::exportGPIO() {
 	std::ofstream exportstream(EXPORT);
-#ifdef __arm__
-	if (exportstream < 0) {
-		printf("Could not export GPIO pin %i\n", port);
-	}
-#endif
 
 	exportstream << port;
 	exportstream.close();
@@ -42,11 +37,6 @@ bool GPIOPin::exportGPIO() {
 
 bool GPIOPin::unexportGPIO() {
 	std::ofstream unexportstream(UNEXPORT);
-#ifdef __arm__
-	if (unexportstream < 0) {
-		printf("Could not unexport GPIO pin %i\n", port);
-	}
-#endif
 
 	unexportstream << port;
 	unexportstream.close();
@@ -74,11 +64,6 @@ bool GPIOPin::setDirection_s(GPIODir dir) {
 	char str[50];
 	DIR(str, port);
 	std::ofstream dirstream(str);
-#ifdef __arm__
-	if (dirstream < 0) {
-		printf("Could not set direction of GPIO pin %i\n", port);
-	}
-#endif
 
 	dirstream << (dir == INPUT ? "in" : "out");
 	dirstream.close();
@@ -92,11 +77,6 @@ bool GPIOPin::setValue_s(bool val) {
 	char str[50];
 	VAL(str, port);
 	std::ofstream valstream(str);
-#ifdef __arm__
-	if (valstream < 0) {
-		printf("Could not set value of GPIO pin %i\n", port);
-	}
-#endif
 
 	valstream << (val ? "1" : "0");//necessary?
 	valstream.close();
@@ -107,13 +87,8 @@ bool GPIOPin::setValue_s(bool val) {
 bool GPIOPin::getValue_s(bool& val) {
 	char str[50];
 	VAL(str, port);
+	printf("reading: %s\n", str);
 	std::ifstream valstream(str);
-#ifdef __arm__
-	if (valstream < 0) {
-		printf("Could not read value of GPIO pin %i\n", port);
-		return true;
-	}
-#endif
 
 	std::string strval;
 	valstream >> strval;
@@ -122,7 +97,7 @@ bool GPIOPin::getValue_s(bool& val) {
 	} else {
 		val = true;
 	}
-	printf("strval: %s -> %i\n", strval.c_str(), val);
+	printf("strval: %s -> %i\n", strval.c_str(), val ? 1 : 0);
 
 	valstream.close();
 
