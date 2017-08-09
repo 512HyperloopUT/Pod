@@ -58,7 +58,7 @@ uint64_t MassRead(const uint32_t *ports, const uint8_t *pins, uint8_t len) {
     for (i = 0; i < len; ++i) {
         int justnow = (DigiReadPin(ports[i], pins[i]) ? 1 : 0);
         val |= justnow << i;
-        UARTprintf("Just read from port %d, pin %d: %d\n", justnow);
+        UARTprintf("Just read from port %d, pin %d: %d\n", ports[i], pins[i], justnow);
     }
     return val;
 }
