@@ -41,16 +41,17 @@ Instruction management
 /* Past and current values */
 uint8_t valid = 0;
 uint8_t cmd = 0;
-uint8_t new = 0;
+uint8_t new = 1;
 
 /* Fetch instructions */
 void ReadCmd(void) {
     /* Read cmd & idata */
     if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
-		UARTprintf("Command read: %ud\n", cmd);
+		UARTprintf("Command read: %u\n", cmd);
     } else {
 		UARTprintf("Command not valid.\n");
+		new = 1;
 	}
 }
 
