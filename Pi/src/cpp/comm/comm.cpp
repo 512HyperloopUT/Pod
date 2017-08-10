@@ -60,12 +60,11 @@ void setRead(int id) {
 	while (io.read(1) != LOW) {}
 
 	printf("setting sensor pins\n");
-	int off = 0;
 	io.write(5, (id & 0x1) ? HIGH : LOW);
-	io.write(5, (id & 0x10) ? HIGH : LOW);
-	io.write(5, (id & 0x100) ? HIGH : LOW);
-	io.write(5, (id & 0x1000) ? HIGH : LOW);
-	io.write(5, (id & 0x10000) ? HIGH : LOW);
+	io.write(12, (id & 0x10) ? HIGH : LOW);
+	io.write(13, (id & 0x100) ? HIGH : LOW);
+	io.write(19, (id & 0x1000) ? HIGH : LOW);
+	io.write(23, (id & 0x10000) ? HIGH : LOW);
 
 	io.write(0, HIGH);
 
