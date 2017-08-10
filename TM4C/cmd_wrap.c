@@ -49,10 +49,10 @@ void ReadCmd(void) {
     if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
 		UARTprintf("Command read: %u\n", cmd);
-        DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
     } else {
 		UARTprintf("Command not valid.\n");
 		new = 1;
+        DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
 	}
 }
 
