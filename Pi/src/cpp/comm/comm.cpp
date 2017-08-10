@@ -3,16 +3,23 @@
 #include "comm/uart.h"
 #include "gpio/GPIOPin.h"
 
+#include "rpi-hw.hpp"
+#include "rpi-hw/time.hpp"
+#include "rpi-hw/gpio.hpp"
+
 #include "boost/asio.hpp"
 
 #include <vector>
 #include <algorithm>
 #include <functional>
 
+using namespace rpihw;
+
 /**********
 internal code
 **********/
 
+/*
 //comm ports
 std::vector<GPIOPin> id_block;//for writing sensor ID
 GPIOPin r_pin(0, OUTPUT);//for starting read command
@@ -20,6 +27,9 @@ GPIOPin e_pin(1, INPUT);//for ending reading command
 
 //digital write/read pins
 std::vector<GPIOPin> dwrite_block;//for writing to digital outputs
+*/
+
+gpio &io = gpio::get();
 
 //com api
 int com_id;
@@ -32,6 +42,15 @@ public code
 **********/
 
 void initComms() {
+	io.setup(5, OUTPUT);
+	io.setup(12, OUTPUT);
+	io.setup(13, OUTPUT);
+	io.setup(19, OUTPUT);
+	io.setup(23, OUTPUT);
+
+	io.setup(0, OUTPUT);
+	io.setup(1, INPUT);
+	/*
 	id_block.push_back(GPIOPin(5, OUTPUT));
 	id_block.push_back(GPIOPin(12, OUTPUT));
 	id_block.push_back(GPIOPin(13, OUTPUT));
@@ -40,26 +59,33 @@ void initComms() {
 	std::for_each(id_block.begin(), id_block.end(), [](GPIOPin& pin) {
 		pin.setValue(false);
 	});
+	*/
 
 	com_id = open_com("/dev/ttyACM0");
 }
 
 void setRead(int id) {
-	r_pin.setValue(false);
+	//r_pin.setValue(false);
+	io.write(0, LOW);
 
 	printf("resetting TM4C command\n");
-	while (e_pin.getValue() != false) {}
+	//while (e_pin.getValue() != false) {}
+	while (io.read(0) != LOW) {}
 
 	printf("setting sensor pins\n");
 	int off = 0;
-	std::for_each(id_block.begin(), id_block.end(), [id, off](GPIOPin& pin) {
-		pin.setValue((id >> off) & 0x1);
-	});
+	io.write(5, (id & 0x1) ? HIGH : LOW);
+	io.write(5, (id & 0x10) ? HIGH : LOW);
+	io.write(5, (id & 0x100) ? HIGH : LOW);
+	io.write(5, (id & 0x1000) ? HIGH : LOW);
+	io.write(5, (id & 0x10000) ? HIGH : LOW);
 
-	r_pin.setValue(true);
+	//r_pin.setValue(true);
+	io.write(0, HIGH);
 
 	printf("writing for TM4C response\n");
-	while (e_pin.getValue() != true) {}
+	//while (e_pin.getValue() != true) {}
+	while (io.read(0) != HIGH) {}
 }
 
 float readUART() {
@@ -85,7 +111,7 @@ void write(bool val, int id) {
 		return;
 	}
 
-	dwrite_block[id].setValue(val);
+	//dwrite_block[id].setValue(val);
 }
 
 std::string writeUpdate(int* data) {
