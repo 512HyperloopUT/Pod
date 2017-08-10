@@ -18,10 +18,12 @@ ser.baudrate = 115200
 COMM_EOC = 242
 
 def readUART():
+    ser.flush()
+
     print('waiting for COMM_EOC to start buffer')
     while True:
-        r = ser.read(1)
-        if r[0] == COMM_EOC:
+        r = ser.read()
+        if r == COMM_EOC:
             break
 
     print('reading buffer')
