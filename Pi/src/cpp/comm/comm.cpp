@@ -92,10 +92,6 @@ float readUART() {
 }
 
 void write(bool val, int id) {
-	if (id < 0 || id >= dwrite_block.size()) {
-		return;
-	}
-
 	//output
 }
 
