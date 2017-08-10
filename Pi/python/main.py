@@ -15,7 +15,7 @@ GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 ser = serial.Serial("/dev/ttyACM0")
 ser.baudrate = 115200
 
-COMM_EOC = chr(242)
+COMM_EOC = 242
 
 def readUART():
     print('waiting for COMM_EOC to start buffer')
