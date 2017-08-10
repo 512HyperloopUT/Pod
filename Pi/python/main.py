@@ -63,9 +63,9 @@ def setRead(sensorID):
 
 while True:
     print('r = read, x = reset, q = quit')
-    choice = raw_input('choice: ')
+    choice = input('choice: ')
     if choice == 'r':
-        readID = raw_input('readID: ')
+        readID = input('readID: ')
         setRead(readID)
     elif choice == 'x':
         setRead(31)
