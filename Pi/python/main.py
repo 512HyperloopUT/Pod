@@ -22,7 +22,7 @@ def readUART():
     while True:
         r = ser.read(1)
         print(r)
-        if r != COMM_EOC:
+        if r == COMM_EOC:
             break
 
     print('reading buffer')
