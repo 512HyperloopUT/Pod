@@ -8,6 +8,8 @@
 #include "rpi-hw/time.hpp"
 #include "rpi-hw/gpio.hpp"
 
+using namespace rpihw;
+
 gpio &io = gpio::get();
 
 int main() {
