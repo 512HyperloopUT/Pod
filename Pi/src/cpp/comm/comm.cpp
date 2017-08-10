@@ -17,7 +17,6 @@ using namespace rpihw;
 /**********
 internal code
 **********/
-
 gpio &io = gpio::get();
 
 //com api

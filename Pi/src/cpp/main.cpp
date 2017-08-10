@@ -1,5 +1,4 @@
 #include "comm/comm.h"
-#include "gpio/GPIOPin.h"
 #include "utils/utils.h"
 
 #include <string>
