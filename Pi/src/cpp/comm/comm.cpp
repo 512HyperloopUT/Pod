@@ -46,7 +46,7 @@ void setRead(int id) {
 	io.write(0, LOW);
 
 	printf("resetting TM4C command\n");
-	while (io.read(1) != LOW) {}
+	while (io.read(1) != false) {}
 
 	printf("setting sensor pins\n");
 	io.write(5, (id & 0x1) ? HIGH : LOW);
@@ -58,7 +58,7 @@ void setRead(int id) {
 	io.write(0, HIGH);
 
 	printf("writing for TM4C response\n");
-	while (io.read(1) != HIGH) {}
+	while (io.read(1) != true) {}
 }
 
 float readUART() {
