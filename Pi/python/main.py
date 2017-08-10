@@ -16,27 +16,10 @@ ser = serial.Serial(port="/dev/ttyACM0",baudrate=115200, parity=serial.PARITY_NO
 
 ser.isOpen()
 
-COMM_EOC = str(chr(242))
-
 def readUART():
     ser.flush()
 
-    print('waiting for COMM_EOC to start buffer')
-    while True:
-        print(ser.readline())
-
-    print('reading buffer')
-
-    val = 0
-    offs = [24, 16, 8, 0]
-
-    for off in offs:
-        curr = ser.read()
-        val |= (curr[0] << off)
-
-    ser.read()
-
-    return val
+    return int(ser.readline())
 
 def setRead(sensorID):
     GPIO.output(0, GPIO.LOW)
