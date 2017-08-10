@@ -4,7 +4,17 @@
 #include <string>
 #include <iostream>
 
+#include "rpi-hw.hpp"
+#include "rpi-hw/time.hpp"
+#include "rpi-hw/gpio.hpp"
+
+gpio &io = gpio::get();
+
 int main() {
+	io.setup(23, OUTPUT);
+	io.write(23, HIGH);
+	return 0;
+	/*
 #ifndef __arm__
 	printf("Warning: probably not running on Pi, not running\n");
 	return 0;
@@ -27,4 +37,5 @@ int main() {
 	}
 
 	return 0;
+	*/
 }
