@@ -68,7 +68,7 @@ void ExecCmd(void) {
 			UARTprintf("\tReading dummy sensor %d.\n", cmd);
 			//TODO Read the selected sensor
 			uint32_t adc_value = MapADCRead(cmd);
-			UARTprintf("\n%c%c%c%c%c%c\n", 'q', (char) ((adc_value >> 24) & 0xff), (char) ((adc_value >> 16) & 0xff), (char) ((adc_value >> 8) & 0xff), (char) (adc_value & 0xff), 'q');
+			UARTprintf("\n%c%c%c%c%c%c\n", 242, (char) ((adc_value >> 24) & 0xff), (char) ((adc_value >> 16) & 0xff), (char) ((adc_value >> 8) & 0xff), (char) (adc_value & 0xff), 242);
 		} else {
 			UARTprintf("\tTriggering software reset %d.\n", cmd);
 		}
@@ -78,9 +78,6 @@ void ExecCmd(void) {
 		if (cmd == 31) {
 			SysCtlReset();
 			UARTprintf("Reset did not work. Please contact Benjamin Xu with a knife in hand. Just kidding.\n");
-		} else {
-			
-			while(1);
 		}
     }
 }

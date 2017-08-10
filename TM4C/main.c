@@ -175,6 +175,8 @@ int main(void) {
     Setup();
     char buff[20];
     for (;;) {
-        UARTprintf("abcdef", buff);
+        sprintf(buff, "%" PRIu64 , curr_time);
+        UARTprintf("SysTick current: %s.\n", buff);
+        Loop();
     }
 }
