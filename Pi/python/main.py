@@ -12,11 +12,11 @@ GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)
 
-ser = serial.Serial("/dev/ttyACM0")
-ser.baudrate = 115200
+#ser = serial.Serial("/dev/ttyACM0")
+#ser.baudrate = 115200
 
 COMM_EOC = chr(242)
-
+'''
 def readUART():
     print('waiting for COMM_EOC to start buffer')
     while ser.read(1) != COMM_EOC:
@@ -32,6 +32,7 @@ def readUART():
         val |= (curr << off)
 
     return val
+'''
 
 def setRead(sensorID):
     GPIO.output(0, GPIO.LOW)
@@ -58,5 +59,5 @@ setRead(5)
 setRead(1)
 setRead(2)
 
-ser.close()
+#ser.close()
 GPIO.cleanup()
