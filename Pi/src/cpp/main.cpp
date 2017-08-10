@@ -12,8 +12,10 @@ using namespace rpihw;
 
 int main() {
 	gpio &io = gpio::get();
-	io.setup(23, OUTPUT);
-	io.write(23, HIGH);
+	io.setup(23, gpio::OUTPUT);
+	while (true) {
+		io.write(23, gpio::HIGH);
+	}
 	return 0;
 	/*
 #ifndef __arm__
