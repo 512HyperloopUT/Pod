@@ -41,7 +41,7 @@ Instruction management
 /* Past and current values */
 uint8_t valid = 0;
 uint8_t cmd = 0;
-uint8_t new = 1;
+uint8_t new = 0;
 
 /* Fetch instructions */
 void ReadCmd(void) {
@@ -51,7 +51,6 @@ void ReadCmd(void) {
 		UARTprintf("Command read: %u\n", cmd);
     } else {
 		UARTprintf("Command not valid.\n");
-		new = 1;
         DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
 	}
 }
