@@ -78,6 +78,9 @@ void ExecCmd(void) {
 		if (cmd == 31) {
 			SysCtlReset();
 			UARTprintf("Reset did not work. Please contact Benjamin Xu with a knife in hand. Just kidding.\n");
+		} else {
+			
+			while(1);
 		}
     }
 }
