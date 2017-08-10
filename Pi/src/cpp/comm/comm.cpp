@@ -1,7 +1,6 @@
 #include "comm/comm.h"
 #include "comm/network.h"
 #include "comm/uart.h"
-#include "gpio/GPIOPin.h"
 
 #include "rpi-hw.hpp"
 #include "rpi-hw/time.hpp"
@@ -50,26 +49,14 @@ void initComms() {
 
 	io.setup(0, OUTPUT);
 	io.setup(1, INPUT);
-	/*
-	id_block.push_back(GPIOPin(5, OUTPUT));
-	id_block.push_back(GPIOPin(12, OUTPUT));
-	id_block.push_back(GPIOPin(13, OUTPUT));
-	id_block.push_back(GPIOPin(19, OUTPUT));
-	id_block.push_back(GPIOPin(26, OUTPUT));
-	std::for_each(id_block.begin(), id_block.end(), [](GPIOPin& pin) {
-		pin.setValue(false);
-	});
-	*/
 
 	com_id = open_com("/dev/ttyACM0");
 }
 
 void setRead(int id) {
-	//r_pin.setValue(false);
 	io.write(0, LOW);
 
 	printf("resetting TM4C command\n");
-	//while (e_pin.getValue() != false) {}
 	while (io.read(0) != LOW) {}
 
 	printf("setting sensor pins\n");
@@ -80,11 +67,9 @@ void setRead(int id) {
 	io.write(5, (id & 0x1000) ? HIGH : LOW);
 	io.write(5, (id & 0x10000) ? HIGH : LOW);
 
-	//r_pin.setValue(true);
 	io.write(0, HIGH);
 
 	printf("writing for TM4C response\n");
-	//while (e_pin.getValue() != true) {}
 	while (io.read(0) != HIGH) {}
 }
 
@@ -111,7 +96,7 @@ void write(bool val, int id) {
 		return;
 	}
 
-	//dwrite_block[id].setValue(val);
+	//output
 }
 
 std::string writeUpdate(int* data) {
