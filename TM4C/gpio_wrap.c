@@ -31,11 +31,13 @@ void MassPeriphInit(const uint32_t* ports, uint8_t len) {
 /*****************
 Pin GPIO Init Macros and Functions
 *****************/
-#define PIN_IN 1
-#define PIN_OUT 0
-#define PTO GPIOPinTypeGPIOOutput
-#define PTI GPIOPinTypeGPIOInput
-#define GPIOPinInit(port, pin, type) type ? PTI(port, pin) : PTO(port, pin)
+void GPIOPinInit(const uint32_t port, const uint8_t pin, const uint8_t type) {
+	if (type) {
+		PTI(port, pin);
+	} else {
+		PTO(port, pin);
+	}
+}
 
 void GPIOMassInit(const uint32_t *ports, const uint8_t *pins, uint8_t len, uint8_t direction) {
     int i;
@@ -48,9 +50,6 @@ void GPIOMassInit(const uint32_t *ports, const uint8_t *pins, uint8_t len, uint8
 /*****************
 Digital Pin IO
 *****************/
-#define DigiWritePin GPIOPinWrite
-#define DigiReadPin GPIOPinRead
-
 /* Only up to 64 bits, read starts reading to bit 0 */
 uint64_t MassRead(const uint32_t *ports, const uint8_t *pins, uint8_t len) {
     int i;

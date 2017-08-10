@@ -24,7 +24,8 @@ Pin GPIO Init Macros and Functions
 #define PIN_OUT 0
 #define PTO GPIOPinTypeGPIOOutput
 #define PTI GPIOPinTypeGPIOInput
-#define GPIOPinInit(port, pin, type) type ? PTI(port, pin) : PTO(port, pin)
+
+void GPIOPinInit(const uint32_t port, const uint8_t pin, const uint8_t type);
 
 void GPIOMassInit(const uint32_t *ports, const uint8_t *pins, uint8_t len, uint8_t direction);
 
