@@ -21,7 +21,6 @@ def readUART():
     print('waiting for COMM_EOC to start buffer')
     while True:
         r = ser.read(1)
-        print(r)
         if r == COMM_EOC:
             break
 
@@ -32,7 +31,6 @@ def readUART():
 
     for off in offs:
         curr = ser.read(1)
-        print(curr)
         val |= (curr[0] << off)
 
     ser.read(1)
