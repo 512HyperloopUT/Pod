@@ -15,7 +15,7 @@ GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 ser = serial.Serial("/dev/ttyACM0")
 ser.baudrate = 115200
 
-COMM_EOC = chr(239)
+COMM_EOC = chr(113)
 
 def readUART():
     ser.flush()
