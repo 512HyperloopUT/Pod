@@ -24,18 +24,15 @@
 
 uint32_t MapADCRead(uint32_t val) {
 	//TODO use ADCRead with some form of mapping
-	UARTprintf("Dummy adc read of sensor mapped to %d.\n", val);
 	return val;
 }
 
 void ADCRead(uint32_t base, uint32_t seq_num, bool masked, uint32_t* buffer) {
-    UARTprintf("ADC read begin\nReading from base %ui, sequence %ui\n", base, seq_num);
     ADCIntClear(base, seq_num); //Clear interrupt flag
     ADCProcessorTrigger(base, seq_num); //Trigger interrupt
     while(!ADCIntStatus(base, seq_num, masked)); //Wait for sequencer
     ADCIntClear(base, seq_num); //Clear interrupt flag
     ADCSequenceDataGet(base, seq_num, buffer); //Fetch the values into a buffer
-    UARTprintf("ADC read end\n");
 }
 
 void EnableADC() {

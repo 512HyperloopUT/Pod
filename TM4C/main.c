@@ -51,18 +51,14 @@ Configure I/O
 *****************/
 void ConfigureGPIO(void) {
     /* GPIO ports */
-    UARTprintf("Enabling GPIO peripherals.\n");
     MassPeriphInit(picomm_ports, picomm_port_count);
     /* cmd */
-    UARTprintf("Initializing command pins.\n");
     GPIOMassInit(cmd_ports, cmd_pins, cmd_width, PIN_IN);
     /* stt */
-    UARTprintf("Initializing state pins.\n");
     GPIOMassInit(tistt_ports, tistt_pins, tistt_width, PIN_OUT);
     GPIOMassInit(pistt_ports, pistt_pins, pistt_width, PIN_IN);
 }
 void ConfigureAnalog(void) {
-    UARTprintf("Now configuring ADC\n");
     EnableADC();
 }
 
@@ -108,16 +104,11 @@ void SysTick_IntHandler(void) {
     curr_time++;
 }
 void ConfigureTiming(void) {
-    UARTprintf("Settling clock.\n");
     uint32_t clock = SysCtlClockGet();
-    UARTprintf("Configuring SysTick interrupt function.\n");
     SysTickIntRegister(SysTick_IntHandler);
-    UARTprintf("Set SysTick period to clock speed.\n");
     SysTickPeriodSet(clock_freq);
-    UARTprintf("Enable all interrupts then enable SysTick interrupt.\n");
     IntMasterEnable();
     SysTickIntEnable();
-    UARTprintf("Enable SysTick.\n");
     SysTickEnable();
 }
 
@@ -133,13 +124,9 @@ void Setup() {
                                             120 * 1000 * 1000);
     /* Initialize the communication pins */
     ConfigureUART(); //UART
-    UARTprintf("Hello. UART configured.\nClock at %ul Hz.\nContinuing with general configuration.\nConfiguring analog I/O.\n", clock_freq);
     ConfigureAnalog();
-    UARTprintf("Configuring General Purpose I/O.\n");
     ConfigureGPIO(); //Pi communications
-    UARTprintf("Configuring SysTick timing mechanism.\n");
     ConfigureTiming(); //Systick setup
-    UARTprintf("Configuration complete. We are ready to begin.");
 }
 
 /*****************
@@ -173,10 +160,7 @@ inline void Loop(void) {
 
 int main(void) {
     Setup();
-    char buff[20];
     for (;;) {
-        sprintf(buff, "%" PRIu64 , curr_time);
-        UARTprintf("SysTick current: %s.\n", buff);
         Loop();
     }
 }
