@@ -41,16 +41,16 @@ def setRead(sensorID):
         pass
 
     print('setting sensor pins')
-    print('bit 0: ', '1' if sensorID & 0x1 != 0 else '0')
-    print('bit 1: ', '1' if sensorID & 0x10 != 0 else '0')
-    print('bit 2: ', '1' if sensorID & 0x100 != 0 else '0')
-    print('bit 3: ', '1' if sensorID & 0x1000 != 0 else '0')
-    print('bit 4: ', '1' if sensorID & 0x10000 != 0 else '0')
-    GPIO.output(5, GPIO.HIGH if sensorID & 0x1 != 0 else GPIO.LOW)
-    GPIO.output(12, GPIO.HIGH if sensorID & 0x10 != 0 else GPIO.LOW)
-    GPIO.output(13, GPIO.HIGH if sensorID & 0x100 != 0 else GPIO.LOW)
-    GPIO.output(19, GPIO.HIGH if sensorID & 0x1000 != 0 else GPIO.LOW)
-    GPIO.output(23, GPIO.HIGH if sensorID & 0x10000 != 0 else GPIO.LOW)
+    print('bit 0: ', '1' if (sensorID & 0x1) != 0 else '0')
+    print('bit 1: ', '1' if (sensorID & 0x10) != 0 else '0')
+    print('bit 2: ', '1' if (sensorID & 0x100) != 0 else '0')
+    print('bit 3: ', '1' if (sensorID & 0x1000) != 0 else '0')
+    print('bit 4: ', '1' if (sensorID & 0x10000) != 0 else '0')
+    GPIO.output(5, GPIO.HIGH if (sensorID & 0x1) != 0 else GPIO.LOW)
+    GPIO.output(12, GPIO.HIGH if (sensorID & 0x10) != 0 else GPIO.LOW)
+    GPIO.output(13, GPIO.HIGH if (sensorID & 0x100) != 0 else GPIO.LOW)
+    GPIO.output(19, GPIO.HIGH if (sensorID & 0x1000) != 0 else GPIO.LOW)
+    GPIO.output(23, GPIO.HIGH if (sensorID & 0x10000) != 0 else GPIO.LOW)
 
     GPIO.output(0, GPIO.HIGH)
 
