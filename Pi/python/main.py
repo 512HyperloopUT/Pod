@@ -16,19 +16,15 @@ ser = serial.Serial(port="/dev/ttyACM0",baudrate=115200, parity=serial.PARITY_NO
 
 ser.isOpen()
 
-COMM_EOC = chr(113)
+COMM_EOC = str(chr(242))
 
 def readUART():
-    while True:
-        print(ser.read())
-
     ser.flush()
 
     print('waiting for COMM_EOC to start buffer')
     while True:
-        r = ser.read()
-        print(int(r[0]))
-        if chr(r[0]) == COMM_EOC:
+        r = str(ser.read())
+        if r == COMM_EOC:
             break
 
     print('reading buffer')
@@ -37,10 +33,10 @@ def readUART():
     offs = [24, 16, 8, 0]
 
     for off in offs:
-        curr = ser.read(1)
+        curr = ser.read()
         val |= (curr[0] << off)
 
-    ser.read(1)
+    ser.read()
 
     return val
 
