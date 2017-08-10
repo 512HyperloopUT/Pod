@@ -10,7 +10,7 @@ GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 
 #ser = serial.Serial("/dev/ttyACM0")
 #ser.baudrate = 115200
@@ -51,7 +51,7 @@ def setRead(sensorID):
     GPIO.output(12, GPIO.HIGH if (sensorID & 0x2) != 0 else GPIO.LOW)
     GPIO.output(13, GPIO.HIGH if (sensorID & 0x4) != 0 else GPIO.LOW)
     GPIO.output(19, GPIO.HIGH if (sensorID & 0x8) != 0 else GPIO.LOW)
-    GPIO.output(23, GPIO.HIGH if (sensorID & 0x10) != 0 else GPIO.LOW)
+    GPIO.output(26, GPIO.HIGH if (sensorID & 0x10) != 0 else GPIO.LOW)
 
     GPIO.output(0, GPIO.HIGH)
 
