@@ -18,16 +18,6 @@ using namespace rpihw;
 internal code
 **********/
 
-/*
-//comm ports
-std::vector<GPIOPin> id_block;//for writing sensor ID
-GPIOPin r_pin(0, OUTPUT);//for starting read command
-GPIOPin e_pin(1, INPUT);//for ending reading command
-
-//digital write/read pins
-std::vector<GPIOPin> dwrite_block;//for writing to digital outputs
-*/
-
 gpio &io = gpio::get();
 
 //com api
