@@ -66,8 +66,6 @@ def setRead(sensorID):
 
     return sensorID
 
-print('readUART: ', readUART())
-'''
 while True:
     print('r = read, x = reset, q = quit')
     choice = input('choice: ')
@@ -81,7 +79,6 @@ while True:
         break
     else:
         print('invalid option')
-'''
 
 ser.close()
 GPIO.cleanup()
