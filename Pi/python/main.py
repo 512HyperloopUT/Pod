@@ -19,8 +19,11 @@ COMM_EOC = chr(242)
 
 def readUART():
     print('waiting for COMM_EOC to start buffer')
-    while ser.read(1) != COMM_EOC:
-        pass
+    while True:
+        r = ser.read(1)
+        if r != COMM_EOC:
+            break
+        print(r)
 
     print('reading buffer')
 
