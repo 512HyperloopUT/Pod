@@ -12,8 +12,9 @@ GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 
-ser = serial.Serial("/dev/ttyACM0")
-ser.baudrate = 115200
+ser = serial.Serial(port="/dev/ttyACM0",baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+
+ser.isOpen()
 
 COMM_EOC = chr(113)
 
