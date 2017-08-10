@@ -32,7 +32,7 @@ def readUART():
 
     for off in offs:
         curr = ser.read(1)
-        val += (curr << off)
+        val |= (curr[0] << off)
 
     return val
 
