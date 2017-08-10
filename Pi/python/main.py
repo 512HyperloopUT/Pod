@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-#import serial
+import serial
 
 GPIO.setmode(GPIO.BCM)
 
@@ -12,12 +12,11 @@ GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 
-#ser = serial.Serial("/dev/ttyACM0")
-#ser.baudrate = 115200
+ser = serial.Serial("/dev/ttyACM0")
+ser.baudrate = 115200
 
 COMM_EOC = chr(242)
 
-'''
 def readUART():
     print('waiting for COMM_EOC to start buffer')
     while ser.read(1) != COMM_EOC:
@@ -33,7 +32,6 @@ def readUART():
         val |= (curr << off)
 
     return val
-'''
 
 def setRead(sensorID):
     GPIO.output(0, GPIO.LOW)
@@ -67,6 +65,7 @@ while True:
     if choice == 'r':
         readID = input('readID: ')
         setRead(int(readID))
+        print('readUART: ', readUART())
     elif choice == 'x':
         setRead(31)
     elif choice == 'q':
@@ -74,5 +73,5 @@ while True:
     else:
         print('invalid option')
 
-#ser.close()
+ser.close()
 GPIO.cleanup()
