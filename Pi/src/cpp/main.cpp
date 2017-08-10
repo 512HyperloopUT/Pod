@@ -1,8 +1,8 @@
-#include "comm/comm.h"
-#include "utils/utils.h"
+//#include "comm/comm.h"
+//#include "utils/utils.h"
 
-#include <string>
-#include <iostream>
+//#include <string>
+//#include <iostream>
 
 #include "rpi-hw.hpp"
 #include "rpi-hw/time.hpp"
@@ -10,9 +10,8 @@
 
 using namespace rpihw;
 
-gpio &io = gpio::get();
-
 int main() {
+	gpio &io = gpio::get();
 	io.setup(23, OUTPUT);
 	io.write(23, HIGH);
 	return 0;
