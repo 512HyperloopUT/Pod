@@ -66,7 +66,7 @@ while True:
     choice = input('choice: ')
     if choice == 'r':
         readID = input('readID: ')
-        setRead(readID)
+        setRead(int(readID))
     elif choice == 'x':
         setRead(31)
     elif choice == 'q':
