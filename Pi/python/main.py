@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# Using python 3
+
 import RPi.GPIO as GPIO
 import serial
 

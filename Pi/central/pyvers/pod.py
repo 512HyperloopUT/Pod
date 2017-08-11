@@ -1,5 +1,9 @@
+#!/usr/bin/env python3
+# Using python 3
+
 import time
 
+# Possibly could be wrong depending on pwd:
 import pod_periph
 import pod_spxgui
 

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# Using Python 2
+
 import random
 import time
 import struct
