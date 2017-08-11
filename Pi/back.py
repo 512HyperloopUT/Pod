@@ -48,7 +48,7 @@ class Frame(Tkinter.Frame):
     def init_data(self):
         """ Initializes treeview with default numbers"""
         for i in range(len(measurementList)):
-            self.tree.insert('', 'end', iid=i+1, text=measurementList[i], values=defaultValues[i])
+            self.tree.insert('', 'end', iid=i + 1, text=measurementList[i], values=defaultValues[i])
 
     def complain(self, string):
         """ Prints out problems to user"""
@@ -59,6 +59,7 @@ class Frame(Tkinter.Frame):
         button = Button(top, text="Dismiss", command=top.destroy)
         button.pack()
 
+
 def updateData(frame, newData):
     """
     Updates the treeview in the frame with data found in newData.
@@ -67,7 +68,7 @@ def updateData(frame, newData):
     :param newData: List with numbers to be displayed.
     """
     for i in range(len(measurementList)):
-            frame.tree.set(i+1, column="#1", value=newData[i])
+        frame.tree.set(i + 1, column="#1", value=newData[i])
 
 
 def cmdStop():
@@ -77,11 +78,13 @@ def cmdStop():
     except TypeError:
         mainFrame.complain('Not connected')
 
+
 def cmdReset():
     try:
         mySocket.sendto('s' * 35 + ' reset', SERVER_IP)
     except TypeError:
         mainFrame.complain('Not connected')
+
 
 def cmdTime():
     """Function used to send time in seconds pod needs to run for before it may brake"""
@@ -92,6 +95,7 @@ def cmdTime():
         mainFrame.complain('That is not an acceptable number.')
     except TypeError:
         mainFrame.complain('Not connected')
+
 
 def count():
     """Continuously receives data from client"""
@@ -106,8 +110,9 @@ def count():
         SERVER_IP = addr
         updateData(mainFrame, receivedList)
 
-root = Tkinter.Tk()
-mainFrame = Frame(root)
-threading.Thread(target=count).start()
-root.mainloop()
 
+if __name__ == "__main__":
+    root = Tkinter.Tk()
+    mainFrame = Frame(root)
+    threading.Thread(target=count).start()
+    root.mainloop()
