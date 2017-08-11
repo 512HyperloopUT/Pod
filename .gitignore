@@ -29,3 +29,6 @@ compile_commands.json
 CTestTestfile.cmake
 
 **/podex
+
+# PyCharm and IDEA
+**/.idea
