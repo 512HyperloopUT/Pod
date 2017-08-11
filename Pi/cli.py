@@ -71,15 +71,15 @@ def checkButton():
         else:
             inputData = seconds
 
-
-threading.Thread(target=checkButton).start()
-prevData = [0] * 10
-while True:
-    data = fillData()
-    if not data == prevData:
-        try:
-            mySocket.sendto(data, (SERVER_IP, PORT_NUMBER))
-            prevData = data
-        except:
-            # Not a big deal just try again...
-            time.sleep(.5)
+if __name__ == "__main__":
+    threading.Thread(target=checkButton).start()
+    prevData = [0] * 10
+    while True:
+        data = fillData()
+        if not data == prevData:
+            try:
+                mySocket.sendto(data, (SERVER_IP, PORT_NUMBER))
+                prevData = data
+            except:
+                # Not a big deal just try again...
+                time.sleep(.5)
