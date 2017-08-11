@@ -31,4 +31,4 @@ CTestTestfile.cmake
 **/podex
 
 # PyCharm and IDEA
-**/.idea
+.idea/*
