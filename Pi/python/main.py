@@ -12,19 +12,16 @@ GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 
-ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS)
+ser = serial.Serial(port="/dev/ttyACM0",baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
 
 ser.isOpen()
-
 
 def readUART():
     ser.flush()
 
     return int(ser.readline())
 
-
-def setRead(sensorID: int):
+def setRead(sensorID):
     GPIO.output(0, GPIO.LOW)
     print('resetting TM4C command')
     while GPIO.input(1) != GPIO.LOW:
@@ -50,21 +47,19 @@ def setRead(sensorID: int):
 
     return sensorID
 
+while True:
+    print('r = read, x = reset, q = quit')
+    choice = input('choice: ')
+    if choice == 'r':
+        readID = input('readID: ')
+        setRead(int(readID))
+        print('readUART: ', readUART())
+    elif choice == 'x':
+        setRead(31)
+    elif choice == 'q':
+        break
+    else:
+        print('invalid option')
 
-if __name__ == "__main__":
-    while True:
-        print('r = read, x = reset, q = quit')
-        choice = input('choice: ')
-        if choice == 'r':
-            readID = input('readID: ')
-            setRead(int(readID))
-            print('readUART: ', readUART())
-        elif choice == 'x':
-            setRead(31)
-        elif choice == 'q':
-            break
-        else:
-            print('invalid option')
-
-    ser.close()
-    GPIO.cleanup()
+ser.close()
+GPIO.cleanup()
