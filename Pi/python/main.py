@@ -4,6 +4,9 @@
 import RPi.GPIO as GPIO
 import serial
 
+ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS)
+
 def GPIOsetup():
     GPIO.setmode(GPIO.BCM)
 
@@ -15,9 +18,6 @@ def GPIOsetup():
     GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
-
-    ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                        bytesize=serial.EIGHTBITS)
 
     ser.isOpen()
 
