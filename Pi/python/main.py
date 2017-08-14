@@ -4,30 +4,29 @@
 import RPi.GPIO as GPIO
 import serial
 
-GPIO.setmode(GPIO.BCM)
+def GPIOsetup():
+    GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(1, GPIO.IN)
+    GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(1, GPIO.IN)
 
-GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
 
-ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS)
+    ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS)
 
-ser.isOpen()
-
+    ser.isOpen()
 
 def readUART():
     ser.flush()
-
     return int(ser.readline())
 
 
-def setRead(sensorID: int):
+def setRead(sensorID):
     GPIO.output(0, GPIO.LOW)
     print('resetting TM4C command')
     while GPIO.input(1) != GPIO.LOW:
@@ -55,6 +54,7 @@ def setRead(sensorID: int):
 
 
 if __name__ == "__main__":
+    # Code for debugging purposes.
     while True:
         print('r = read, x = reset, q = quit')
         choice = input('choice: ')
