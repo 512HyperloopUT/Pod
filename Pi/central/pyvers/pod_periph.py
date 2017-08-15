@@ -2,6 +2,7 @@
 
 import RPi.GPIO as GPIO
 import serial
+import smbus2
 
 """
 <code>sensor</code> is used read an input from a local hardware device.
@@ -21,7 +22,44 @@ class Sensor:
         self.value = None
 
     def update_sensor(self, commt: Client):
-        self.value = commt.read(sensor_id=self.sensor_id)
+        raise Exception("Screwed up")
+
+    def data_string(self):
+        raise Exception("Screwed up")
+
+
+class AnalogSensor(Sensor):
+    def __init__(self, name: str, sensor_id: int):
+        super().__init__(name, sensor_id)
+
+    def update_sensor(self, commt: Client):
+        self.value = commt.analog_read(sensor_id=self.sensor_id)
+
+    def data_string(self):
+        return self.name + ": " + str(self.value)
+
+
+class ResetSensor(AnalogSensor):
+    RESET_SENSOR = "Reset Sensor"
+
+    def __init__(self):
+        super().__init__(ResetSensor.RESET_SENSOR, 31)
+
+    def data_string(self):
+        return "Soft TM4C reset"
+
+
+class I2CSensor(Sensor):
+    def __init__(self, name, bus_id, sensor_id):
+        super().__init__(name, sensor_id)
+        self.bus_id = bus_id
+        self.data = [0] * 16
+
+    def update_sensor(self, commt: Client):
+        self.value = commt.i2c_read(self.bus_id, self.sensor_id)
+
+    def data_string(self):
+        return "{0}|{1}|{2}: {3}".format(self.name, self.bus_id, self.sensor_id, self.data)
 
 
 def make_sensor(name: str):
@@ -39,6 +77,7 @@ class Actuator:
 
 
 def make_actuator(name: str):
+    # TODO for different sensors
     pass
 
 
@@ -60,11 +99,20 @@ class Client:
 
         self.uart_port.isOpen()
 
+        self.i2c_bus = smbus2.SMBus(1)
+
     def write(self, actuator_id: int, value: bool):
         # TODO implement write method
         raise Exception("Unimplemented method")
 
-    def read(self, sensor_id: int):
+    def i2c_read(self, bus_id: int, sensor_id: int):
+        if bus_id == 1:
+            return self.i2c_bus.read_byte_data(sensor_id, 0)
+        else:
+            with smbus2.SMBusWrapper(bus_id) as bus:
+                return bus.read_byte_data(sensor_id, 0)
+
+    def analog_read(self, sensor_id: int):
         print("Sending reset signal to TM4C.")
         GPIO.output(0, GPIO.LOW)
         print("Waiting for TM4C to reset.")
@@ -89,4 +137,4 @@ class Client:
         return int(self.uart_port.readline())
 
     def reset(self):
-        self.read(31)
+        ResetSensor().update_sensor(self)
