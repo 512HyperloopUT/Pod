@@ -10,7 +10,6 @@
 # install smbus2
 
 import time
-import os
 
 import smbus2
 
@@ -23,6 +22,7 @@ class IMUSensor(pod_periph.I2CSensor):
         # TODO Analyze data
 
 
+BRAKE_INTERVAL = 10 # Change to change num. of seconds before braking
 sensor_ports = [
     IMUSensor("imu", 1, 0x28),
     pod_periph.AnalogSensor("prox0", 0),
@@ -45,6 +45,8 @@ def log(outfile):
 
 if __name__ == "__main__":
     logfile = open("temp_log.txt")
-    while True:
+    start = time.time()
+    while time.time() - start < BRAKE_INTERVAL:
         update_sensors()
         log(logfile)
+    # TODO Add in the braking
