@@ -23,7 +23,7 @@
 #include "utils/uartstdio.h"
 
 
-#define ADCCH(num) ADC_CTL_CH  ##  num  ##
+#define ADCCH(num) ADC_CTL_CH  ##  num
 uint32_t channel_mapping[] = {
 	ADCCH(0), ADCCH(1), ADCCH(2), ADCCH(3),
 	ADCCH(4), ADCCH(5), ADCCH(6), ADCCH(7),
@@ -62,11 +62,11 @@ void ADCRead(uint32_t channel, bool masked, uint32_t* buffer) {
 
 
 	//Do actual read
-    ADCIntClear(base, seq_num); //Clear interrupt flag
-    ADCProcessorTrigger(base, seq_num); //Trigger interrupt
-    while(!ADCIntStatus(base, seq_num, masked)); //Wait for sequencer
-    ADCIntClear(base, seq_num); //Clear interrupt flag
-    ADCSequenceDataGet(base, seq_num, buffer); //Fetch the values into a buffer
+    ADCIntClear(ADC0_BASE, 3); //Clear interrupt flag
+    ADCProcessorTrigger(ADC0_BASE, 3); //Trigger interrupt
+    while(!ADCIntStatus(ADC0_BASE, 3, masked)); //Wait for sequencer
+    ADCIntClear(ADC0_BASE, 3); //Clear interrupt flag
+    ADCSequenceDataGet(ADC0_BASE, 3, buffer); //Fetch the values into a buffer
 	
 	return buffer;
 }
