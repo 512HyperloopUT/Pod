@@ -36,6 +36,7 @@ RELAY_RE_PIN_NUM = 11
 EXTEND_LIMIT = 500
 RETRACT_LIMIT = 500
 
+
 def update_sensors():
     for sensor in sensor_ports:
         sensor.update_sensor(cli)
