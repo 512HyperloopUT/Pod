@@ -22,17 +22,19 @@ class IMUSensor(pod_periph.I2CSensor):
 
 
 BRAKE_INTERVAL = 10  # Change to change num. of seconds before braking
+potentiometer = pod_periph.AnalogSensor("emergencypotent", 2)
 sensor_ports = [
     IMUSensor("imu", 1, 0x28),
     pod_periph.AnalogSensor("prox0", 0),
     pod_periph.AnalogSensor("prox1", 1),
-    pod_periph.AnalogSensor("prox2", 2),
-    pod_periph.AnalogSensor("prox3", 3)
+    potentiometer
 ]
 cli = pod_periph.Client()
 
-RELAY_PIN_NUM = 10
-potentiometer = pod_periph.AnalogSensor("emergencypotent", 4)
+RELAY_EX_PIN_NUM = 10
+RELAY_RE_PIN_NUM = 11
+EXTEND_LIMIT = 500
+RETRACT_LIMIT = 500
 
 def update_sensors():
     for sensor in sensor_ports:
@@ -47,17 +49,25 @@ def log(outfile):
 if __name__ == "__main__":
     logfile = open("temp_log.txt")
     start = time.time()
-    Rpi.GPIO.setup(RELAY_PIN_NUM, Rpi.GPIO.OUT, initial=Rpi.GPIO.LOW)
+    Rpi.GPIO.setup(RELAY_EX_PIN_NUM, Rpi.GPIO.OUT, initial=Rpi.GPIO.LOW)
+    Rpi.GPIO.setup(RELAY_RE_PIN_NUM, Rpi.GPIO.OUT, initial=Rpi.GPIO.LOW)
     while time.time() - start < BRAKE_INTERVAL:
         update_sensors()
         log(logfile)
 
     # TODO Add in the braking
     # TODO CHECK IF THIS WORKS
-    Rpi.GPIO.output(RELAY_PIN_NUM, Rpi.GPIO.HIGH)
-    potentiometer.update_sensor()
+    Rpi.GPIO.output(RELAY_EX_PIN_NUM, Rpi.GPIO.HIGH)
 
-    while potentiometer.value > SOME_MEANINGFUL_VALUE:
+    potentiometer.update_sensor()
+    while potentiometer.value > EXTEND_LIMIT:
         potentiometer.update_sensor(cli)
 
-    Rpi.GPIO.output(RELAY_PIN_NUM, Rpi.GPIO.HIGH)
+    Rpi.GPIO.output(RELAY_EX_PIN_NUM, Rpi.GPIO.LOW)
+    Rpi.GPIO.output(RELAY_RE_PIN_NUM, Rpi.GPIO.HIGH)
+
+    potentiometer.update_sensor()
+    while potentiometer.value < RETRACT_LIMIT:
+        potentiometer.update_sensor(cli)
+
+    Rpi.GPIO.output(RELAY_RE_PIN_NUM, Rpi.GPIO.LOW)
