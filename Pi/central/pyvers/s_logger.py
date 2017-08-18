@@ -273,6 +273,31 @@ def send(s: socket.socket):
 
 
 def recv(s: socket.socket):
+    """
+    Expecting commands like <Target name> <value>
+
+    Target names:
+        EBRAKE_ACTU
+        EBRAKE_ACTU_L
+        EBRAKE_ACTU_R
+        EBRAKE_EMAG
+        EBRAKE_EMAG_L
+        EBRAKE_EMAG_R
+        MAINB_ACTU
+        MAINB_ACTU_L
+        MAINB_ACTU_R
+
+    value:
+        for actuators:
+            0 = HALT
+            1 = EXTEND
+            2 = RETRACT
+        for electromag:
+            0 = OFF
+            1 = ON
+
+    :param s: ssocket to send through
+    """
     while True:
         try:
             (data, addr) = s.recvfrom(2048)
@@ -363,13 +388,6 @@ def recv(s: socket.socket):
             # Something else happened, handle error, exit, etc.
             print(e)
             sys.exit(1)
-        else:
-            if len(msg) == 0:
-                print('orderly shutdown on server end')
-                sys.exit(0)
-            else:
-                # got a message do something :)
-                sys.exit(1)
 
 
 if __name__ == "__main__":
