@@ -1,9 +1,6 @@
 from socket import *
 import threading
 
-import random
-import time
-
 IP_ADDRESS = "192.168.1.11"  # CHANGE THIS TO COMPUTER'S IP ADDRESS!!!
 PORT = 3002  # If you change this change in gui.py as well.
 
@@ -13,7 +10,9 @@ socketA.bind((hostName, PORT))
 
 def send_data2gui(data):
     """
-    :param data: List of data to be sent to GUI, numbers must be in string format
+    Updates GUI.
+    :param data: List of data to be sent to GUI, numbers must be in string format in the following order...
+        [ E-Brake Potentiometer, Height, Velocity, Acceleration, Distance Traveled ]
     """
 
     payload = " ".join(data)
@@ -27,12 +26,6 @@ def recieve_command():
         # TODO: ADD LOGIC FOR WHAT TODO WHEN RECIEVE COMMAND
 
 if __name__ == "__main__":
-    threading.Thread(target=recieve_command).start()
-    while True:
-        stuff = []
-        for _ in range(5):
-            stuff.append(str(int(random.random()*10)))
-        send_data2gui(stuff)
-        time.sleep(1)
+    threading.Thread(target=recieve_command).start()  # Start this thread.
 
 
