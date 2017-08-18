@@ -13,6 +13,9 @@ IS_DEBUG = True
 
 class Pod:
     def __init__(self):
+        self.ebrake_locked = False
+        self.ebrake_released = False
+
         self.sensor_list = []
         self.actuator_list = []
         self.action_list = []
@@ -27,7 +30,7 @@ class Pod:
         self.brake_disabled = 0
         self.can_brake = None
 
-        # TODO create logfile
+        self.logfile = open("./podex.log")
 
     def update_sensors(self):
         for sensor in self.sensor_list:
@@ -35,6 +38,8 @@ class Pod:
 
     def update_actuators(self):
         # TODO default loop logic here
+        if time.time() < self.can_brake:
+            self.unlock_ebrake()
         pass
 
     def update_actions(self):
@@ -42,26 +47,49 @@ class Pod:
             action.do_action()
 
     def log(self):
+        self.logfile.write("{0}".format(time.time()))
         # TODO append data to log
-        pass
 
     def start(self):
+        self.lock_ebrake()
         self.start = time.time()
         self.can_brake = self.start + self.brake_disabled
 
     def set_boundary(self, req_time_elapsed):
         self.brake_disabled = req_time_elapsed
-        if not self.start == None:
+        if self.start is not None:
             self.can_brake = self.start + self.brake_disabled
 
     def brake(self):
-        if self.can_brake > time.time():
+        if self.can_brake < time.time():
             self.start = None
             self.can_brake = None
             # TODO brake procedures
         else:
             # TODO check if do nothing or do something
             pass
+
+    def lock_ebrake(self):
+        if not self.ebrake_locked:
+            self.ebrake_released = False
+            self.ebrake_locked = True
+            # TODO lock ebrakes
+            pass
+
+    def unlock_ebrake(self):
+        if self.ebrake_released:
+            self.lock_ebrake()
+        if self.ebrake_locked:
+            # TODO unlock ebrakes
+            pass
+
+    def ebrake(self):
+        if self.can_brake < time.time() and not self.ebrake_locked:
+            if self.ebrake_locked or self.ebrake_released:
+                self.unlock_ebrake()
+            self.ebrake_released = True
+            self.actuator_list[13].update_actuator(self.client, False)  # EBRAKE_EMAG_L
+            self.actuator_list[14].update_actuator(self.client, False)  # EBRAKE_EMAG_R
 
 
 class TimedAction:
@@ -106,9 +134,9 @@ class LoggerAction(TimedAction):
 
 def pre_init():
     print("""
-                        ,:
-    512 Hyperloop     ,' |
-                     /   :
+                         ,:
+    512 Hyperloop      ,' |
+                      /   :
   ,MMM8&&&.        --'   /
   MMMM88&&&&&      \/ />/
  MMMM88&&&&&&&     / /_\\
@@ -127,8 +155,30 @@ def pre_init():
 
 def init_pod(pod_instance: Pod):
     # TODO add sensors
+    prox0_name = 0
+    prox1_name = 0
+    prox2_name = 0
+    prox3_name = 0
+    prox0_id = 0
+    prox1_id = 0
+    prox2_id = 0
+    prox3_id = 0
+    imu_bus = 1
+    imu_id = 0x28
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox0", prox0_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox1", prox1_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox2", prox2_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox3", prox3_id))
+    pod_instance.sensor_list.append(pod_periph.IMUSensor("imu", imu_bus, imu_id))
 
     # TODO add actuators
+    actu_names = ["ebrake_l", "ebrake_r", "mainb_l", "mainb_r", "", "", "", "", "", "", "", "", "", "", "", ""]
+    actu_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    actu_potents = [0, 1, None, None, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    for actu_name, actu_id, actu_potent in zip(actu_names, actu_ids, actu_potents):
+        pod_instance.actuator_list.append(pod_periph.Actuator(actu_name, actu_id))
+    pod_instance.actuator_list.append(pod_periph.ElectromagnetActuator("ebrake_l", 13))
+    pod_instance.actuator_list.append(pod_periph.ElectromagnetActuator("ebrake_r", 14))
 
     # TODO add actions
     gui_update_action = UpdateAction(0.02)
@@ -140,35 +190,36 @@ def init_pod(pod_instance: Pod):
     pod_instance.client = pod_periph.Client()
     # GUI / UDP initialization
     pod_instance.gui = pod_spxgui.Port(input("Server IP: "))
-    pass
 
 
 def pre_start(pod_instance: Pod):
     # TODO recover from stop / begin moving
+    if not pod_instance.ebrake_locked:
+        pod_instance.lock_ebrake()
     return stop_check(pod_instance)
 
 
 def stop_check(pod_instance: Pod):
-    # TODO clear out the queue for the socket
-    # TODO check for emergency stop
     load = pod_instance.gui.receive()
-    seconds = load.split()
-    if load.startswith('s' * 35):
-        if len(seconds) == 1:
-            if IS_DEBUG:
-                print("EMERGENCY STOP")
-            # TODO: handle stop
-            return True
+    while load is not None:
+        seconds = load.split()
+        if load.startswith('s' * 35):
+            if len(seconds) == 1:
+                if IS_DEBUG:
+                    print("EMERGENCY STOP")
+                pod_instance.ebrake()
+                return True
+            else:
+                if IS_DEBUG:
+                    print(seconds[1])
+                if seconds[1] == 'reset':  # If a reset is triggered on the GUI
+                    pod_instance.client.reset()
+                else:  # If a time update is given on the GUI, number sent is contained in seconds[1]
+                    pod_instance.set_boundary(int(seconds[1]))
+                    pass
         else:
-            if IS_DEBUG:
-                print(seconds[1])
-            if seconds[1] == 'reset':  # If a reset is triggered on the GUI
-                pod_instance.client.reset()
-            else:  # If a time update is given on the GUI, number sent is contained in seconds[1]
-                pod_instance.set_boundary(int(seconds[1]))
-                pass
-    else:
-        print(*seconds)
+            print(*seconds)
+        load = pod_instance.gui.receive()
 
     # TODO check for other stops
     return False
@@ -191,12 +242,13 @@ def post_stop(pod_instance: Pod):
         pass
     else:
         pod_instance.brake()
+        pod_instance.state = IDLE_STATE
     # TODO after braking
     return shutdown_check(pod_instance)
 
 
 def graceful_shutdown(pod_instance: Pod):
-    # TODO, probably uninitialize components
+    # TODO shutdown checks + procedures
     pass
 
 

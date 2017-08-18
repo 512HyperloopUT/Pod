@@ -268,7 +268,8 @@ def send(s: socket.socket):
         [ E-Brake Potentiometer, Height, Velocity, Acceleration, Distance Traveled ]
     """
 
-    payload = " ".join([l_potentiometer.value, 0, mag(imu.value[0]), mag(imu.value[4]), mag(imu.value[1])])
+    payload = " ".join([l_potentiometer.value, (sensor_ports[1].value + sensor_ports[2].value)/2, mag(imu.value[0]),
+                        mag(imu.value[4]), mag(imu.value[1])])
     s.sendto(payload.encode(), (IP_ADDRESS, PORT))
 
 

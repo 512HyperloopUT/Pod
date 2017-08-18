@@ -42,7 +42,7 @@ class Port:
             (load, addr) = self.socket.recvfrom(self.SIZE)
             return load
         except socket.timeout:
-            return "None"
+            return None
 
 
 if __name__ == "__main__":
