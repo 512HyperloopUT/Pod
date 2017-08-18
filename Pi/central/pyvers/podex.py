@@ -38,7 +38,7 @@ class Pod:
 
     def update_actuators(self):
         # TODO default loop logic here
-        if time.time() < self.can_brake:
+        if self.ebrake_locked and time.time() < self.can_brake:
             self.unlock_ebrake()
         pass
 

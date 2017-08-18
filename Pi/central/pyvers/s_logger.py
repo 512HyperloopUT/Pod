@@ -11,94 +11,13 @@
 
 # change i2c baudrate to 50kHz, if using i2c
 
-import math
 import time
+import socket
+import sys
+
 import Rpi.GPIO
 
 import pod_periph
-import bno055
-
-import socket
-
-import sys
-
-
-class IMUSensor(pod_periph.Sensor):
-    def __init__(self, name: str, sensor_id: int):
-        super().__init__(name, sensor_id)
-        self.bno = bno055.BNO055()
-        if self.bno.begin() is not True:
-            print("Error initializing device")
-            exit()
-        time.sleep(1)
-        # TODO not sure about this line
-        # self.bno.setExternalCrystalUse(True)
-
-        self.initial_rot = normalize(self.bno.getQuat())
-
-    def update_sensor(self, commt: pod_periph.Client):
-        super(commt)
-        self.value = self.value[0:2] + [self.bno.getQuat(), self.bno.getVector(bno055.BNO055.VECTOR_LINEARACCEL),
-                                        time.time()] + self.value[2:5]
-
-        # get the rotation from current coordinate system to original coordinate system
-        rot_q = q_mult(q_conjugate(normalize(self.value[3])), self.initial_rot)
-        # Rotate relative, linear acceleration to initial orientation
-        final_accel = qv_mult(rot_q, self.value[4])
-        # Add accel to velocity to get the current velocity
-        self.value[1][0] += final_accel[0]
-        self.value[1][1] += final_accel[1]
-        self.value[1][2] += final_accel[2]
-        # Do a simple time delta for the new distance traveled
-        self.value[0][0] += (self.value[1][0] * (self.value[3] - self.value[7]))
-        self.value[0][1] += (self.value[1][0] * (self.value[3] - self.value[7]))
-        self.value[0][2] += (self.value[1][0] * (self.value[3] - self.value[7]))
-
-
-def normalize(v, tolerance=0.00001):
-    mag2 = sum(n * n for n in v)
-    if abs(mag2 - 1.0) > tolerance:
-        mag = math.sqrt(mag2)
-        v = tuple(n / mag for n in v)
-    return v
-
-
-def q_mult(q1, q2):
-    w1, x1, y1, z1 = q1
-    w2, x2, y2, z2 = q2
-    w = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2
-    x = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2
-    y = w1 * y2 + y1 * w2 + z1 * x2 - x1 * z2
-    z = w1 * z2 + z1 * w2 + x1 * y2 - y1 * x2
-    return w, x, y, z
-
-
-def q_conjugate(q):
-    w, x, y, z = q
-    return w, -x, -y, -z
-
-
-def qv_mult(q1, v1):
-    q2 = (0.0,) + v1
-    return q_mult(q_mult(q1, q2), q_conjugate(q1))[1:]
-
-
-def axisangle_to_q(v, theta):
-    v = normalize(v)
-    x, y, z = v
-    theta /= 2
-    w = math.cos(theta)
-    x = x * math.sin(theta)
-    y = y * math.sin(theta)
-    z = z * math.sin(theta)
-    return w, x, y, z
-
-
-def q_to_axisangle(q):
-    w, v = q[0], q[1:]
-    theta = math.acos(w) * 2.0
-    return normalize(v), theta
-
 
 # Emergency brake
 EBRAKE_ACTU_L_FORW = 0
@@ -158,7 +77,7 @@ cli = pod_periph.Client()
 
 l_potentiometer = pod_periph.AnalogSensor("emergencypotent_left", EBRAKE_POTENT_L)
 r_potentiometer = pod_periph.AnalogSensor("emergencypotent_right", EBRAKE_POTENT_R)
-imu = IMUSensor("imu", IMU_CH)
+imu = pod_periph.IMUSensor("imu", IMU_CH)
 
 sensor_ports = [
     imu,

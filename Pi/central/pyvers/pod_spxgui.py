@@ -34,8 +34,7 @@ class Port:
                 self.socket.sendto(packed, (self.SERVER_IP, self.PORT_NUMBER))
                 self.prev = packed
             except Exception as e:
-                # print(e)
-                pass
+                print(e)
 
     def receive(self):
         try:
