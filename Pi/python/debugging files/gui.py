@@ -54,7 +54,11 @@ def get_ip():
 
 def send_command():
     command = main_frame.command_box.get()
-    socketA.sendto(command.encode(), IP_INFO)
+    try:
+        socketA.sendto(command.encode(), IP_INFO)
+    except TypeError:
+        print("You have to have the Pi initiate the connection first")
+    main_frame.command_box.delete(0, 'end')
 
 def update_data():
     global IP_INFO
