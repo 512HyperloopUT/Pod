@@ -22,14 +22,16 @@ def send_data2gui(data):
 def recieve_command():
     while True:
         (data, addr) = socketA.recvfrom(2048)
-        print (data)
+        command = data.decode()
+
+        # TODO: ADD LOGIC FOR WHAT TODO WHEN RECIEVE COMMAND
 
 if __name__ == "__main__":
     threading.Thread(target=recieve_command).start()
-    stuff=[]
     while True:
+        stuff = []
         for _ in range(5):
-            stuff.append(str(random.random()))
+            stuff.append(str(int(random.random()*10)))
         send_data2gui(stuff)
         time.sleep(1)
 
