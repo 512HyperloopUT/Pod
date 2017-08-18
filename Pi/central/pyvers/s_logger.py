@@ -18,8 +18,9 @@ import pod_periph
 import bno055
 
 
-class IMUSensor(pod_periph.I2CSensor):
-    def __init__(self):
+class IMUSensor(pod_periph.Sensor):
+    def __init__(self, name: str, sensor_id: int):
+        super().__init__(name, sensor_id)
         self.bno = bno055.BNO055()
         if self.bno.begin() is not True:
             print("Error initializing device")
@@ -29,8 +30,11 @@ class IMUSensor(pod_periph.I2CSensor):
 
     def update_sensor(self, commt: pod_periph.Client):
         super(commt)
-        self.value = self.bno.get
-        # TODO Analyze data
+        self.value = self.value[0:2] + [self.bno.getQuat(), self.bno.getVector(bno055.BNO055.VECTOR_LINEARACCEL), time.time()] + self.value[2:5]
+        # TODO modify velocity (self.value[1])
+        tuple(map(sum, zip(self.value[1], self.value[4])))
+        # TODO modify distance (self.value[0])
+        self.value[0] = self.value[0] + (self.value[1] * (self.value[3] - self.value[7]))
 
 
 # Emergency brake
@@ -93,7 +97,7 @@ l_potentiometer = pod_periph.AnalogSensor("emergencypotent_left", EBRAKE_POTENT_
 r_potentiometer = pod_periph.AnalogSensor("emergencypotent_right", EBRAKE_POTENT_R)
 
 sensor_ports = [
-    IMUSensor("imu", IMU_BUS, IMU_CH),
+    IMUSensor("imu", IMU_CH),
     pod_periph.AnalogSensor("prox0", PROX_LF),
     pod_periph.AnalogSensor("prox1", PROX_RF),
     l_potentiometer,
@@ -132,7 +136,7 @@ def actuator_state(state: int, data: [], actu_ex_pin: int, actu_re_pin: int):
             Rpi.GPIO.output(actu_re_pin, Rpi.GPIO.LOW)
     elif state == EXT_DIST:
         Rpi.GPIO.output(actu_re_pin, Rpi.GPIO.LOW)
-        if r_potentiometer.value[0] < data[0] + data[1]:  # TODO check the left side as well as comparison
+        if r_potentiometer.value[0] < data[0] + data[1] or data is None:  # TODO check the left side as well as comparison
             Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
         else:
             Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
