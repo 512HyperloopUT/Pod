@@ -179,7 +179,7 @@ def log(outfile):
         outfile.write(sensor.data_string())
 
 
-def actuator_state(state: int, data: [], actu_ex_pin: int, actu_re_pin: int):
+def actuator_state(state: int, data: [], actu_ex_pin: int, actu_re_pin: int, r_p: pod_periph.AnalogSensor = None, l_p: pod_periph.AnalogSensor = None):
     if state == EXT_FREE:
         Rpi.GPIO.output(actu_re_pin, Rpi.GPIO.LOW)
         Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.HIGH)
@@ -200,27 +200,38 @@ def actuator_state(state: int, data: [], actu_ex_pin: int, actu_re_pin: int):
             Rpi.GPIO.output(actu_re_pin, Rpi.GPIO.LOW)
     elif state == EXT_DIST:
         Rpi.GPIO.output(actu_re_pin, Rpi.GPIO.LOW)
-        if r_potentiometer.value[0] < data[0] + data[
-            1] or data is None:  # TODO check the left side as well as comparison
-            Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+        if r_p is not None:
+            if r_p.value[0] < data[0] + data[1] or data is None:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+            else:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
         else:
             Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
     elif state == RET_DIST:
         Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
-        if r_potentiometer.value[0] > data[0] + data[1]:  # TODO check the left side as well as comparison
-            Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+        if r_p is not None:
+            if r_p.value[0] > data[0] + data[1]:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+            else:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
         else:
             Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
     elif state == EXT_TARG:
         Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
-        if r_potentiometer.value[0] > data[0]:  # TODO check the left side as well as comparison
-            Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+        if r_p is not None:
+            if r_p.value[0] > data[0]:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+            else:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
         else:
             Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
     elif state == RET_TARG:
         Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
-        if r_potentiometer.value[0] == data[0]:  # TODO check the left side as well as comparison
-            Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+        if r_p is not None:
+            if r_p.value[0] == data[0]:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
+            else:
+                Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
         else:
             Rpi.GPIO.output(actu_ex_pin, Rpi.GPIO.LOW)
     elif state == HALT:
@@ -238,8 +249,8 @@ def update_actuators():
     elif EBRAKE_EMAG_R_STATE == ON:
         Rpi.GPIO.output(EBRAKE_EMAG_R, Rpi.GPIO.HIGH)
 
-    actuator_state(EBRAKE_ACTU_L_STATE[0], EBRAKE_ACTU_L_STATE[1], EBRAKE_ACTU_L_FORW, EBRAKE_ACTU_L_BACK)
-    actuator_state(EBRAKE_ACTU_R_STATE[0], EBRAKE_ACTU_R_STATE[1], EBRAKE_ACTU_R_FORW, EBRAKE_ACTU_R_BACK)
+    actuator_state(EBRAKE_ACTU_L_STATE[0], EBRAKE_ACTU_L_STATE[1], EBRAKE_ACTU_L_FORW, EBRAKE_ACTU_L_BACK, r_potentiometer, l_potentiometer)
+    actuator_state(EBRAKE_ACTU_R_STATE[0], EBRAKE_ACTU_R_STATE[1], EBRAKE_ACTU_R_FORW, EBRAKE_ACTU_R_BACK, r_potentiometer, l_potentiometer)
     actuator_state(MAINB_ACTU_L_STATE[0], MAINB_ACTU_L_STATE[1], MAINB_ACTU_L_FORW, MAINB_ACTU_L_BACK)
     actuator_state(MAINB_ACTU_R_STATE[0], MAINB_ACTU_R_STATE[1], MAINB_ACTU_R_FORW, MAINB_ACTU_R_BACK)
 
