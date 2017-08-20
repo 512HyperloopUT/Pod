@@ -6,6 +6,7 @@ import time
 # Possibly could be wrong depending on pwd:
 import pod_periph
 import pod_spxgui
+from quat import mag
 
 IDLE_STATE = "idle"
 IS_DEBUG = True
@@ -64,8 +65,11 @@ class Pod:
         if self.can_brake < time.time():
             self.start = None
             self.can_brake = None
-            # TODO brake procedures
-        else:
+            # TODO drop emag brakes
+            while mag(self.sensor_list[4].values[2]) > 5:  # wait until speed is reasonable # TODO change to valid limit
+                self.sensor_list[4].update_sensor(self.client)
+            # TODO drop frictional brakes
+        else:  # cannot yet brake, still pushing
             # TODO check if do nothing or do something
             pass
 
@@ -73,14 +77,16 @@ class Pod:
         if not self.ebrake_locked:
             self.ebrake_released = False
             self.ebrake_locked = True
-            # TODO lock ebrakes
+            # TODO ratchet brake
+            self.actuator_list[13].update_actuator(self.client, True)  # EBRAKE_EMAG_L
+            self.actuator_list[14].update_actuator(self.client, True)  # EBRAKE_EMAG_R
             pass
 
     def unlock_ebrake(self):
         if self.ebrake_released:
             self.lock_ebrake()
         if self.ebrake_locked:
-            # TODO unlock ebrakes
+            # TODO release ratchet
             pass
 
     def ebrake(self):
@@ -155,20 +161,20 @@ def pre_init():
 
 def init_pod(pod_instance: Pod):
     # TODO add sensors
-    prox0_name = 0
-    prox1_name = 0
-    prox2_name = 0
-    prox3_name = 0
+    prox0_name = ""
+    prox1_name = ""
+    prox2_name = ""
+    prox3_name = ""
     prox0_id = 0
     prox1_id = 0
     prox2_id = 0
     prox3_id = 0
     imu_bus = 1
     imu_id = 0x28
-    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox0", prox0_id))
-    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox1", prox1_id))
-    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox2", prox2_id))
-    pod_instance.sensor_list.append(pod_periph.AnalogSensor("prox3", prox3_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor(prox0_name, prox0_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor(prox1_name, prox1_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor(prox2_name, prox2_id))
+    pod_instance.sensor_list.append(pod_periph.AnalogSensor(prox3_name, prox3_id))
     pod_instance.sensor_list.append(pod_periph.IMUSensor("imu", imu_bus, imu_id))
 
     # TODO add actuators
@@ -177,8 +183,8 @@ def init_pod(pod_instance: Pod):
     actu_potents = [0, 1, None, None, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     for actu_name, actu_id, actu_potent in zip(actu_names, actu_ids, actu_potents):
         pod_instance.actuator_list.append(pod_periph.Actuator(actu_name, actu_id))
-    pod_instance.actuator_list.append(pod_periph.ElectromagnetActuator("ebrake_l", 13))
-    pod_instance.actuator_list.append(pod_periph.ElectromagnetActuator("ebrake_r", 14))
+    pod_instance.actuator_list.append(pod_periph.ElectromagnetActuator("ebrake_emag_l", 13))
+    pod_instance.actuator_list.append(pod_periph.ElectromagnetActuator("ebrake_emag_r", 14))
 
     # TODO add actions
     gui_update_action = UpdateAction(0.02)
