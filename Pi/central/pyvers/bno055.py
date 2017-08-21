@@ -264,7 +264,11 @@ class BNO055:
 
     def getVector(self, vectorType):
         buf = self.readBytes(vectorType, 6)
-        xyz = ((buf[1] << 8) + buf[0], (buf[3] << 8) + buf[2], (buf[5] << 8) + buf[4])
+        buf = [(buf[1] << 8) + buf[0], (buf[3] << 8) + buf[2], (buf[5] << 8) + buf[4]]
+        for i in range(3):
+            if buf[i] > 32767:
+                buf[i] -= 65536
+        xyz = (buf[0], buf[1], buf[2])
         if vectorType == BNO055.VECTOR_MAGNETOMETER:
             scalingFactor = 16.0
         elif vectorType == BNO055.VECTOR_GYROSCOPE:
@@ -279,7 +283,11 @@ class BNO055:
 
     def getQuat(self):
         buf = self.readBytes(BNO055.BNO055_QUATERNION_DATA_W_LSB_ADDR, 8)
-        wxyz = ((buf[1] << 8) + buf[0], (buf[3] << 8) + buf[2], (buf[5] << 8) + buf[4], (buf[7] << 8) + buf[6])
+        buf = [(buf[1] << 8) + buf[0], (buf[3] << 8) + buf[2], (buf[5] << 8) + buf[4], (buf[7] << 8) + buf[6]]
+        for i in range(4):
+            if buf[i] > 32767:
+                buf[i] -= 65536
+        wxyz = (buf[0], buf[1], buf[2], buf[3])
         return tuple([i * (1.0 / (1 << 14)) for i in wxyz])
 
     def readBytes(self, register, numBytes=1):
