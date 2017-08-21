@@ -145,7 +145,7 @@ class IMUSensor(Sensor):
                                         time.time()] + self.value[2:5]
 
         # get the rotation from current coordinate system to original coordinate system
-        rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[3])), self.initial_rot)
+        rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[2])), self.initial_rot)
         # Rotate relative, linear acceleration to initial orientation
         final_accel = quat.qv_mult(rot_q, self.value[4])
         # Add accel to velocity to get the current velocity
