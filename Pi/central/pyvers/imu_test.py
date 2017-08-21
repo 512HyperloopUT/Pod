@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # Using python 3
 
+import time
+
 import pod_periph
 
 BUS = 1
@@ -12,8 +14,9 @@ if __name__ == "__main__":
     while True:
         print("Updating sensor. Values:")
         imu.update_sensor(cli)
-        print("\tdistance, magnitude:", imu.value[0])
+        print("\tdistance:", imu.value[0])
         print("\tvelocity:", imu.value[1])
         print("\tcurrent orientation:", imu.value[2])
         print("\tcurrent acceleration:", imu.value[3])
         print("\tcurrent time:", imu.value[4])
+        time.sleep(0.02)
