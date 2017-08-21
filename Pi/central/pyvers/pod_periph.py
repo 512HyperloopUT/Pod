@@ -81,7 +81,6 @@ class IMUSensor(Sensor):
         self.initial_rot = quat.normalize(self.bno.getQuat())
 
     def update_sensor(self, commt: Client):
-        super(commt)
         self.value = self.value[0:2] + [self.bno.getQuat(), self.bno.getVector(bno055.BNO055.VECTOR_LINEARACCEL),
                                         time.time()] + self.value[2:5]
 
