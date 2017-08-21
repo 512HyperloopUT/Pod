@@ -141,7 +141,6 @@ class IMUSensor(Sensor):
         self.value = [self.initial_rot, (0.0, 0.0, 0.0), self.initial_rot, (0.0, 0.0, 0.0), time.time()]
 
     def update_sensor(self, commt: Client):
-        super(commt)
         self.value = self.value[0:2] + [self.bno.getQuat(), self.bno.getVector(bno055.BNO055.VECTOR_LINEARACCEL),
                                         time.time()] + self.value[2:5]
 
