@@ -23,8 +23,8 @@ class Pod:
 
         self.data_list = []
 
-        self.client = pod_periph.Client()
-        self.gui = pod_spxgui.Port()
+        self.client = None
+        self.gui = None
         self.state = IDLE_STATE  # TODO figure out states
 
         self.start = None
