@@ -12,8 +12,8 @@ if __name__ == "__main__":
     while True:
         print("Updating sensor. Values:")
         imu.update_sensor(cli)
-        print("\tdistance, magnitude: " + imu.value[0])
-        print("\tvelocity: " + imu.value[1])
-        print("\tcurrent orientation: " + imu.value[2])
-        print("\tcurrent acceleration: " + imu.value[3])
-        print("\tcurrent time: " + imu.value[4])
+        print("\tdistance, magnitude:", imu.value[0])
+        print("\tvelocity:", imu.value[1])
+        print("\tcurrent orientation:", imu.value[2])
+        print("\tcurrent acceleration:", imu.value[3])
+        print("\tcurrent time:", imu.value[4])
