@@ -20,6 +20,65 @@ Both of these classes use a static factory method.
 """
 
 
+class Client:
+    def __init__(self):
+        self.uart_port = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE,
+                                       stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+
+        GPIO.setmode(GPIO.BCM)
+
+        GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(1, GPIO.IN)
+
+        GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
+
+        self.uart_port.isOpen()
+
+        self.i2c_bus = smbus2.SMBus(1)
+
+    def write(self, actuator_id: int, value: bool):
+        # TODO implement write method
+        raise Exception("Unimplemented method")
+
+    def i2c_read(self, bus_id: int, sensor_id: int):
+        if bus_id == 1:
+            return self.i2c_bus.read_byte_data(sensor_id, 0)
+        else:
+            with smbus2.SMBusWrapper(bus_id) as bus:
+                return bus.read_byte_data(sensor_id, 0)
+
+    def analog_read(self, sensor_id: int):
+        print("Sending reset signal to TM4C.")
+        GPIO.output(0, GPIO.LOW)
+        print("Waiting for TM4C to reset.")
+        while GPIO.input(1) != GPIO.LOW:
+            pass
+
+        print("TM4C has reset. Setting sensor id pins.")
+        GPIO.output(5, GPIO.HIGH if (sensor_id & 0x1) != 0 else GPIO.LOW)
+        GPIO.output(12, GPIO.HIGH if (sensor_id & 0x2) != 0 else GPIO.LOW)
+        GPIO.output(13, GPIO.HIGH if (sensor_id & 0x4) != 0 else GPIO.LOW)
+        GPIO.output(19, GPIO.HIGH if (sensor_id & 0x8) != 0 else GPIO.LOW)
+        GPIO.output(26, GPIO.HIGH if (sensor_id & 0x10) != 0 else GPIO.LOW)
+
+        GPIO.output(0, GPIO.HIGH)
+
+        print("Sensor pins and reset pin set. Waiting for TM4C response.")
+        self.uart_port.flush()
+        while GPIO.input(1) != GPIO.HIGH:
+            pass
+        print("TM4C responded. Reading value from UART.")
+
+        return int(self.uart_port.readline())
+
+    def reset(self):
+        ResetSensor().update_sensor(self)
+
+
 class Sensor:
     def __init__(self, name: str, sensor_id: int):
         self.name = name
@@ -117,60 +176,3 @@ def make_actuator(name: str):
     pass
 
 
-class Client:
-    def __init__(self):
-        self.uart_port = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE,
-                                       stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
-
-        GPIO.setmode(GPIO.BCM)
-
-        GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(1, GPIO.IN)
-
-        GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)
-
-        self.uart_port.isOpen()
-
-        self.i2c_bus = smbus2.SMBus(1)
-
-    def write(self, actuator_id: int, value: bool):
-        # TODO implement write method
-        raise Exception("Unimplemented method")
-
-    def i2c_read(self, bus_id: int, sensor_id: int):
-        if bus_id == 1:
-            return self.i2c_bus.read_byte_data(sensor_id, 0)
-        else:
-            with smbus2.SMBusWrapper(bus_id) as bus:
-                return bus.read_byte_data(sensor_id, 0)
-
-    def analog_read(self, sensor_id: int):
-        print("Sending reset signal to TM4C.")
-        GPIO.output(0, GPIO.LOW)
-        print("Waiting for TM4C to reset.")
-        while GPIO.input(1) != GPIO.LOW:
-            pass
-
-        print("TM4C has reset. Setting sensor id pins.")
-        GPIO.output(5, GPIO.HIGH if (sensor_id & 0x1) != 0 else GPIO.LOW)
-        GPIO.output(12, GPIO.HIGH if (sensor_id & 0x2) != 0 else GPIO.LOW)
-        GPIO.output(13, GPIO.HIGH if (sensor_id & 0x4) != 0 else GPIO.LOW)
-        GPIO.output(19, GPIO.HIGH if (sensor_id & 0x8) != 0 else GPIO.LOW)
-        GPIO.output(26, GPIO.HIGH if (sensor_id & 0x10) != 0 else GPIO.LOW)
-
-        GPIO.output(0, GPIO.HIGH)
-
-        print("Sensor pins and reset pin set. Waiting for TM4C response.")
-        self.uart_port.flush()
-        while GPIO.input(1) != GPIO.HIGH:
-            pass
-        print("TM4C responded. Reading value from UART.")
-
-        return int(self.uart_port.readline())
-
-    def reset(self):
-        ResetSensor().update_sensor(self)
