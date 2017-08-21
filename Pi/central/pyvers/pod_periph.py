@@ -138,7 +138,7 @@ class IMUSensor(Sensor):
         # self.bno.setExternalCrystalUse(True)
 
         self.initial_rot = quat.normalize(self.bno.getQuat())
-        self.value = [self.initial_rot, (0.0, 0.0, 0.0), self.initial_rot, (0.0, 0.0, 0.0), time.time()]
+        self.value = [(0.0, 0.0, 0.0), (0.0, 0.0, 0.0), self.initial_rot, (0.0, 0.0, 0.0), time.time()]
 
     def update_sensor(self, commt: Client):
         self.value = self.value[0:2] + [self.bno.getQuat(), self.bno.getVector(bno055.BNO055.VECTOR_LINEARACCEL),
@@ -149,13 +149,17 @@ class IMUSensor(Sensor):
         # Rotate relative, linear acceleration to initial orientation
         final_accel = quat.qv_mult(rot_q, self.value[3])
         # Add accel to velocity to get the current velocity
-        self.value[1][0] += final_accel[0]
-        self.value[1][1] += final_accel[1]
-        self.value[1][2] += final_accel[2]
+        self.value[1] = (
+                self.value[1][0] + final_accel[0],
+                self.value[1][1] + final_accel[1],
+                self.value[1][2] + final_accel[2]
+        )
         # Do a simple time delta for the new distance traveled
-        self.value[0][0] += (self.value[1][0] * (self.value[4] - self.value[7]))
-        self.value[0][1] += (self.value[1][0] * (self.value[4] - self.value[7]))
-        self.value[0][2] += (self.value[1][0] * (self.value[4] - self.value[7]))
+        self.value[0] = (
+                self.value[0][0] + (self.value[1][0] * (self.value[4] - self.value[7])),
+                self.value[0][1] + (self.value[1][0] * (self.value[4] - self.value[7])),
+                self.value[0][2] + (self.value[1][0] * (self.value[4] - self.value[7]))
+        )
 
 
 def make_sensor(name: str):
