@@ -153,9 +153,9 @@ class IMUSensor(Sensor):
         self.value[1][1] += final_accel[1]
         self.value[1][2] += final_accel[2]
         # Do a simple time delta for the new distance traveled
-        self.value[0][0] += (self.value[1][0] * (self.value[3] - self.value[7]))
-        self.value[0][1] += (self.value[1][0] * (self.value[3] - self.value[7]))
-        self.value[0][2] += (self.value[1][0] * (self.value[3] - self.value[7]))
+        self.value[0][0] += (self.value[1][0] * (self.value[4] - self.value[7]))
+        self.value[0][1] += (self.value[1][0] * (self.value[4] - self.value[7]))
+        self.value[0][2] += (self.value[1][0] * (self.value[4] - self.value[7]))
 
 
 def make_sensor(name: str):
