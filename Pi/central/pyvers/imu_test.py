@@ -19,4 +19,4 @@ if __name__ == "__main__":
         print("\tcurrent orientation:", imu.value[2])
         print("\tcurrent acceleration:", imu.value[3])
         print("\tcurrent time:", imu.value[4])
-        time.sleep(0.02)
+        time.sleep(0.2)
