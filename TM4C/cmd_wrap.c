@@ -43,32 +43,52 @@ uint8_t valid = 0;
 uint8_t cmd = 0;
 uint8_t new = 0;
 
+uint8_t is_write = 0;
+
 /* Fetch instructions */
 void ReadCmd(void) {
     /* Read cmd & idata */
     if (valid = DigiReadPin(pistt_ports[0], pistt_pins[0])) { /* Valid command */
+		is_write = (uint8_t) MassRead(cmd_type_ports, cmd_type_pins, cmd_type_width);
         cmd = (uint8_t) MassRead(cmd_ports, cmd_pins, cmd_width);
+		cmd_dir = (uint8_t) MassRead(cmd_dir_ports, cmd_dir_pins, cmd_dir_width);
     } else {
         DigiWritePin(tistt_ports[0], tistt_pins[0], 0);
 	}
 }
 
 /* Execute instructions */
-
 void ExecCmd(void) {
     if (!valid) {
 		new = 1;
     } else if (new) { /* Do cmd if is new */
         new = 0;
-		if (cmd != 31) {
-			//TODO Read the selected sensor
-			uint32_t adc_value = MapADCRead(cmd);
-			UARTprintf("%d\n", adc_value);
+		if (is_write) {
+			WriteActu(cmd, cmd_dir);
+		} else {
+			if (cmd != 31) {
+				//TODO Read the selected sensor
+				uint32_t adc_value = MapADCRead(cmd);
+				UARTprintf("%d\n", adc_value);
+			}
 		}
-        /* Command has completed */
-        DigiWritePin(tistt_ports[0], tistt_pins[0], -1);
+		/* Command has completed */
+		DigiWritePin(tistt_ports[0], tistt_pins[0], -1);
 		if (cmd == 31) {
 			SysCtlReset();
 		}
     }
+}
+
+void WriteActu(uint8_t port, uint8_t dir) {
+	if (dir == 0) {
+		DigiWritePin(actu_forw_write_pins[cmd], actu_forw_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_back_write_pins[cmd], 0);
+	} else if (dir == 1) {
+		DigiWritePin(actu_forw_write_pins[cmd], actu_back_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_forw_write_pins[cmd], -1);
+	} else if (dir == 2) {
+		DigiWritePin(actu_forw_write_pins[cmd], actu_forw_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_back_write_pins[cmd], -1);
+	}
 }

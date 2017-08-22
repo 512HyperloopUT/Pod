@@ -90,7 +90,7 @@ class Pod:
             pass
 
     def ebrake(self):
-        if self.can_brake < time.time() and not self.ebrake_locked:
+        if self.can_brake < time.time():
             if self.ebrake_locked or self.ebrake_released:
                 self.unlock_ebrake()
             self.ebrake_released = True

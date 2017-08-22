@@ -57,6 +57,13 @@ void ConfigureGPIO(void) {
     /* stt */
     GPIOMassInit(tistt_ports, tistt_pins, tistt_width, PIN_OUT);
     GPIOMassInit(pistt_ports, pistt_pins, pistt_width, PIN_IN);
+	/* write */
+    GPIOMassInit(cmd_type_ports, cmd_type_pins, cmd_type_width, PIN_IN);
+	/* aux bits */
+    GPIOMassInit(cmd_dir_ports, cmd_dir_pins, cmd_dir_width, PIN_IN);
+	/* actu */
+    GPIOMassInit(actu_forw_write_ports, actu_forw_write_pins, actu_write_count, PIN_OUT);
+    GPIOMassInit(actu_back_write_ports, actu_back_write_pins, actu_write_count, PIN_OUT);
 }
 void ConfigureAnalog(void) {
     EnableADC();

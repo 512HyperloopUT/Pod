@@ -47,9 +47,33 @@ const uint32_t pistt_ports[] = {
 const uint8_t pistt_pins[] = {
     PIN(3)
 };
+
+//Port for write cmd
+#error fill out pin type pin
+const uint8_t cmd_type_width = 1;
+const uint32_t cmd_type_ports[] = {};
+const uint8_t cmd_type_pins[] = {};
+
+//Port for write cmd direction
+#error fill out direction pins
+const uint8_t cmd_dir_width = 2;
+const uint32_t cmd_dir_ports[] = {};
+const uint8_t cmd_dir_pins[] = {};
+
 //Used GPIO ports
+#error fill out other used GPIO ports
 const uint8_t picomm_port_count = 4;
 const uint32_t picomm_ports[] = {
     GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L)
 };
 
+
+//Write pins
+#error fill out actuator pins
+const uint32_t actu_write_count = 12;
+#error pins for forward
+const uint32_t actu_forw_write_ports[] = {};
+const uint8_t actu_forw_write_pins[] = {};
+#error pins for back
+const uint32_t actu_back_write_ports[] = {};
+const uint8_t actu_back_write_pins[] = {};

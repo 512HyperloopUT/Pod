@@ -31,8 +31,25 @@ extern const uint8_t cmd_width;
 extern const uint32_t cmd_ports[];
 extern const uint8_t cmd_pins[];
 
+//Port for write cmd
+extern const uint8_t cmd_type_width;
+extern const uint32_t cmd_type_ports[];
+extern const uint8_t cmd_type_pins[];
+
+//Port for write cmd direction
+extern const uint8_t cmd_dir_width;
+extern const uint32_t cmd_dir_ports[];
+extern const uint8_t cmd_dir_pins[];
+
 //Used GPIO ports for Pi-TM4C comms
 extern const uint8_t picomm_port_count;
 extern const uint32_t picomm_ports[];
+
+//Write pins
+extern const uint32_t actu_write_count;
+extern const uint32_t actu_forw_write_ports[];
+extern const uint32_t actu_forw_write_pins[];
+extern const uint32_t actu_back_write_ports[];
+extern const uint32_t actu_back_write_pins[];
 
 #endif /* MAPPING_CONSTANTS_H_ */
