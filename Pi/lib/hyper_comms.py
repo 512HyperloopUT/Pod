@@ -13,6 +13,7 @@ class WriteDir(Enum):
     NEUTRAL = 0
     FORWARD = 1
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#read start
