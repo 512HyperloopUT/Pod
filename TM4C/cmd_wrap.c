@@ -44,6 +44,7 @@ uint8_t cmd = 0;
 uint8_t new = 0;
 
 uint8_t is_write = 0;
+uint8_t cmd_dir = 0;
 
 /* Fetch instructions */
 void ReadCmd(void) {

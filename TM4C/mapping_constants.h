@@ -46,10 +46,10 @@ extern const uint8_t picomm_port_count;
 extern const uint32_t picomm_ports[];
 
 //Write pins
-extern const uint32_t actu_write_count;
+extern const uint8_t actu_write_count;
 extern const uint32_t actu_forw_write_ports[];
-extern const uint32_t actu_forw_write_pins[];
+extern const uint8_t actu_forw_write_pins[];
 extern const uint32_t actu_back_write_ports[];
-extern const uint32_t actu_back_write_pins[];
+extern const uint8_t actu_back_write_pins[];
 
 #endif /* MAPPING_CONSTANTS_H_ */
