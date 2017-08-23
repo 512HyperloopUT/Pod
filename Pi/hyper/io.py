@@ -22,6 +22,16 @@ class Input:
         # check for ebrake on UDP
         self.duration = time.time() - self.start_time
 
+    def isReady():
+        # if input is ready to be updated
+        # check comms
+        if not self.comm_port.read(31) == 512:
+            return False
+
+        #calibrate sensors
+
+        return True
+
 
 class Sensor:
     def __init__(self, name, sensor_id):

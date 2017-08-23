@@ -19,8 +19,8 @@ class Pod:
                 running = False
 
     def start(self):
-        # test comms
-        # calibrate
+        if not self.input_data.isReady():
+            return
         # cycle electromags
         # cycle actuators
         self.loop()
