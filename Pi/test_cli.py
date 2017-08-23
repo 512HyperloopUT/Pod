@@ -4,10 +4,10 @@ while True:
     print('r = read, w = write, q = quit')
     choice = input("choice: ")
     if choice == 'r':
-        readID = input("readID: ")
+        readID = int(input("readID: "))
         print('readUART: ', comms.read(readID))
     elif choice == 'w':
-        writeID = input("writeID: ")
+        writeID = int(input("writeID: "))
         dir = WriteDir(int(input("dir: ")))
         comms.write(writeID, dir)
     elif choice == 'q':
