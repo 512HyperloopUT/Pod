@@ -16,8 +16,8 @@ class Pod:
     def loop(self):
         running = True
         while running:
-            self.input.update()
-            for subsystem in self.subsystems:
+            self.podinput.update()
+            for subsystem in subsystems:
                 subsystem.run()
-            if self.input.cycles > 1000:
+            if self.podinput.cycles > 1000:
                 running = False
