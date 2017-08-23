@@ -2,10 +2,9 @@
 
 import time
 import RPi.GPIO as GPIO
-import bno055
-import hyper_quat as quat
-import hyper_comms as comms
-
+import lib.bno055
+import lib.hyper_quat as quat
+import lib.hyper_comms as comms
 
 class Sensor:
     def __init__(self, name: str, sensor_id: int):
