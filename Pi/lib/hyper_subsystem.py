@@ -11,7 +11,7 @@ class TestSubsystem():
         subsystems.append(self)
 
     def run(self):
-        if podinput.duration > 2 and not self.printed:
+        if self.podinput.duration > 2 and not self.printed:
             self.printed = True
             print("hi there")
 
