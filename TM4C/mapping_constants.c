@@ -49,7 +49,6 @@ const uint8_t pistt_pins[] = {
 };
 
 //Port for write cmd
-#error fill out pin type pin
 const uint8_t cmd_type_width = 1;
 const uint32_t cmd_type_ports[] = {PORT(L)};
 const uint8_t cmd_type_pins[] = {PIN(2)};
