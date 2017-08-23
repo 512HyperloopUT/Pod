@@ -6,29 +6,27 @@ import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
 
-class Sensor:
+class _Sensor:
     def __init__(self, name: str, sensor_id: int):
         self.name = name
         self.sensor_id = sensor_id
         self.value = None
 
-    def update_sensor(self):
+    def update(self):
         raise Exception("Screwed up")
 
     def data_string(self):
         raise Exception("Screwed up")
-
 
 class AnalogSensor(Sensor):
     def __init__(self, name: str, sensor_id: int):
         super().__init__(name, sensor_id)
 
-    def update_sensor(self):
+    def update(self):
         self.value = comms.read(self.sensor_id)
 
     def data_string(self):
         return self.name + ": " + str(self.value)
-
 
 class IMUSensor(Sensor):
     def __init__(self, name: str, sensor_id: int):
@@ -44,7 +42,7 @@ class IMUSensor(Sensor):
         self.initial_rot = quat.normalize(self.bno.read_quaternion())
         self.value = [(0.0, 0.0, 0.0), (0.0, 0.0, 0.0), self.initial_rot, (0.0, 0.0, 0.0), time.time()]
 
-    def update_sensor(self):
+    def update(self):
         self.value = self.value[0:2] + [self.bno.read_quaternion(), self.bno.read_linear_acceleration(),
                                         time.time()] + self.value[2:5]
 
@@ -73,11 +71,10 @@ class IMUSensor(Sensor):
                "\n\tcurrent accel: " + str(self.value[3]) +\
                "\n\tcurrent time: " + str(self.value[4])
 
-
 class Actuator:
     def __init__(self, name: str, actuator_id: int):
         self.name = name
         self.actuator_id = actuator_id
 
-    def update_actuator(self, val: int):
+    def set(self, val: int):
         comms.write(self.actuator_id, val)
