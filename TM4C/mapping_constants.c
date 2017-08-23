@@ -27,7 +27,7 @@ Listed from listed significant to most significant bit
 
 //State of cmd execution
 const uint8_t tistt_width = 1;
-const uint32_t tistt_ports[] = {PORT(L)};
+const uint32_t tistt_ports[] = {PORT(P)};
 const uint8_t tistt_pins[] = {PIN(2)};
 //Command to execute, 0&1 are the reading toggle values, and 2-15 are the write commands
 const uint8_t cmd_width = 5;
@@ -55,9 +55,9 @@ const uint32_t cmd_dir_ports[] = {PORT(F), PORT(F)};
 const uint8_t cmd_dir_pins[] = {PIN(1), PIN(2)};
 
 //Used GPIO ports
-const uint8_t picomm_port_count = 4;
+const uint8_t picomm_port_count = 5;
 const uint32_t picomm_ports[] = {
-    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L)
+    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L), GPIOPORT(P)
 };
 
 
