@@ -24,7 +24,7 @@ class AnalogSensor(Sensor):
         super().__init__(name, sensor_id)
 
     def update_sensor(self):
-        self.value = comms.read(sensor_id=self.sensor_id)
+        self.value = comms.read(self.sensor_id)
 
     def data_string(self):
         return self.name + ": " + str(self.value)
