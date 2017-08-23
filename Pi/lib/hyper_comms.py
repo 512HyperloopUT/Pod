@@ -13,22 +13,22 @@ class WriteDir(Enum):
     NEUTRAL = 0
     FORWARD = 1
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
+def init():
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#start cmd
-GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)#cmd type
-GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)#write dir 0
-GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)#write dir 1
-GPIO.setup(1, GPIO.IN)#finish cmd
+    GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#start cmd
+    GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)#cmd type
+    GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)#write dir 0
+    GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)#write dir 1
+    GPIO.setup(1, GPIO.IN)#finish cmd
 
-GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)#id pin 0
-GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)#id pin 1
-GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)#id pin 2
-GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)#id pin 3
-GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)#id pin 4
-
-print("gpio initialized")
+    GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)#id pin 0
+    GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)#id pin 1
+    GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)#id pin 2
+    GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)#id pin 3
+    GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)#id pin 4
+    print("gpio initialized")
 
 def read(id):
     __reset()

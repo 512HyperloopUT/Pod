@@ -1,5 +1,7 @@
 import lib.hyper_comms as comms
 
+comms.init()
+
 while True:
     print('r = read, w = write, q = quit')
     choice = input("choice: ")
