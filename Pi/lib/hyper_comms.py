@@ -16,11 +16,11 @@ class WriteDir(Enum):
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#read start
-GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)#write start
+GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#start cmd
+GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)#cmd type
 GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)#write dir 0
 GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)#write dir 1
-GPIO.setup(1, GPIO.IN)#cmd finished
+GPIO.setup(1, GPIO.IN)#finish cmd
 
 GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)#id pin 0
 GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)#id pin 1
@@ -32,16 +32,18 @@ print("gpio initialized")
 
 def read(id):
     __reset()
+    __set_type(False)
     __write_id(id)
-    __finish(0)
+    __finish()
     ser.flush()
     return int(ser.readline())
 
 def write(id, dir):
     __reset()
+    __set_type(True)
     __write_id(id)
     __write_dir(dir)
-    __finish(23)
+    __finish()
 
 def free():
     ser.close()
@@ -50,14 +52,11 @@ def free():
 
 def __reset():
     GPIO.output(0, GPIO.LOW)
-    GPIO.output(23, GPIO.LOW)
     while GPIO.input(1) != GPIO.LOW:
         pass
 
-def __finish(cmd):
-    GPIO.output(cmd, GPIO.HIGH)
-    while GPIO.input(1) != GPIO.HIGH:
-        pass
+def __set_type(type):
+    GPIO.output(23, GPIO.HIGH if type else GPIO.LOW)
 
 def __write_id(id):
     GPIO.output(5, GPIO.HIGH if (id & 0x1) != 0 else GPIO.LOW)
@@ -76,3 +75,8 @@ def __write_dir(dir):
     else:
         GPIO.output(23, GPIO.LOW)
         GPIO.output(24, GPIO.LOW)
+
+def __finish():
+    GPIO.output(1, GPIO.HIGH)
+    while GPIO.input(1) != GPIO.HIGH:
+        pass
