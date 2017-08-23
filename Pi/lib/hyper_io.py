@@ -1,4 +1,5 @@
 import time
+import thread
 import RPi.GPIO as GPIO
 import lib.bno055 as bno055
 import lib.hyper_quat as quat
@@ -6,38 +7,29 @@ import lib.hyper_comms as comms
 
 class Input:
     def __init__(self):
+        self.ebrake_requested = False
+        self.ebrake_waittime = -1
         self.cycles = 0
 
-    def update():
+    def update(self):
+        #check for ebrake on UDP
         self.cycles += 1
 
-class Sensor:
-    def __init__(self, name: str, sensor_id: int):
-        self.name = name
-        self.sensor_id = sensor_id
-        self.value = None
+class AnalogSensor():
+    def __init__(self, id: int):
+        self.id = id
+        self.value = 0
 
     def update(self):
-        pass
+        self.value = comms.read(self.id)
 
     def data_string(self):
-        pass
+        return "sensor " + self.id + ": " + self.value
 
 
-class AnalogSensor(Sensor):
-    def __init__(self, name: str, sensor_id: int):
-        super().__init__(name, sensor_id)
-
-    def update(self):
-        self.value = comms.read(self.sensor_id)
-
-    def data_string(self):
-        return self.name + ": " + str(self.value)
-
-
-class IMUSensor(Sensor):
-    def __init__(self, name: str, sensor_id: int):
-        super().__init__(name, sensor_id)
+class IMUSensor():
+    def __init__(self, id: int):
+        self.id = id
         self.bno = bno055.BNO055(serial_port='/dev/ttyAMA0', rst=18)
         if self.bno.begin() is not True:
             print("Error initializing device")

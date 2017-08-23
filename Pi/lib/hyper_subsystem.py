@@ -1,22 +1,28 @@
 import lib.hyper_io as io
 import time
 
-class Subsystem:
-    def __init__(self, input):
-        pass
+subsystems = []
 
-    def run(self):
-        pass
-
-class TestSubsystem(Subsystem):
-    def __init__(self, input):
-        super().__init__(input)
+class TestSubsystem():
+    def __init__(self, podinput):
+        self.podinput = podinput
         self.waittime = 20
         self.start = time.time()
         self.printed = False
 
+        subsystems.append(self)
+
     def run(self):
         if time.time() - self.start > self.waittime:
-            if input.cycles > 500 and not self.printed:
+            if podinput.cycles > 500 and not self.printed:
                 self.printed = True
                 print("hi there")
+
+class PublishSubsystem():
+    def __init(self, input):
+        self.podinput = podinput
+        subsystems.append(self)
+
+    def run(self):
+        #publish sensor data to UDP
+        pass

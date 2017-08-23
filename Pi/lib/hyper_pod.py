@@ -3,17 +3,17 @@ import lib.hyper_subsystem as subsystems
 
 class Pod:
     def __init__(self):
-        self.input = io.Input()
-        self.subsystems.append(subsystems.TestSubsystem(input))
+        self.podinput = io.Input()
+        self.subsystems.append(subsystems.TestSubsystem(podinput))
 
-    def start():
+    def start(self):
         #test comms
         #calibrate
         #cycle electromags
         #cycle actuators
         loop()
 
-    def loop():
+    def loop(self):
         running = True
         while running:
             self.input.update()
