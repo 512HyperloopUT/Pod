@@ -12,7 +12,7 @@ class TestSubsystem():
             print("hi there")
 
 class PublishSubsystem():
-    def __init(self, input):
+    def __init(self, podinput):
         self.podinput = podinput
 
     def run(self):
