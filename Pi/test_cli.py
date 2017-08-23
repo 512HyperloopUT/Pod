@@ -8,7 +8,7 @@ while True:
         print('readUART: ', comms.read(readID))
     elif choice == 'w':
         writeID = int(input("writeID: "))
-        dir = WriteDir(int(input("dir: ")))
+        dir = comms.WriteDir(int(input("dir: ")))
         comms.write(writeID, dir)
     elif choice == 'q':
         break
