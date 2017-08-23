@@ -6,7 +6,7 @@ import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
 
-class _Sensor:
+class Sensor:
     def __init__(self, name: str, sensor_id: int):
         self.name = name
         self.sensor_id = sensor_id
