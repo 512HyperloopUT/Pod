@@ -7,13 +7,6 @@ class Pod:
         self.subsystems = []
         self.subsystems.append(subsystems.TestSubsystem(self.podinput))
 
-    def start(self):
-        #test comms
-        #calibrate
-        #cycle electromags
-        #cycle actuators
-        loop()
-
     def loop(self):
         running = True
         while running:
@@ -22,3 +15,10 @@ class Pod:
                 subsystem.run()
             if self.podinput.cycles > 1000:
                 running = False
+
+    def start(self):
+        #test comms
+        #calibrate
+        #cycle electromags
+        #cycle actuators
+        loop()
