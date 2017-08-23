@@ -3,7 +3,7 @@
 import time
 import RPi.GPIO as GPIO
 import bno055
-import quat
+import hyper_quat as quat
 import hyper_comms as comms
 
 

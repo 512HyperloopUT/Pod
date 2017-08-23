@@ -2,7 +2,7 @@
 # Using python 3
 
 import time
-import lib.pod_periph as periph
+import lib.hyper_periph as periph
 
 BUS = 1
 ADDR = 0x28
