@@ -7,6 +7,7 @@ class Pod:
         self.podinput = io.Input()
         self.subsystems = []
         self.subsystems.append(subsystems.TestSubsystem(self.podinput))
+        self.subsystems.append(subsystems.PublishSubsystem(self.podinput))
 
     def loop(self):
         running = True
