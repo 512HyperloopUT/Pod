@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
+import lib.hyper_io as io
 
 class Input:
     def __init__(self):
@@ -14,6 +15,10 @@ class Input:
 
         self.starttime = time.time()
         self.duration = 0
+
+        self.team_id = 1
+        self.status = 2
+        self.acceleration = 3
 
     def update(self):
         #check for ebrake on UDP
