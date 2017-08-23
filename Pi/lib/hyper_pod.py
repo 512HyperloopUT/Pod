@@ -21,4 +21,4 @@ class Pod:
         #calibrate
         #cycle electromags
         #cycle actuators
-        loop(self)
+        self.loop()
