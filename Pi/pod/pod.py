@@ -4,18 +4,18 @@ from pod import subsystem
 
 class Pod:
     def __init__(self):
-        self.podinput = io.Input()
+        self.input_data = io.Input()
         self.subsystems = []
-        self.subsystems.append(subsystem.TestSubsystem(self.podinput))
-        self.subsystems.append(subsystem.PublishSubsystem(self.podinput))
+        self.subsystems.append(subsystem.TestSubsystem(self.input_data))
+        self.subsystems.append(subsystem.PublishSubsystem(self.input_data))
 
     def loop(self):
         running = True
         while running:
-            self.podinput.update()
+            self.input_data.update()
             for sub in self.subsystems:
                 sub.run()
-            if self.podinput.duration > 5:
+            if self.input_data.duration > 5:
                 running = False
 
     def start(self):

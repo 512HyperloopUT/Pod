@@ -72,7 +72,6 @@ class Frame(Tkinter.Frame):
         self.text_box.grid(row=5, columnspan=1, sticky='n')
         self.text_box.insert(END, "Warnings: \n")
 
-
     def init_data(self):
         """ Initializes treeview with default numbers"""
         for i in range(len(measurementList)):
@@ -108,6 +107,7 @@ def updateData(frame, newData):
         else:
             frame.tree.item(i + 1, tags="normal")
 
+
 def cmdStop():
     """Function used to send stop signal"""
     try:
@@ -133,6 +133,7 @@ def cmdTime():
     except TypeError:
         mainFrame.complain('Not connected')
 
+
 def cmdCommand():
     """Function used to send commands to Pi"""
     try:
@@ -140,6 +141,7 @@ def cmdCommand():
         mySocket.sendto('s' * 35 + ' cmd ' + command)
     except TypeError:
         mainFrame.complain('Not connected')
+
 
 def count():
     """Continuously receives data from client"""

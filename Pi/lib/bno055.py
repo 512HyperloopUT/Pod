@@ -239,6 +239,7 @@ class BNO055(object):
                 i2c = I2C
             # Save a reference to the I2C device instance for later communication.
             self._i2c_device = i2c.get_i2c_device(address, **kwargs)
+        self._mode = OPERATION_MODE_NDOF
 
     def _serial_send(self, command, ack=True, max_attempts=5):
         # Send a serial command and automatically handle if it needs to be resent

@@ -35,19 +35,19 @@ class CommPort:
         GPIO.cleanup()
         print("freed comm resources")
 
-    def read(self, id):
+    def read(self, sensor_id):
         self.__reset()
         self.__set_type(False)
-        self.__write_id(id)
+        self.__write_id(sensor_id)
         self.ser.flush()
         self.__finish()
         return int(self.ser.readline())
 
-    def write(self, id, dir):
+    def write(self, actuator_id, direction):
         self.__reset()
         self.__set_type(True)
-        self.__write_id(id)
-        self.__write_dir(dir)
+        self.__write_id(actuator_id)
+        self.__write_dir(direction)
         self.__finish()
 
     def __reset(self):
@@ -55,21 +55,21 @@ class CommPort:
         while GPIO.input(1) != GPIO.LOW:
             pass
 
-    def __set_type(self, type):
-        GPIO.output(23, GPIO.HIGH if type else GPIO.LOW)
+    def __set_type(self, cmd_type):
+        GPIO.output(23, GPIO.HIGH if cmd_type else GPIO.LOW)
 
-    def __write_id(self, id):
-        GPIO.output(5, GPIO.HIGH if (id & 0x1) != 0 else GPIO.LOW)
-        GPIO.output(12, GPIO.HIGH if (id & 0x2) != 0 else GPIO.LOW)
-        GPIO.output(13, GPIO.HIGH if (id & 0x4) != 0 else GPIO.LOW)
-        GPIO.output(19, GPIO.HIGH if (id & 0x8) != 0 else GPIO.LOW)
-        GPIO.output(26, GPIO.HIGH if (id & 0x10) != 0 else GPIO.LOW)
+    def __write_id(self, target_id):
+        GPIO.output(5, GPIO.HIGH if (target_id & 0x1) != 0 else GPIO.LOW)
+        GPIO.output(12, GPIO.HIGH if (target_id & 0x2) != 0 else GPIO.LOW)
+        GPIO.output(13, GPIO.HIGH if (target_id & 0x4) != 0 else GPIO.LOW)
+        GPIO.output(19, GPIO.HIGH if (target_id & 0x8) != 0 else GPIO.LOW)
+        GPIO.output(26, GPIO.HIGH if (target_id & 0x10) != 0 else GPIO.LOW)
 
-    def __write_dir(self, dir):
-        if dir == WriteDir.REVERSE:
+    def __write_dir(self, direction):
+        if direction == WriteDir.REVERSE:
             GPIO.output(24, GPIO.HIGH)
             GPIO.output(25, GPIO.LOW)
-        elif dir == WriteDir.FORWARD:
+        elif direction == WriteDir.FORWARD:
             GPIO.output(24, GPIO.LOW)
             GPIO.output(25, GPIO.HIGH)
         else:
@@ -80,3 +80,15 @@ class CommPort:
         GPIO.output(0, GPIO.HIGH)
         while GPIO.input(1) != GPIO.HIGH:
             pass
+
+
+class UDPPort:
+    # TODO complete this class
+    def __init__(self):
+        pass
+
+    def read(self):
+        pass
+
+    def write(self):
+        pass

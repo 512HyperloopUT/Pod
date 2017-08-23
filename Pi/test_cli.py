@@ -14,8 +14,8 @@ if __name__ == "__main__":
             print('read: ', comm_port.read(readID))
         elif choice == 'w':
             writeID = int(input("writeID: "))
-            dir = comms.WriteDir(int(input("dir: ")))
-            comm_port.write(writeID, dir)
+            direction = comms.WriteDir(int(input("dir: ")))
+            comm_port.write(writeID, direction)
         elif choice == 'q':
             break
         else:
