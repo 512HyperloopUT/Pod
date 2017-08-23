@@ -6,6 +6,7 @@ import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
 
+
 class Sensor:
     def __init__(self, name: str, sensor_id: int):
         self.name = name
@@ -18,6 +19,7 @@ class Sensor:
     def data_string(self):
         raise Exception("Screwed up")
 
+
 class AnalogSensor(Sensor):
     def __init__(self, name: str, sensor_id: int):
         super().__init__(name, sensor_id)
@@ -27,6 +29,7 @@ class AnalogSensor(Sensor):
 
     def data_string(self):
         return self.name + ": " + str(self.value)
+
 
 class IMUSensor(Sensor):
     def __init__(self, name: str, sensor_id: int):
@@ -45,7 +48,24 @@ class IMUSensor(Sensor):
     def update(self):
         self.value = self.value[0:2] + [self.bno.read_quaternion(), self.bno.read_linear_acceleration(),
                                         time.time()] + self.value[2:5]
-        self.value[3] = tuple([round(x, 1) for x in self.value[3]])
+        # self.value[3] = tuple([round(x, 1) for x in self.value[3]])
+
+        delta_t = self.value[4] - self.value[7]
+
+        # Do a lowpass on accel
+        # TODO test efficacy
+        self.value[3] = tuple([
+            self.value[6][ind] + (
+                delta_t * (self.value[3][ind] - self.value[6][ind]) / IMUSensor.IMU_ACCEL_SMOOTHING
+            ) for ind in range(3)
+        ])
+        # simple complimentary lowpass on orientation
+        # TODO test efficacy
+        self.value[3] = tuple([
+            (self.value[5][ind] * IMUSensor.IMU_ORIEN_SMOOTHING) +
+            (self.value[2][ind] * (1 - IMUSensor.IMU_ORIEN_SMOOTHING))
+            for ind in range(4)
+        ])
 
         # get the rotation from current coordinate system to original coordinate system
         rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[2])), self.initial_rot)
@@ -65,12 +85,13 @@ class IMUSensor(Sensor):
         )
 
     def data_string(self):
-        return self.name +\
-               "\n\torientation: " + str(self.value[0]) +\
-               "\n\tvelocity: " + str(self.value[1]) +\
-               "\n\tcurrent orientation: " + str(self.value[2]) +\
-               "\n\tcurrent accel: " + str(self.value[3]) +\
+        return self.name + \
+               "\n\torientation: " + str(self.value[0]) + \
+               "\n\tvelocity: " + str(self.value[1]) + \
+               "\n\tcurrent orientation: " + str(self.value[2]) + \
+               "\n\tcurrent accel: " + str(self.value[3]) + \
                "\n\tcurrent time: " + str(self.value[4])
+
 
 class Actuator:
     def __init__(self, name: str, actuator_id: int):
