@@ -1,19 +1,17 @@
 import time
 
-import hyper.quat as quat
-
-import hyper.comms as comms
-import lib.bno055 as bno055
+from hyper import quat, comms
+from lib import bno055
 
 
 class Input:
     def __init__(self):
-        self.comms = comms.Comms()
+        self.comm_port = comms.CommPort()
 
         self.ebrake_requested = False
-        self.ebrake_waittime = -1
+        self.ebrake_wait_time = -1
 
-        self.starttime = time.time()
+        self.start_time = time.time()
         self.duration = 0
 
         self.team_id = 1
@@ -22,36 +20,34 @@ class Input:
 
     def update(self):
         # check for ebrake on UDP
-        self.duration = time.time() - self.starttime
+        self.duration = time.time() - self.start_time
 
 
-class Sensor(Input):
-    def __init__(self, name, id):
-        super().__init__()
+class Sensor:
+    def __init__(self, name, sensor_id):
         self.name = name
-        self.id = id
+        self.sensor_id = sensor_id
 
 
 class AnalogSensor(Sensor):
-    def __init__(self, name, id, comms):
-        super().__init__(name, id)
-        self.comms = comms
+    def __init__(self, name, sensor_id, comm_port):
+        super().__init__(name, sensor_id)
+        self.comm_port = comm_port
         self.value = 0
 
     def update(self):
-        self.value = self.comms.read(self.id)
+        self.value = self.comm_port.read(self.sensor_id)
 
     def data_string(self):
-        return "sensor " + self.id + ": " + str(self.value)
+        return "sensor " + self.sensor_id + ": " + str(self.value)
 
 
 class IMUSensor(Sensor):
     IMU_ACCEL_SMOOTHING = 10
     IMU_ORIEN_SMOOTHING = 0.7
 
-    def __init__(self, name, id, comms):
-        super().__init__(name, id)
-        self.comms = comms
+    def __init__(self, name, sensor_id):
+        super().__init__(name, sensor_id)
         self.bno = bno055.BNO055(serial_port='/dev/ttyAMA0', rst=18)
         if self.bno.begin() is not True:
             print("Error initializing device")
@@ -89,6 +85,7 @@ class IMUSensor(Sensor):
         rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[2])), self.initial_rot)
         # Rotate relative, linear acceleration to initial orientation
         final_accel = quat.qv_mult(rot_q, self.value[3])
+        # TODO add in a filter here for accuracy sake
         # Add accel to velocity to get the current velocity
         self.value[1] = (
             self.value[1][0] + final_accel[0],
@@ -112,10 +109,10 @@ class IMUSensor(Sensor):
 
 
 class Actuator:
-    def __init__(self, name, id, comms):
+    def __init__(self, name, actu_id, comm_port):
         self.name = name
-        self.id = id
-        self.comms = comms
+        self.actu_id = actu_id
+        self.comm_port = comm_port
 
     def set(self, val):
-        self.comms.write(self.id, val)
+        self.comm_port.write(self.actu_id, val)

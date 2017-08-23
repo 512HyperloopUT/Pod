@@ -1,4 +1,4 @@
-class TestSubsystem():
+class TestSubsystem:
     def __init__(self, podinput):
         self.podinput = podinput
         self.printed = False
@@ -9,7 +9,7 @@ class TestSubsystem():
             print("hi there")
 
 
-class PublishSubsystem():
+class PublishSubsystem:
     def __init__(self, podinput):
         self.podinput = podinput
 

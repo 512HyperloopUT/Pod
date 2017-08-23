@@ -1,21 +1,20 @@
-import lib.hyper_io as io
-
-import pod.subsystem as subsystems
+from hyper import io
+from pod import subsystem
 
 
 class Pod:
     def __init__(self):
         self.podinput = io.Input()
         self.subsystems = []
-        self.subsystems.append(subsystems.TestSubsystem(self.podinput))
-        self.subsystems.append(subsystems.PublishSubsystem(self.podinput))
+        self.subsystems.append(subsystem.TestSubsystem(self.podinput))
+        self.subsystems.append(subsystem.PublishSubsystem(self.podinput))
 
     def loop(self):
         running = True
         while running:
             self.podinput.update()
-            for subsystem in self.subsystems:
-                subsystem.run()
+            for sub in self.subsystems:
+                sub.run()
             if self.podinput.duration > 5:
                 running = False
 

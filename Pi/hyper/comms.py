@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+from RPi import GPIO
 from enum import Enum
 import serial
 
@@ -9,7 +9,7 @@ class WriteDir(Enum):
     FORWARD = 1
 
 
-class Comms:
+class CommPort:
     def __init__(self):
         self.ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE,
                                  stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)

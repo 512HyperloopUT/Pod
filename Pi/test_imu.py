@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Using python 3
+# Testing the imu
 
-import time
-import lib.hyper_periph as periph
+from hyper import io
 
 ADDR = 0x28
 
 if __name__ == "__main__":
-    imu = periph.IMUSensor("imu", ADDR)
+    imu = io.IMUSensor("imu", ADDR)
     while True:
-        imu.update_sensor()
+        imu.update()
         print(imu.data_string())
