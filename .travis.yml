@@ -1,8 +1,0 @@
-language: cpp
-
-install:
- - sudo apt-get install libboost-all-dev
-
-script:
- - (cd Pi/src/ && cmake .)
- - (cd Pi/src/ && make)
