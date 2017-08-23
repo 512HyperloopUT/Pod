@@ -134,6 +134,7 @@ void Setup() {
     ConfigureAnalog();
     ConfigureGPIO(); //Pi communications
     ConfigureTiming(); //Systick setup
+	UARTprintf("%d\n", 512);
 }
 
 /*****************
