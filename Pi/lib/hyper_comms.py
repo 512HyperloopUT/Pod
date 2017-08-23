@@ -67,14 +67,14 @@ def __write_id(id):
 
 def __write_dir(dir):
     if dir == WriteDir.REVERSE:
-        GPIO.output(23, GPIO.HIGH)
-        GPIO.output(24, GPIO.LOW)
-    elif dir == WriteDir.FORWARD:
-        GPIO.output(23, GPIO.LOW)
         GPIO.output(24, GPIO.HIGH)
-    else:
-        GPIO.output(23, GPIO.LOW)
+        GPIO.output(25, GPIO.LOW)
+    elif dir == WriteDir.FORWARD:
         GPIO.output(24, GPIO.LOW)
+        GPIO.output(25, GPIO.HIGH)
+    else:
+        GPIO.output(24, GPIO.LOW)
+        GPIO.output(25, GPIO.LOW)
 
 def __finish():
     GPIO.output(0, GPIO.HIGH)
