@@ -4,6 +4,7 @@ import lib.hyper_subsystem as subsystems
 class Pod:
     def __init__(self):
         self.podinput = io.Input()
+        self.subsystems = []
         self.subsystems.append(subsystems.TestSubsystem(podinput))
 
     def start(self):
