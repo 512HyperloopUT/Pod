@@ -6,6 +6,7 @@ import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
 
+
 class Sensor:
     def __init__(self, name: str, sensor_id: int):
         self.name = name
@@ -47,6 +48,7 @@ class IMUSensor(Sensor):
     def update_sensor(self):
         self.value = self.value[0:2] + [self.bno.read_quaternion(), self.bno.read_linear_acceleration(),
                                         time.time()] + self.value[2:5]
+        self.value[3] = tuple([round(x, 1) for x in self.value[3]])
 
         # get the rotation from current coordinate system to original coordinate system
         rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[2])), self.initial_rot)
