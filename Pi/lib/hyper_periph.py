@@ -34,7 +34,7 @@ class AnalogSensor(Sensor):
 class IMUSensor(Sensor):
     def __init__(self, name: str, sensor_id: int):
         super().__init__(name, sensor_id)
-        self.bno = bno055.BNO055()
+        self.bno = bno055.BNO055(serial_port='/dev/ttyAMA0', rst=18)
         if self.bno.begin() is not True:
             print("Error initializing device")
             exit()
