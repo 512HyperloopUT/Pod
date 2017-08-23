@@ -2,7 +2,7 @@
 
 import time
 import RPi.GPIO as GPIO
-import lib.bno055
+import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
 
