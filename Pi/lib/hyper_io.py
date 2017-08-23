@@ -7,6 +7,8 @@ import lib.hyper_comms as comms
 
 class Input:
     def __init__(self):
+        self.comms = comms.Comms()
+
         self.ebrake_requested = False
         self.ebrake_waittime = -1
         self.cycles = 0
@@ -16,20 +18,22 @@ class Input:
         self.cycles += 1
 
 class AnalogSensor():
-    def __init__(self, id: int):
+    def __init__(self, id, comms):
         self.id = id
+        self.comms = comms
         self.value = 0
 
     def update(self):
-        self.value = comms.read(self.id)
+        self.value = self.comms.read(self.id)
 
     def data_string(self):
         return "sensor " + self.id + ": " + self.value
 
 
 class IMUSensor():
-    def __init__(self, id: int):
+    def __init__(self, id, comms):
         self.id = id
+        self.comms = comms
         self.bno = bno055.BNO055(serial_port='/dev/ttyAMA0', rst=18)
         if self.bno.begin() is not True:
             print("Error initializing device")
@@ -89,9 +93,10 @@ class IMUSensor():
                "\n\tcurrent time: " + str(self.value[4])
 
 class Actuator:
-    def __init__(self, name: str, actuator_id: int):
+    def __init__(self, name, id, comms):
         self.name = name
-        self.actuator_id = actuator_id
+        self.id = id
+        self.comms = commms
 
-    def set(self, val: int):
-        comms.write(self.actuator_id, val)
+    def set(self, val):
+        self.comms.write(self.id, val)
