@@ -1,8 +1,6 @@
 import lib.hyper_comms as comms
 import lib.hyper_periph as periph
 
-comms.init()
-
 while True:
     print('r = read, w = write, q = quit')
     choice = input("choice: ")
@@ -17,5 +15,3 @@ while True:
         break
     else:
         print('invalid option')
-
-comms.free()
