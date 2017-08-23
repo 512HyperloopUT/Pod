@@ -41,12 +41,8 @@ const uint8_t cmd_pins[] = {
 };
 //State of cmd writing
 const uint8_t pistt_width = 1;
-const uint32_t pistt_ports[] = {
-    PORT(L)
-};
-const uint8_t pistt_pins[] = {
-    PIN(3)
-};
+const uint32_t pistt_ports[] = {PORT(L)};
+const uint8_t pistt_pins[] = {PIN(3)};
 
 //Port for write cmd
 const uint8_t cmd_type_width = 1;
