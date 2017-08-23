@@ -77,6 +77,6 @@ def __write_dir(dir):
         GPIO.output(24, GPIO.LOW)
 
 def __finish():
-    GPIO.output(1, GPIO.HIGH)
+    GPIO.output(0, GPIO.HIGH)
     while GPIO.input(1) != GPIO.HIGH:
         pass
