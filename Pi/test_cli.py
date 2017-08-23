@@ -5,11 +5,11 @@ while True:
     choice = input("choice: ")
     if choice == 'r':
         readID = input("readID: ")
-        print('readUART: ', read(readID))
+        print('readUART: ', comms.read(readID))
     elif choice == 'w':
         writeID = input("writeID: ")
         dir = WriteDir(int(input("dir: ")))
-        write(writeID, dir)
+        comms.write(writeID, dir)
     elif choice == 'q':
         break
     else:
