@@ -60,11 +60,11 @@ def __finish(cmd):
         pass
 
 def __write_id(id):
-    GPIO.output(5, GPIO.HIGH if (sensorID & 0x1) != 0 else GPIO.LOW)
-    GPIO.output(12, GPIO.HIGH if (sensorID & 0x2) != 0 else GPIO.LOW)
-    GPIO.output(13, GPIO.HIGH if (sensorID & 0x4) != 0 else GPIO.LOW)
-    GPIO.output(19, GPIO.HIGH if (sensorID & 0x8) != 0 else GPIO.LOW)
-    GPIO.output(26, GPIO.HIGH if (sensorID & 0x10) != 0 else GPIO.LOW)
+    GPIO.output(5, GPIO.HIGH if (id & 0x1) != 0 else GPIO.LOW)
+    GPIO.output(12, GPIO.HIGH if (id & 0x2) != 0 else GPIO.LOW)
+    GPIO.output(13, GPIO.HIGH if (id & 0x4) != 0 else GPIO.LOW)
+    GPIO.output(19, GPIO.HIGH if (id & 0x8) != 0 else GPIO.LOW)
+    GPIO.output(26, GPIO.HIGH if (id & 0x10) != 0 else GPIO.LOW)
 
 def __write_dir(dir):
     if dir == REVERSE:
