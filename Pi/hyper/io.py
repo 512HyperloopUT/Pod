@@ -1,8 +1,10 @@
 import time
-import RPi.GPIO as GPIO
+
+import hyper.quat as quat
+
+import hyper.comms as comms
 import lib.bno055 as bno055
-import lib.hyper_quat as quat
-import lib.hyper_comms as comms
+
 
 class Input:
     def __init__(self):
@@ -22,9 +24,15 @@ class Input:
         #check for ebrake on UDP
         self.duration = time.time() - self.starttime
 
-class AnalogSensor():
-    def __init__(self, id, comms):
+class Sensor(Input):
+    def __init__(self, name, id):
+        super().__init__()
+        self.name = name
         self.id = id
+
+class AnalogSensor(Sensor):
+    def __init__(self, name, id, comms):
+        super().__init__(name, id)
         self.comms = comms
         self.value = 0
 
@@ -32,12 +40,15 @@ class AnalogSensor():
         self.value = self.comms.read(self.id)
 
     def data_string(self):
-        return "sensor " + self.id + ": " + self.value
+        return "sensor " + self.id + ": " + str(self.value)
 
 
-class IMUSensor():
-    def __init__(self, id, comms):
-        self.id = id
+class IMUSensor(Sensor):
+    IMU_ACCEL_SMOOTHING = 10
+    IMU_ORIEN_SMOOTHING = 0.7
+
+    def __init__(self, name, id, comms):
+        super().__init__(name, id)
         self.comms = comms
         self.bno = bno055.BNO055(serial_port='/dev/ttyAMA0', rst=18)
         if self.bno.begin() is not True:
@@ -101,7 +112,7 @@ class Actuator:
     def __init__(self, name, id, comms):
         self.name = name
         self.id = id
-        self.comms = commms
+        self.comms = comms
 
     def set(self, val):
         self.comms.write(self.id, val)

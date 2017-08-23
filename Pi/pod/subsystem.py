@@ -1,6 +1,3 @@
-import lib.hyper_io as io
-import time
-
 class TestSubsystem():
     def __init__(self, podinput):
         self.podinput = podinput

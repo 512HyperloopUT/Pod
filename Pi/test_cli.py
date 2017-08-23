@@ -1,5 +1,4 @@
-import lib.hyper_comms as comms
-import lib.hyper_periph as periph
+import hyper.comms as comms
 
 while True:
     print('r = read, w = write, q = quit')
