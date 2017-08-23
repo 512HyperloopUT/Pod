@@ -9,11 +9,6 @@ ADDR = 0x28
 if __name__ == "__main__":
     imu = periph.IMUSensor("imu", ADDR)
     while True:
-        print("Updating sensor. Values:")
+        print("Updating sensor.")
         imu.update_sensor()
-        print("\tdistance:", imu.value[0])
-        print("\tvelocity:", imu.value[1])
-        print("\tcurrent orientation:", imu.value[2])
-        print("\tcurrent acceleration:", imu.value[3])
-        print("\tcurrent time:", imu.value[4])
-        time.sleep(0.2)
+        print(imu.data_string())
