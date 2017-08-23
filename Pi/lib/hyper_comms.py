@@ -14,7 +14,6 @@ class WriteDir(Enum):
     FORWARD = 1
 
 def init():
-    GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
 
     GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#start cmd
