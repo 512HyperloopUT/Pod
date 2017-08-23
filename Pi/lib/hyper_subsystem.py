@@ -14,7 +14,7 @@ class TestSubsystem():
 
     def run(self):
         if time.time() - self.start > self.waittime:
-            if podinput.cycles > 500 and not self.printed:
+            if podinput.duration > 2 and not self.printed:
                 self.printed = True
                 print("hi there")
 

@@ -25,7 +25,7 @@ class Comms:
         GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)#id pin 2
         GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)#id pin 3
         GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)#id pin 4
-        print("gpio initialized")
+        print("comms initialized")
 
     def __del__(self):
         self.ser.close()

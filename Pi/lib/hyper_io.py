@@ -11,11 +11,13 @@ class Input:
 
         self.ebrake_requested = False
         self.ebrake_waittime = -1
-        self.cycles = 0
+
+        self.starttime = time.time()
+        self.duration = 0
 
     def update(self):
         #check for ebrake on UDP
-        self.cycles += 1
+        self.duration = time.time() - self.starttime
 
 class AnalogSensor():
     def __init__(self, id, comms):
