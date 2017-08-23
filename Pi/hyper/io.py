@@ -66,31 +66,29 @@ class IMUSensor(Sensor):
 
         delta_t = self.value[4] - self.value[7]
 
-        # Do a lowpass on accel
-        # TODO test efficacy
-        self.value[3] = tuple([
-            self.value[6][ind] + (
-                delta_t * (self.value[3][ind] - self.value[6][ind]) / IMUSensor.IMU_ACCEL_SMOOTHING
-            ) for ind in range(3)
-        ])
         # simple complimentary lowpass on orientation
         # TODO test efficacy
         self.value[3] = tuple([
-            (self.value[5][ind] * IMUSensor.IMU_ORIEN_SMOOTHING) +
-            (self.value[2][ind] * (1 - IMUSensor.IMU_ORIEN_SMOOTHING))
-            for ind in range(4)
+            (prev * IMUSensor.IMU_ORIEN_SMOOTHING) +
+            (curr * (1 - IMUSensor.IMU_ORIEN_SMOOTHING))
+            for prev, curr in zip(self.value[5], self.value[2])
         ])
-
         # get the rotation from current coordinate system to original coordinate system
         rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[2])), self.initial_rot)
         # Rotate relative, linear acceleration to initial orientation
-        final_accel = quat.qv_mult(rot_q, self.value[3])
+        self.value[3] = quat.qv_mult(rot_q, self.value[3])
+        # Do a lowpass on accel
+        # TODO test efficacy
+        self.value[3] = tuple([
+            prev + (delta_t * (curr - prev) / IMUSensor.IMU_ACCEL_SMOOTHING)
+            for prev, curr in zip(self.value[6], self.value[3])
+        ])
         # TODO add in a filter here for accuracy sake
         # Add accel to velocity to get the current velocity
         self.value[1] = (
-            self.value[1][0] + final_accel[0],
-            self.value[1][1] + final_accel[1],
-            self.value[1][2] + final_accel[2]
+            self.value[1][0] + self.value[3][0],
+            self.value[1][1] + self.value[3][1],
+            self.value[1][2] + self.value[3][2]
         )
         # Do a simple time delta for the new distance traveled
         self.value[0] = (
