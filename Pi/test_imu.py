@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+# Using python 3
+
+import time
+import lib.pod_periph as periph
+
+BUS = 1
+ADDR = 0x28
+
+if __name__ == "__main__":
+    imu = pod_periph.IMUSensor("imu", ADDR)
+    while True:
+        print("Updating sensor. Values:")
+        imu.update_sensor(cli)
+        print("\tdistance:", imu.value[0])
+        print("\tvelocity:", imu.value[1])
+        print("\tcurrent orientation:", imu.value[2])
+        print("\tcurrent acceleration:", imu.value[3])
+        print("\tcurrent time:", imu.value[4])
+        time.sleep(0.2)

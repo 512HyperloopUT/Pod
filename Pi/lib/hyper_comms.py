@@ -6,8 +6,6 @@ ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_N
 
 ser.isOpen()
 
-print("serial initialized")
-
 class WriteDir(Enum):
     REVERSE = 2
     NEUTRAL = 0
