@@ -66,7 +66,7 @@ const uint32_t picomm_ports[] = {
 
 
 //Write pins
-const uint32_t actu_write_count = 0;
+const uint8_t actu_write_count = 0;
 const uint32_t actu_forw_write_ports[] = {};
 const uint8_t actu_forw_write_pins[] = {};
 const uint32_t actu_back_write_ports[] = {};
