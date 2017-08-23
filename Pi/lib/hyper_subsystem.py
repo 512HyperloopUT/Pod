@@ -5,7 +5,7 @@ class Subsystem:
     def __init__(self, sensors):
         pass
 
-    def run():
+    def run(self):
         pass
 
 class EBrake(Subsystem):
@@ -16,7 +16,7 @@ class EBrake(Subsystem):
         self.waittime = 20
         self.start = time.time()
 
-    def run():
+    def run(self):
         if time.time() - self.start > self.waittime:
             if sensors[0].value > 500:
                 self.left_emag.set(2)
