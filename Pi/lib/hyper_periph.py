@@ -2,9 +2,9 @@
 
 import time
 import RPi.GPIO as GPIO
-import bno055
-import hyper_quat as quat
-import hyper_comms as comms
+import lib.bno055
+import lib.hyper_quat as quat
+import lib.hyper_comms as comms
 
 
 class Sensor:
@@ -25,7 +25,7 @@ class AnalogSensor(Sensor):
         super().__init__(name, sensor_id)
 
     def update_sensor(self):
-        self.value = comms.read(sensor_id=self.sensor_id)
+        self.value = comms.read(self.sensor_id)
 
     def data_string(self):
         return self.name + ": " + str(self.value)
