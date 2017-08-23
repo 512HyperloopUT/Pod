@@ -21,14 +21,16 @@ class Input:
         self.acceleration = 3
 
     def update(self):
-        #check for ebrake on UDP
+        # check for ebrake on UDP
         self.duration = time.time() - self.starttime
+
 
 class Sensor(Input):
     def __init__(self, name, id):
         super().__init__()
         self.name = name
         self.id = id
+
 
 class AnalogSensor(Sensor):
     def __init__(self, name, id, comms):
@@ -107,6 +109,7 @@ class IMUSensor(Sensor):
                "\n\tcurrent orientation: " + str(self.value[2]) + \
                "\n\tcurrent accel: " + str(self.value[3]) + \
                "\n\tcurrent time: " + str(self.value[4])
+
 
 class Actuator:
     def __init__(self, name, id, comms):

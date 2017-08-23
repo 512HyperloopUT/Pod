@@ -1,4 +1,5 @@
 import pod.pod as pod
 
-pod = pod.Pod()
-pod.start()
+if __name__ == "__main__":
+    pod = pod.Pod()
+    pod.start()

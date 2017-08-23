@@ -20,8 +20,8 @@ class Pod:
                 running = False
 
     def start(self):
-        #test comms
-        #calibrate
-        #cycle electromags
-        #cycle actuators
+        # test comms
+        # calibrate
+        # cycle electromags
+        # cycle actuators
         self.loop()

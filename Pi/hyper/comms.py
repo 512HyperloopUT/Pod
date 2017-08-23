@@ -2,29 +2,32 @@ import RPi.GPIO as GPIO
 from enum import Enum
 import serial
 
+
 class WriteDir(Enum):
     REVERSE = 2
     NEUTRAL = 0
     FORWARD = 1
 
+
 class Comms:
     def __init__(self):
-        self.ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+        self.ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE,
+                                 stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
         self.ser.isOpen()
 
         GPIO.setmode(GPIO.BCM)
 
-        GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)#start cmd
-        GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)#cmd type
-        GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)#write dir 0
-        GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)#write dir 1
-        GPIO.setup(1, GPIO.IN)#finish cmd
+        GPIO.setup(0, GPIO.OUT, initial=GPIO.LOW)  # start cmd
+        GPIO.setup(23, GPIO.OUT, initial=GPIO.LOW)  # cmd type
+        GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)  # write dir 0
+        GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)  # write dir 1
+        GPIO.setup(1, GPIO.IN)  # finish cmd
 
-        GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)#id pin 0
-        GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)#id pin 1
-        GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)#id pin 2
-        GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)#id pin 3
-        GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)#id pin 4
+        GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)  # id pin 0
+        GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)  # id pin 1
+        GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)  # id pin 2
+        GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)  # id pin 3
+        GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)  # id pin 4
         print("comms initialized")
 
     def __del__(self):
@@ -36,9 +39,9 @@ class Comms:
         self.__reset()
         self.__set_type(False)
         self.__write_id(id)
-        self.__finish()
         self.ser.flush()
-        return int(ser.readline())
+        self.__finish()
+        return int(self.ser.readline())
 
     def write(self, id, dir):
         self.__reset()
