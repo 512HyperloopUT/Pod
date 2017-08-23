@@ -1,11 +1,15 @@
-# Using python 3
-
 import time
 import RPi.GPIO as GPIO
 import lib.bno055 as bno055
 import lib.hyper_quat as quat
 import lib.hyper_comms as comms
 
+class Input:
+    def __init__(self):
+        self.cycles = 0
+
+    def update():
+        self.cycles += 1
 
 class Sensor:
     def __init__(self, name: str, sensor_id: int):
@@ -14,10 +18,10 @@ class Sensor:
         self.value = None
 
     def update(self):
-        raise Exception("Screwed up")
+        pass
 
     def data_string(self):
-        raise Exception("Screwed up")
+        pass
 
 
 class AnalogSensor(Sensor):
@@ -91,7 +95,6 @@ class IMUSensor(Sensor):
                "\n\tcurrent orientation: " + str(self.value[2]) + \
                "\n\tcurrent accel: " + str(self.value[3]) + \
                "\n\tcurrent time: " + str(self.value[4])
-
 
 class Actuator:
     def __init__(self, name: str, actuator_id: int):

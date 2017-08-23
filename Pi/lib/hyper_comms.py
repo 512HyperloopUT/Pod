@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 from enum import Enum
 import serial
 
-COMMS = None
+ser = None
 
 class WriteDir(Enum):
     REVERSE = 2
@@ -10,11 +10,8 @@ class WriteDir(Enum):
     FORWARD = 1
 
 def init():
-    global COMMS
-    if COMMS is None:
-        COMMS = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                      bytesize=serial.EIGHTBITS)
-        COMMS.isOpen()
+    ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
+    ser.isOpen()
 
     GPIO.setmode(GPIO.BCM)
 
@@ -36,8 +33,8 @@ def read(id):
     __set_type(False)
     __write_id(id)
     __finish()
-    COMMS.flush()
-    return int(COMMS.readline())
+    ser.flush()
+    return int(ser.readline())
 
 def write(id, dir):
     __reset()
@@ -47,7 +44,7 @@ def write(id, dir):
     __finish()
 
 def free():
-    COMMS.close()
+    ser.close()
     GPIO.cleanup()
     print("freed comm resources")
 

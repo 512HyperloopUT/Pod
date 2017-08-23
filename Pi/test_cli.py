@@ -8,7 +8,7 @@ while True:
     choice = input("choice: ")
     if choice == 'r':
         readID = int(input("readID: "))
-        print('readUART: ', comms.read(readID))
+        print('read: ', comms.read(readID))
     elif choice == 'w':
         writeID = int(input("writeID: "))
         dir = comms.WriteDir(int(input("dir: ")))

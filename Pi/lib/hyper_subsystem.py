@@ -1,23 +1,22 @@
-import lib.hyper_periph as periph
+import lib.hyper_io as io
 import time
 
 class Subsystem:
-    def __init__(self, sensors):
+    def __init__(self, input):
         pass
 
-    def run():
+    def run(self):
         pass
 
-class EBrake(Subsystem):
-    def __init__(self, sensors):
-        super().__init__(sensors)
-        self.left_emag = periph.Actuator("left_emag", 13)
-        self.right_emag = periph.Actuator("right_emag", 14)
+class TestSubsystem(Subsystem):
+    def __init__(self, input):
+        super().__init__(input)
         self.waittime = 20
         self.start = time.time()
+        self.printed = False
 
-    def run():
+    def run(self):
         if time.time() - self.start > self.waittime:
-            if sensors[0].value > 500:
-                self.left_emag.set(2)
-                self.right_emag.set(2)
+            if input.cycles > 500 and not self.printed:
+                self.printed = True
+                print("hi there")

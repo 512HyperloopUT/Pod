@@ -1,12 +1,23 @@
-import lib.hyper_periph as periph
-import lib.hyper_subsystem as subsystem
+import lib.hyper_io as io
+import lib.hyper_subsystem as subsystems
 
 class Pod:
     def __init__(self):
-        self.sensors = [periph.AnalogSensor("analogtest0", 0)]
-        self.subsystems = [subsystem.TestSubsystem(sensors)]
+        self.input = io.Input()
+        self.subsystems.append(subsystems.TestSubsystem(input))
+
+    def start():
+        #test comms
+        #calibrate
+        #cycle electromags
+        #cycle actuators
+        loop()
 
     def loop():
         running = True
         while running:
-            pass
+            self.input.update()
+            for subsystem in self.subsystems:
+                subsystem.run()
+            if self.input.cycles > 1000:
+                running = False
