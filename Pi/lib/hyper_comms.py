@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-import hyper_uart as uart
 from enum import Enum
 import serial
 
