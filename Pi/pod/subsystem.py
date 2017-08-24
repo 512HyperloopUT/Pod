@@ -105,12 +105,5 @@ class LogSubsystem:
     def run(self):
         i = self.input_data
         data_row = [i.status, i.accelerationX, i.accelerationY, i.accelerationZ,
-<<<<<<< HEAD
-                    i.OriW, i.OriX, i.OriY, i.OriZ, i.voltage, i.amperage_lowcurrent]
+                    i.OriW, i.OriX, i.OriY, i.OriZ, i.voltage, i.amperage_highcurrent]
         self.csv_writer.writerow(data_row)
-=======
-                    i.OriW, i.OriX, i.OriY, i.OriZ, i.voltage, i.amperage]
-        with open('log.csv', 'a', newline='') as csvfile:
-            csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            csv_writer.writerow(data_row)
->>>>>>> f6f98ae5eafdf68a569dc205b86390f45fec9d14

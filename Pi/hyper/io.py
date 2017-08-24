@@ -14,14 +14,9 @@ class Input:
         #self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
-<<<<<<< HEAD
         self.voltmeter = AnalogSensor(18, self.comm_port)
         self.ammeter_highcurrent = AnalogSensor(19, self.comm_port)
         self.ammeter_lowcurrent = AnalogSensor(-1, self.comm_port)
-=======
-        self.voltmeter = Voltmeter(18, self.comm_port)
-        self.ammeter = AnalogSensor(19, self.comm_port)
->>>>>>> f6f98ae5eafdf68a569dc205b86390f45fec9d14
         self.prox1 = DigitalSensor(0, self.comm_port)
         self.prox2 = DigitalSensor(1, self.comm_port)
         self.prox3 = DigitalSensor(2, self.comm_port)
@@ -97,8 +92,8 @@ class Input:
         self.user_command = self.udp_port.user_command
 
         self.voltage = self.voltmeter.get()
-        self.ammeter_lowcurrent = self.ammeter_lowcurrent.get()
         self.ammeter_highcurrent = self.ammeter_highcurrent.get()
+        self.ammeter_lowcurrent = self.ammeter_lowcurrent.get()
         self.lf_lev_extension = self.lf_lev_pot.get()
         self.rf_lev_extension = self.rf_lev_pot.get()
         self.lb_lev_extension = self.lb_lev_pot.get()
@@ -166,6 +161,7 @@ class AnalogSensor:
     def get(self):
         return self.value
 
+
 class Voltmeter:
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
@@ -174,8 +170,8 @@ class Voltmeter:
 
     def update(self):
         if self.in_id == -1:
-             self.value = -1
-             return
+            self.value = -1
+            return
         val = self.comm_port.readAnalog(self.in_id)
         vout = (val * 5.0) / 1024.0
         vin = vout / (7500 / (30000 + 7500))
