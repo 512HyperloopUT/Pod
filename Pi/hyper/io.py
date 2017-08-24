@@ -2,6 +2,7 @@ import time
 import struct
 from hyper import quat, comms
 from lib import bno055
+import spidev
 
 
 class Input:
@@ -165,6 +166,19 @@ class IMUSensor:
 
     def getOriZ(self):
             return self.value[2][3]
+
+
+class SPISensor:
+    def __init__(self, bus, port):
+        # 0,0 or 1,1
+        spi = spidev.SpiDev()
+        spi.open(bus, port)
+
+    def update(self):
+        pass
+
+    def data_string(self):
+        pass
 
 
 class Actuator:

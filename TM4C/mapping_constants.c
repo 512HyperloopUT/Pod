@@ -55,9 +55,10 @@ const uint32_t cmd_dir_ports[] = {PORT(F), PORT(F)};
 const uint8_t cmd_dir_pins[] = {PIN(1), PIN(2)};
 
 //Used GPIO ports
-const uint8_t picomm_port_count = 5;
+const uint8_t picomm_port_count = 6;
 const uint32_t picomm_ports[] = {
-    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L), GPIOPORT(N), GPIOPORT(P)
+    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L),
+	GPIOPORT(N), GPIOPORT(P)
 };
 
 
