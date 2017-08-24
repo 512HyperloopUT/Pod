@@ -1,5 +1,5 @@
 import time
-
+import struct
 from hyper import quat, comms
 from lib import bno055
 
@@ -16,6 +16,15 @@ class Input:
 
         self.team_id = 1
         self.status = 2
+        self.acceleration = 3
+        self.position = 4
+        self.velocity = 5
+        self.battery_voltage = 6
+        self.battery_current = 7
+        self.battery_temperature = 8
+        self.pod_temperature = 9
+        self.stripe_count = 10
+
         self.accelerationX = 0
         self.accelerationY = 0
         self.accelerationZ = 0
@@ -35,7 +44,17 @@ class Input:
         self.OriX = self.imu.getOriX()
         self.OriY = self.imu.getAccY()
         self.OriZ = self.imu.getOriZ()
-        
+
+    def get_packed_data(self):
+        """
+        :return: The 34 byte telemetry frame of required data as specified by the SpaceX documentation.
+        """
+        input_data = [self.team_id, self.status, self.acceleration, self.position, self.velocity, self.battery_voltage,
+                      self.battery_current, self.battery_temperature, self.pod_temperature, self.stripe_count]
+        packer = struct.Struct('! B B i i i i i i i I')
+        packed_data = packer.pack(*input_data)
+        return packed_data
+
     def isReady(self):
         # if input is ready to be updated
         # check comms
