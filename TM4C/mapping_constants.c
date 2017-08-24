@@ -57,13 +57,21 @@ const uint8_t cmd_dir_pins[] = {PIN(1), PIN(2)};
 //Used GPIO ports
 const uint8_t picomm_port_count = 5;
 const uint32_t picomm_ports[] = {
-    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L), GPIOPORT(P)
+    GPIOPORT(F), GPIOPORT(H), GPIOPORT(K), GPIOPORT(L), GPIOPORT(N), GPIOPORT(P)
 };
 
 
 //Write pins
-const uint8_t actu_write_count = 0;
-const uint32_t actu_forw_write_ports[] = {};
-const uint8_t actu_forw_write_pins[] = {};
-const uint32_t actu_back_write_ports[] = {};
-const uint8_t actu_back_write_pins[] = {};
+const uint8_t actu_write_count = 1;
+const uint32_t actu_forw_write_ports[] = {
+	PORT(N)
+};
+const uint8_t actu_forw_write_pins[] = {
+	PIN(5)
+};
+const uint32_t actu_back_write_ports[] = {
+	PORT(N)
+};
+const uint8_t actu_back_write_pins[] = {
+	PIN(4)
+};
