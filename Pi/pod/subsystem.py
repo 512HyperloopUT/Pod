@@ -45,10 +45,10 @@ class LogSubsystem:
         # create a logging format
         self.formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        self.handler.setFormatter(formatter)
+        self.handler.setFormatter(self.formatter)
 
         # add the handlers to the logger
-        self.logger.addHandler(handler)
+        self.logger.addHandler(self.handler)
 
         def run(self):
             self.logger.info('\nStatus:' + self.input_data.status +
