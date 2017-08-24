@@ -52,4 +52,4 @@ class LogSubsystem:
 
     def run(self):
         self.logger.info('\nStatus:' + str(self.input_data.status) +
-                         '\nAcceleration:)' + str(self.input_data.acceleration)
+                         '\nAcceleration:)' + str(self.input_data.acceleration))
