@@ -32,7 +32,7 @@ class Input:
         return True
 
 
-class AnalogSensor(Sensor):
+class AnalogSensor():
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
         self.comm_port = comm_port
@@ -45,7 +45,7 @@ class AnalogSensor(Sensor):
         return "sensor " + self.in_id + ": " + str(self.value)
 
 
-class IMUSensor(Sensor):
+class IMUSensor():
     IMU_ACCEL_SMOOTHING = 10
     IMU_ORIEN_SMOOTHING = 0.7
 
