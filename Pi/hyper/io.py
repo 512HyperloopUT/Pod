@@ -14,24 +14,24 @@ class Input:
         self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
-        self.voltmeter = Sensor(11, self.comm_port)
-        self.ammeter = Sensor(7, self.comm_port)
-        self.prox1 = Sensor(20, self.comm_port)
-        self.prox2 = Sensor(21, self.comm_port)
-        self.prox3 = Sensor(22, self.comm_port)
-        self.prox4 = Sensor(23, self.comm_port)
-        self.retro1 = Sensor(24, self.comm_port)
-        self.retro2 = Sensor(25, self.comm_port)
-        self.lf_lev_pot = Sensor(3, self.comm_port)
-        self.rf_lev_pot = Sensor(4, self.comm_port)
-        self.lb_lev_pot = Sensor(5, self.comm_port)
-        self.rb_lev_pot = Sensor(6, self.comm_port)
-        self.lf_lat_pot = Sensor(1, self.comm_port)
-        self.rf_lat_pot = Sensor(2, self.comm_port)
-        self.lb_lat_pot = Sensor(16, self.comm_port)
-        self.rb_lat_pot = Sensor(17, self.comm_port)
-        self.l_ebr_pot = Sensor(10, self.comm_port)
-        self.r_ebr_pot = Sensor(9, self.comm_port)
+        self.voltmeter = AnalogSensor(11, self.comm_port)
+        self.ammeter = AnalogSensor(7, self.comm_port)
+        self.prox1 = DigitalSensor(20, self.comm_port)
+        self.prox2 = DigitalSensor(21, self.comm_port)
+        self.prox3 = DigitalSensor(22, self.comm_port)
+        self.prox4 = DigitalSensor(23, self.comm_port)
+        self.retro1 = DigitalSensor(24, self.comm_port)
+        self.retro2 = DigitalSensor(25, self.comm_port)
+        self.lf_lev_pot = AnalogSensor(3, self.comm_port)
+        self.rf_lev_pot = AnalogSensor(4, self.comm_port)
+        self.lb_lev_pot = AnalogSensor(5, self.comm_port)
+        self.rb_lev_pot = AnalogSensor(6, self.comm_port)
+        self.lf_lat_pot = AnalogSensor(1, self.comm_port)
+        self.rf_lat_pot = AnalogSensor(2, self.comm_port)
+        self.lb_lat_pot = AnalogSensor(16, self.comm_port)
+        self.rb_lat_pot = AnalogSensor(17, self.comm_port)
+        self.l_ebr_pot = AnalogSensor(10, self.comm_port)
+        self.r_ebr_pot = AnalogSensor(9, self.comm_port)
 
         # useful inputs
         self.start_time = int(time.time() * 1000)
@@ -128,7 +128,23 @@ class Input:
         return True
 
 
-class Sensor:
+class DigitalSensor:
+    def __init__(self, in_id, comm_port):
+        self.in_id = in_id
+        self.comm_port = comm_port
+        self.value = False
+
+    def update(self):
+        if self.in_id == -1:
+            self.value = -1
+            return
+        self.value = self.comm_port.readDigital(self.in_id)
+
+    def get(self):
+        return self.value
+
+
+class AnalogSensor:
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
         self.comm_port = comm_port
@@ -138,7 +154,7 @@ class Sensor:
         if self.in_id == -1:
             self.value = -1
             return
-        self.value = self.comm_port.read(self.in_id)
+        self.value = self.comm_port.readAnalog(self.in_id)
 
     def get(self):
         return self.value

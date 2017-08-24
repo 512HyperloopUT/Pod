@@ -35,9 +35,19 @@ class CommPort:
         GPIO.cleanup()
         print("freed comm resources")
 
-    def read(self, sensor_id):
+    def readDigital(self, sensor_id):
         self.__reset()
         self.__set_type(False)
+        self.__set_dir(WriteDir.RETRACT)
+        self.__write_id(sensor_id)
+        self.ser.flush()
+        self.__finish()
+        return bool(self.ser.readline())
+
+    def readAnalog(self, sensor_id):
+        self.__reset()
+        self.__set_type(False)
+        self.__set_dir(WriteDir.NEUTRAL)
         self.__write_id(sensor_id)
         self.ser.flush()
         self.__finish()
