@@ -7,8 +7,8 @@ All commands are prefaced by 35 's' characters... for reasons
 
 - E-brake
     'stop'
-- Reset Board
-    'reset'
+[- Reset Board
+    'reset'] -> Deprecated
 - Set Time
     'time' 'n'  n being time in seconds
 - Send Command
@@ -66,7 +66,7 @@ class Frame(Tkinter.Frame):
         self.button.grid(row=1, columnspan=1, sticky='n')
         self.entry.grid(row=2, columnspan=1, sticky='nw')
         self.time_button.grid(row=2, columnspan=2, sticky='ne')
-        self.reset_button.grid(row=3, columnspan=3, sticky='n')
+        #self.reset_button.grid(row=3, columnspan=3, sticky='n')
         self.cmd_entry.grid(row=4, columnspan=1, sticky='nw')
         self.cmd_button.grid(row=4, columnspan=2, sticky='ne')
         self.text_box.grid(row=5, columnspan=1, sticky='n')
