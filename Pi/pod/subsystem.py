@@ -69,7 +69,7 @@ class TestSubsystem:
         self.printed = False
 
     def run(self):
-        if self.input_data.duration > 2 and not self.printed:
+        if self.input_data.duration > 2000 and not self.printed:
             self.printed = True
             print("hi there")
 

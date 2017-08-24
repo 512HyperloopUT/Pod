@@ -34,7 +34,7 @@ class Input:
         self.r_ebr_pot = Sensor(9, self.comm_port)
 
         # useful inputs
-        self.start_time = time.time()
+        self.start_time = int(time.time() * 1000)
         self.duration = 0
 
         self.emag_activated = False
@@ -75,7 +75,7 @@ class Input:
         self.r_ebr_extension = 0
 
     def update(self):
-        self.duration = time.time() - self.start_time
+        self.duration = int(time.time() * 1000) - self.start_time
         self.accelerationX = self.imu.getAccX()
         self.accelerationY = self.imu.getAccY()
         self.accelerationZ = self.imu.getAccZ()
