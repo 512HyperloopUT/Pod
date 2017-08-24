@@ -1,5 +1,8 @@
 import time
 import struct
+
+import os
+
 from hyper import quat, comms, udp
 from lib import bno055
 import spidev
@@ -178,27 +181,29 @@ class IMUSensor:
 
 
 class ThermoSensor:
-    def __init__(self, cs):
-        # 17 27
-        self.spi = spidev.SpiDev()
-        self.spi.open(0, 0)
-        self.cs = 17 if cs == 0 else 27
-        GPIO.setup(self.cs, GPIO.OUT, initial=GPIO.HIGH)
+    THERMO_PIN = 17
+
+    def __init__(self, serial):
+        self.serial = serial
+        GPIO.setup(self.THERMO_PIN, GPIO.OUT, initial=GPIO.LOW)
+
+        os.system('modprobe w1-gpio')
+        os.system('modprobe w1-therm')
+        self.temp_sensor = "sys/bus/w1/devices/28-" + self.serial + "/w1_slave"
+
         self.value = None
 
+    def temp_raw(self):
+        f = open(self.temp_sensor, 'r')
+        lines = f.readlines()
+        f.close()
+        return lines
+
     def update(self):
-        GPIO.output(self.cs, GPIO.LOW)
-        time.sleep(0.001)
-        v = self.spi.readbytes(2)
-        GPIO.output(self.cs, GPIO.HIGH)
-        if (v & 0x4) != 0:
-            # uh oh, no thermocouple attached!
-            self.value = None
-        v = v >> 3
-        self.value = v*0.25
+        pass
 
     def data_string(self):
-        return "spi sensor, degrees celsius: " + self.value
+        return "spi sensor, degrees celsius: " + str(self.value)
 
 
 class Actuator:
