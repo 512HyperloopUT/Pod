@@ -1,4 +1,6 @@
 import logging
+from socket import socket, AF_INET, SOCK_DGRAM
+
 from hyper import io
 
 
@@ -22,13 +24,19 @@ class EMagSubsystem:
         self.emag.set(self.input_data.emag_activated)
 
 
-class PublishSubsystem:
-    def __init__(self, input_data):
-        self.input_data = input_data
+class PublishSubsystem():
+    def __init__(self, podinput):
+        self.podinput = podinput
+        self.gui_socket = socket(AF_INET, SOCK_DGRAM)
+        self.last_send = podinput.duration()
+
+        self.SERVER_IP = '192.168.0.1'
+        self.PORT = 3000
 
     def run(self):
-        # publish sensor data to UDP
-        pass
+        if self.podinput.duration() != self.last_send:
+            self.last_send = self.podinput.duration()
+            self.gui_socket.sendto(self.podinput.get_packed_data(), (self.SERVER_IP, self.PORT))
 
 
 class LogSubsystem:
