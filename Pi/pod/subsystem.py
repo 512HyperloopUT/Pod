@@ -33,7 +33,7 @@ class PublishSubsystem:
 
 class LogSubsystem:
 	def __init__(self, input_data):
-		self.input_data = input_data
+        self.input_data = input_data
 
         self.logger = logging.getLogger(self.input_data.team_id)
         self.logger.setLevel(logging.INFO)
