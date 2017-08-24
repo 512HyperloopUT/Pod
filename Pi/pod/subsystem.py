@@ -28,7 +28,7 @@ class PublishSubsystem():
     def __init__(self, podinput):
         self.podinput = podinput
         self.gui_socket = socket(AF_INET, SOCK_DGRAM)
-        self.last_send = podinput.duration()
+        self.last_send = self.podinput.duration
 
         self.SERVER_IP = '192.168.0.1'
         self.PORT = 3000
@@ -36,7 +36,8 @@ class PublishSubsystem():
     def run(self):
         if self.podinput.duration() != self.last_send:
             self.last_send = self.podinput.duration()
-            self.gui_socket.sendto(self.podinput.get_packed_data(), (self.SERVER_IP, self.PORT))
+            self.gui_socket.sendto(
+                self.podinput.get_packed_data(), (self.SERVER_IP, self.PORT))
 
 
 class LogSubsystem:
@@ -60,5 +61,5 @@ class LogSubsystem:
 
     def run(self):
         self.logger.info("\nStatus: " + str(self.input_data.status) +
-                         "\nAcceleration(x,y,z): " + str(self.input_data.accelerationX) +str(self.input_data.accelerationY) + str(self.input_data.accelerationZ) +
-                         "\nOrientation(w,x,y,z): " + str(self.input_data.OriW) + str(self.input_data.OriX) + str(self.input_data.OriY) +str(self.input_data.OriZ))
+                         "\nAcceleration(x,y,z): " + str(self.input_data.accelerationX) + str(self.input_data.accelerationY) + str(self.input_data.accelerationZ) +
+                         "\nOrientation(w,x,y,z): " + str(self.input_data.OriW) + str(self.input_data.OriX) + str(self.input_data.OriY) + str(self.input_data.OriZ))
