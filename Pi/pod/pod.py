@@ -6,8 +6,12 @@ class Pod:
     def __init__(self):
         self.input_data = io.Input()
         self.subsystems = []
+        self.subsystems.append(subsystem.LateralSubsystem(self.input_data))
+        self.subsystems.append(subsystem.LevitationSubsystem(self.input_data))
+        self.subsystems.append(subsystem.BrakeSubsystem(self.input_data))
+        self.subsystems.append(subsystem.EBrakeSubsystem(self.input_data))
+        self.subsystems.append(subsystem.BatterySubsystem(self.input_data))
         self.subsystems.append(subsystem.TestSubsystem(self.input_data))
-        self.subsystems.append(subsystem.EMagSubsystem(self.input_data))
         self.subsystems.append(subsystem.PublishSubsystem(self.input_data))
         self.subsystems.append(subsystem.LogSubsystem(self.input_data))
 

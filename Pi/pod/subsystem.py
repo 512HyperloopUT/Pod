@@ -4,6 +4,65 @@ from socket import socket, AF_INET, SOCK_DGRAM
 from hyper import io
 
 
+# HARDWARE SUBSYSTEMS
+
+
+class LevitationSubsystem:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.lf_lev = io.Actuator(0, input_data.comm_port)
+        self.rf_lev = io.Actuator(1, input_data.comm_port)
+        self.lb_lev = io.Actuator(2, input_data.comm_port)
+        self.rb_lev = io.Actuator(3, input_data.comm_port)
+
+    def run(self):
+        pass
+
+
+class LateralSubsystem:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.lf_lat = io.Actuator(4, input_data.comm_port)
+        self.rf_lat = io.Actuator(5, input_data.comm_port)
+        self.lb_lat = io.Actuator(6, input_data.comm_port)
+        self.rb_lat = io.Actuator(7, input_data.comm_port)
+
+    def run(self):
+        pass
+
+
+class BrakeSubsystem:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.l_br = io.Actuator(10, input_data.comm_port)
+        self.r_br = io.Actuator(11, input_data.comm_port)
+
+    def run(self):
+        pass
+
+
+class EBrakeSubsystem:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.l_ebr = io.Actuator(8, input_data.comm_port)
+        self.r_ebr = io.Actuator(9, input_data.comm_port)
+
+    def run(self):
+        pass
+
+
+class BatterySubsystem:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.battery_switch = io.DigitalOutput(12, input_data.comm_port)
+
+    def run(self):
+        pass
+
+
+# SOFTWARE SUBSYSTEMS
+
+
 class TestSubsystem:
     def __init__(self, input_data):
         self.input_data = input_data
@@ -13,15 +72,6 @@ class TestSubsystem:
         if self.input_data.duration > 2 and not self.printed:
             self.printed = True
             print("hi there")
-
-
-class EMagSubsystem:
-    def __init__(self, input_data):
-        self.input_data = input_data
-        self.emag = io.EMag(-1, input_data.comm_port)
-
-    def run(self):
-        self.emag.set(self.input_data.emag_activated)
 
 
 class PublishSubsystem():

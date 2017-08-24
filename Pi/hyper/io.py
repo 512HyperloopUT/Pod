@@ -22,6 +22,10 @@ class Input:
         self.prox4 = Sensor(-1, comm_port)
         self.retro1 = Sensor(-1, comm_port)
         self.retro2 = Sensor(-1, comm_port)
+        self.lf_lev_pot = Sensor(-1, comm_port)
+        self.rf_lev_pot = Sensor(-1, comm_port)
+        self.lb_lev_pot = Sensor(-1, comm_port)
+        self.rb_lev_pot = Sensor(-1, comm_port)
         self.lf_lat_pot = Sensor(-1, comm_port)
         self.rf_lat_pot = Sensor(-1, comm_port)
         self.lb_lat_pot = Sensor(-1, comm_port)
@@ -57,6 +61,10 @@ class Input:
 
         self.voltage = 0
         self.amperage = 0
+        self.lf_lev_extension = 0
+        self.rf_lev_extension = 0
+        self.lb_lev_extension = 0
+        self.rb_lev_extension = 0
         self.lf_lat_extension = 0
         self.rf_lat_extension = 0
         self.lb_lat_extension = 0
@@ -80,6 +88,10 @@ class Input:
 
         self.voltage = self.voltmeter.get()
         self.amperage = self.ammeter.get()
+        self.lf_lev_extension = self.lf_lev_pot.get()
+        self.rf_lev_extension = self.rf_lev_pot.get()
+        self.lb_lev_extension = self.lb_lev_pot.get()
+        self.rb_lev_extension = self.rb_lev_pot.get()
         self.lf_lat_extension = self.lf_lat_pot.get()
         self.rf_lat_extension = self.rf_lat_pot.get()
         self.lb_lat_extension = self.lb_lat_pot.get()
@@ -235,6 +247,17 @@ class ThermoSensor:
         return "spi sensor, degrees celsius: " + str(self.value)
 
 
+class DigitalOutput:
+    def __init__(self, out_id, comm_port):
+        self.out_id = out_id
+        self.comm_port = comm_port
+
+    def set(self, val):
+        if self.out_id == -1:
+            return
+        self.comm_port.writeDigial(self.out_id, val)
+
+
 class Actuator:
     def __init__(self, out_id, comm_port):
         self.out_id = out_id
@@ -244,14 +267,3 @@ class Actuator:
         if self.out_id == -1:
             return
         self.comm_port.writeDigitalActuator(self.out_id, val)
-
-
-class EMag:
-    def __init__(self, out_id, comm_port):
-        self.out_id = out_id
-        self.comm_port = comm_port
-
-    def set(self, val):
-        if self.out_id == -1:
-            return
-        self.comm_port.writeDigial(self.out_id, val)
