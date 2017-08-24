@@ -1,3 +1,7 @@
+import logging
+
+
+
 class TestSubsystem:
     def __init__(self, input_data):
         self.input_data = input_data
@@ -16,3 +20,27 @@ class PublishSubsystem:
     def run(self):
         # publish sensor data to UDP
         pass
+
+
+class LogSystem:
+	def _init_(self, input_data)
+		self.input_data = input_data
+
+	def run(self)
+		logger = logging.getlogger(input_data.team_id)
+		logger.setLevel(logging.INFO)
+
+		# create a file handler
+		handler = logging.FileHandler('status.log')
+		handler.setLevel(logging.INFO)
+
+		# create a logging format
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		handler.setFormatter(formatter)
+
+		# add the handlers to the logger
+		logger.addHandler(handler)
+
+		logger.info('\nStatus:' + input_data.status +
+					'\nEbrake Requested:' + input_data.ebrake_requested +
+					'\nAcceleration:)' + input_data.acceleration)
