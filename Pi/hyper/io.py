@@ -1,8 +1,6 @@
 import time
 import struct
-
 import os
-
 from hyper import quat, comms, udp
 from lib import bno055
 import spidev
@@ -12,7 +10,7 @@ from RPi import GPIO
 class Input:
     def __init__(self):
         self.comm_port = comms.CommPort()
-        #self.imu = IMUSensor()
+        self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
         self.start_time = time.time()
@@ -29,8 +27,8 @@ class Input:
         self.velocity = 5  # cm/s
         self.battery_voltage = 6  # millivolts
         self.battery_current = 7  # milliamps
-        self.battery_temperature = 8 # tenths of C
-        self.pod_temperature = 9 # tenths of C
+        self.battery_temperature = 8  # tenths of C
+        self.pod_temperature = 9  # tenths of C
         self.stripe_count = 10
 
         self.accelerationX = 0
@@ -44,14 +42,14 @@ class Input:
 
     def update(self):
         self.duration = time.time() - self.start_time
-        #self.accelerationX = self.imu.getAccX()
-        #self.accelerationY = self.imu.getAccY()
-        #self.accelerationZ = self.imu.getAccZ()
+        self.accelerationX = self.imu.getAccX()
+        self.accelerationY = self.imu.getAccY()
+        self.accelerationZ = self.imu.getAccZ()
 
-        #self.OriW = self.imu.getOriW()
-        #self.OriX = self.imu.getOriX()
-        #self.OriY = self.imu.getAccY()
-        #self.OriZ = self.imu.getOriZ()
+        self.OriW = self.imu.getOriW()
+        self.OriX = self.imu.getOriX()
+        self.OriY = self.imu.getAccY()
+        self.OriZ = self.imu.getOriZ()
 
         self.udp_port.update()
         self.emag_activated = self.udp_port.ebrake
@@ -159,25 +157,25 @@ class IMUSensor:
             "\n\tcurrent time: " + str(self.value[4])
 
     def getAccX(self):
-            return self.value[3][0]
+        return self.value[3][0]
 
     def getAccY(self):
-            return self.value[3][1]
+        return self.value[3][1]
 
     def getAccZ(self):
-            return self.value[3][2]
+        return self.value[3][2]
 
     def getOriW(self):
-            return self.value[2][0]
+        return self.value[2][0]
 
     def getOriX(self):
-            return self.value[2][1]
+        return self.value[2][1]
 
     def getOriY(self):
-            return self.value[2][2]
+        return self.value[2][2]
 
     def getOriZ(self):
-            return self.value[2][3]
+        return self.value[2][3]
 
 
 class ThermoSensor:
