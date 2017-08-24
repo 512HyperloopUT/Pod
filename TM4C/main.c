@@ -27,7 +27,7 @@
 #include "driverlib/systick.h"
 #include "driverlib/adc.h"
 /* Board driver */
-#include "drivers/pinout.h"
+#include "pinout.h"
 /* UART */
 #include "utils/uartstdio.h"
 
