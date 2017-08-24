@@ -69,10 +69,10 @@ void ExecCmd(void) {
 		} else {
 			if (cmd != 31) {
 				uint32_t read_val;
-				if (aux == 0) {
+				if (cmd_dir == 0) {
 					//TODO Read the selected sensor
 					read_val = MapADCRead(cmd);
-				} else {
+				} else if (cmd_dir == 1) {
 					//TODO Read the selected sensor
 					read_val = DigiReadPin(digi_read_ports[cmd], digi_read_pins[cmd]);
 				}
