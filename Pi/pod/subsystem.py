@@ -1,4 +1,5 @@
 import logging
+import csv
 from socket import socket, AF_INET, SOCK_DGRAM
 
 from hyper import io
@@ -94,23 +95,13 @@ class PublishSubsystem():
 class LogSubsystem:
     def __init__(self, input_data):
         self.input_data = input_data
-
-        self.logger = logging.getLogger(str(self.input_data.team_id))
-        self.logger.setLevel(logging.INFO)
-
-        # create a file handler
-        self.handler = logging.FileHandler("status.log")
-        self.handler.setLevel(logging.INFO)
-
-        # create a logging format
-        self.formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        self.handler.setFormatter(self.formatter)
-
-        # add the handlers to the logger
-        self.logger.addHandler(self.handler)
+        with open('log.csv', 'w', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            self.csv_writer = csv_writer
+            csv_writer.writerow(['status', 'x-acceleration', 'y-acceleration', 'z-acceleration', 'w-orientation',
+                                 'x-orientation', 'y-orientation', 'z-orientation'])
 
     def run(self):
-        self.logger.info("\nStatus: " + str(self.input_data.status) +
-                         "\nAcceleration(x,y,z): " + str(self.input_data.accelerationX) + str(self.input_data.accelerationY) + str(self.input_data.accelerationZ) +
-                         "\nOrientation(w,x,y,z): " + str(self.input_data.OriW) + str(self.input_data.OriX) + str(self.input_data.OriY) + str(self.input_data.OriZ))
+        i = self.input_data
+        data_row = [i.status, i.accelerationX, i.accelerationY, i.accelerationZ, i.OriW, i.OriX, i.OriY, i.OriZ]
+        self.csv_writer.writerow(data_row)
