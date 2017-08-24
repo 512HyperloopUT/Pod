@@ -78,6 +78,13 @@ class Input:
         self.emag_timer = self.udp_port.timer
         self.user_command = self.udp_port.user_command
 
+        self.voltage = self.voltmeter.get()
+        self.amperage = self.ammeter.get()
+        self.lf_lat_extension = self.lf_lat_pot.get()
+        self.rf_lat_extension = self.rf_lat_pot.get()
+        self.lb_lat_extension = self.lb_lat_pot.get()
+        self.rb_lat_extension = self.rb_lat_pot.get()
+
     def get_packed_data(self):
         """
         :return: The 34 byte telemetry frame of required data as specified by the SpaceX documentation.
