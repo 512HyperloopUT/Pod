@@ -197,14 +197,8 @@ def count():
 
 def cmdQuit():
     """Quits the program"""
-    top = Toplevel()
-    top.title("Quit?")
-    msg = Message(top, text='Are you sure?', width=1000)
-    msg.pack(side="top", padx=10, pady=10)
-    button = Button(top, text="No", command=top.destroy)
-    button.pack()
-    buttonq = Button(top, text="Yes", command=quit)
-    buttonq.pack()
+    quit()
+
 if __name__ == "__main__":
     root = Tkinter.Tk()
     mainFrame = Frame(root)
