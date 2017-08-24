@@ -39,18 +39,17 @@ class LogSubsystem:
         self.logger.setLevel(logging.INFO)
 
         # create a file handler
-        self.handler = logging.FileHandler('status.log')
+        self.handler = logging.FileHandler("status.log")
         self.handler.setLevel(logging.INFO)
 
         # create a logging format
         self.formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         self.handler.setFormatter(self.formatter)
 
         # add the handlers to the logger
         self.logger.addHandler(self.handler)
 
     def run(self):
-        self.logger.info('\nStatus:' + str(self.input_data.status) +
-                         '\nEbrake Requested:' + str(self.input_data.ebrake_requested) +
-                         '\nAcceleration:)' + str(self.input_data.acceleration))
+        self.logger.info("\nStatus:" + str(self.input_data.status) +
+                         "\nAcceleration:)" + str(self.input_data.acceleration))
