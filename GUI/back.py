@@ -45,6 +45,7 @@ class Frame(Tkinter.Frame):
         self.cmd_entry = Entry(self.parent)
         self.cmd_button = Button(self.parent, text="Send Command", command=cmdCommand)
         self.reset_button = Button(self.parent, text="Reset TI Board", command=cmdReset)
+        self.quit_button = Button(self.parent, text="Quit Program", command=cmdQuit)
         self.text_box = Text(self.parent)
 
         self.current_data = defaultValues
@@ -72,7 +73,8 @@ class Frame(Tkinter.Frame):
         #self.reset_button.grid(row=3, columnspan=3, sticky='n')
         self.cmd_entry.grid(row=4, columnspan=1, sticky='nw')
         self.cmd_button.grid(row=4, columnspan=2, sticky='ne')
-        self.text_box.grid(row=5, columnspan=1, sticky='n')
+        self.quit_button.grid(row=5, columnspan=1, sticky='n')
+        self.text_box.grid(row=6, columnspan=1, sticky='n')
         self.text_box.insert(END, "Warnings: \n")
 
     def init_data(self):
@@ -163,9 +165,13 @@ def count():
         updateData(mainFrame, receivedList)
         mainFrame.check_warnings()
 
+def cmdQuit():
+    quit()
 
 if __name__ == "__main__":
     root = Tkinter.Tk()
     mainFrame = Frame(root)
-    threading.Thread(target=count).start()
+    t = threading.Thread(target=count)
+    t.daemon = True
+    t.start()
     root.mainloop()

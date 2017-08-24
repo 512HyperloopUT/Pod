@@ -84,7 +84,7 @@ class PublishSubsystem():
         self.PORT = 3000
 
     def run(self):
-        if self.podinput.duration != self.last_send:
+        if self.podinput.duration - self.last_send >= 500:
             self.last_send = self.podinput.duration
             self.gui_socket.sendto(
                 self.podinput.get_packed_data(), (self.SERVER_IP, self.PORT))
