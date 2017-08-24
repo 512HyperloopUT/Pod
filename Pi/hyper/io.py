@@ -126,7 +126,7 @@ class Actuator:
 
 
 class EMag:
-    def __init(self, out_id, comm_port):
+    def __init__(self, out_id, comm_port):
         self.out_id = out_id
         self.comm_port = comm_port
 
