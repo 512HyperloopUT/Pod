@@ -76,7 +76,7 @@ class IMUSensor(Sensor):
 
         # simple complimentary lowpass on orientation
         # TODO test efficacy
-        self.value[3] = tuple([
+        self.value[2] = tuple([
             (prev * IMUSensor.IMU_ORIEN_SMOOTHING) +
             (curr * (1 - IMUSensor.IMU_ORIEN_SMOOTHING))
             for prev, curr in zip(self.value[5], self.value[2])
