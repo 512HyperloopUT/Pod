@@ -27,7 +27,7 @@ class Input:
         if not self.comm_port.read(31) == 512:
             return False
 
-        #calibrate sensors
+        # calibrate sensors
 
         return True
 
@@ -59,7 +59,8 @@ class IMUSensor():
         # self.bno.setExternalCrystalUse(True)
 
         self.initial_rot = quat.normalize(self.bno.read_quaternion())
-        self.value = [(0.0, 0.0, 0.0), (0.0, 0.0, 0.0), self.initial_rot, (0.0, 0.0, 0.0), time.time()]
+        self.value = [(0.0, 0.0, 0.0), (0.0, 0.0, 0.0),
+                      self.initial_rot, (0.0, 0.0, 0.0), time.time()]
 
     def update(self):
         self.value = self.value[0:2] + [self.bno.read_quaternion(), self.bno.read_linear_acceleration(),
@@ -76,7 +77,8 @@ class IMUSensor():
             for prev, curr in zip(self.value[5], self.value[2])
         ])
         # get the rotation from current coordinate system to original coordinate system
-        rot_q = quat.q_mult(quat.q_conjugate(quat.normalize(self.value[2])), self.initial_rot)
+        rot_q = quat.q_mult(quat.q_conjugate(
+            quat.normalize(self.value[2])), self.initial_rot)
         # Rotate relative, linear acceleration to initial orientation
         self.value[3] = quat.qv_mult(rot_q, self.value[3])
         # Do a lowpass on accel
@@ -94,18 +96,21 @@ class IMUSensor():
         )
         # Do a simple time delta for the new distance traveled
         self.value[0] = (
-            self.value[0][0] + (self.value[1][0] * (self.value[4] - self.value[7])),
-            self.value[0][1] + (self.value[1][0] * (self.value[4] - self.value[7])),
-            self.value[0][2] + (self.value[1][0] * (self.value[4] - self.value[7]))
+            self.value[0][0] + (self.value[1][0] *
+                                (self.value[4] - self.value[7])),
+            self.value[0][1] + (self.value[1][0] *
+                                (self.value[4] - self.value[7])),
+            self.value[0][2] + (self.value[1][0] *
+                                (self.value[4] - self.value[7]))
         )
 
     def data_string(self):
         return self.name + \
-               "\n\torientation: " + str(self.value[0]) + \
-               "\n\tvelocity: " + str(self.value[1]) + \
-               "\n\tcurrent orientation: " + str(self.value[2]) + \
-               "\n\tcurrent accel: " + str(self.value[3]) + \
-               "\n\tcurrent time: " + str(self.value[4])
+            "\n\torientation: " + str(self.value[0]) + \
+            "\n\tvelocity: " + str(self.value[1]) + \
+            "\n\tcurrent orientation: " + str(self.value[2]) + \
+            "\n\tcurrent accel: " + str(self.value[3]) + \
+            "\n\tcurrent time: " + str(self.value[4])
 
 
 class Actuator:

@@ -32,7 +32,7 @@ class PublishSubsystem:
 
 
 class LogSubsystem:
-	def __init__(self, input_data):
+    def __init__(self, input_data):
         self.input_data = input_data
 
         self.logger = logging.getLogger(self.input_data.team_id)
@@ -43,13 +43,14 @@ class LogSubsystem:
         self.handler.setLevel(logging.INFO)
 
         # create a logging format
-        self.formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        self.formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         self.handler.setFormatter(formatter)
 
         # add the handlers to the logger
         self.logger.addHandler(handler)
 
-	def run(self):
-		self.logger.info('\nStatus:' + self.input_data.status +
-					'\nEbrake Requested:' + self.input_data.ebrake_requested +
-					'\nAcceleration:)' + self.input_data.acceleration)
+        def run(self):
+            self.logger.info('\nStatus:' + self.input_data.status +
+                             '\nEbrake Requested:' + self.input_data.ebrake_requested +
+                             '\nAcceleration:)' + self.input_data.acceleration)

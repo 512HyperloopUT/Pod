@@ -253,15 +253,18 @@ class BNO055(object):
             self._serial.flushInput()
             # Send the data.
             self._serial.write(command)
-            logger.debug('Serial send: 0x{0}'.format(binascii.hexlify(command)))
+            logger.debug('Serial send: 0x{0}'.format(
+                binascii.hexlify(command)))
             # Stop if no acknowledgment is expected.
             if not ack:
                 return
             # Read acknowledgement response (2 bytes).
             resp = bytearray(self._serial.read(2))
-            logger.debug('Serial receive: 0x{0}'.format(binascii.hexlify(resp)))
+            logger.debug('Serial receive: 0x{0}'.format(
+                binascii.hexlify(resp)))
             if resp is None or len(resp) != 2:
-                raise RuntimeError('Timeout waiting for serial acknowledge, is the BNO055 connected?')
+                raise RuntimeError(
+                    'Timeout waiting for serial acknowledge, is the BNO055 connected?')
             # Stop if there's no bus error (0xEE07 response) and return response bytes.
             if not (resp[0] == 0xEE and resp[1] == 0x07):
                 return resp
@@ -270,7 +273,8 @@ class BNO055(object):
             #   http://ae-bst.resource.bosch.com/media/products/dokumente/bno055/BST-BNO055-AN012-00.pdf
             attempts += 1
             if attempts >= max_attempts:
-                raise RuntimeError('Exceeded maximum attempts to acknowledge serial command without bus error!')
+                raise RuntimeError(
+                    'Exceeded maximum attempts to acknowledge serial command without bus error!')
 
     def _write_bytes(self, address, data, ack=True):
         # Write a list of 8-bit values starting at the provided register address.
@@ -288,7 +292,8 @@ class BNO055(object):
             resp = self._serial_send(command, ack=ack)
             # Verify register write succeeded if there was an acknowledgement.
             if resp[0] != 0xEE and resp[1] != 0x01:
-                raise RuntimeError('Register write error: 0x{0}'.format(binascii.hexlify(resp)))
+                raise RuntimeError(
+                    'Register write error: 0x{0}'.format(binascii.hexlify(resp)))
 
     def _write_byte(self, address, value, ack=True):
         # Write an 8-bit value to the provided register address.  If ack is True
@@ -308,7 +313,8 @@ class BNO055(object):
             resp = self._serial_send(command, ack=ack)
             # Verify register write succeeded if there was an acknowledgement.
             if ack and resp[0] != 0xEE and resp[1] != 0x01:
-                raise RuntimeError('Register write error: 0x{0}'.format(binascii.hexlify(resp)))
+                raise RuntimeError(
+                    'Register write error: 0x{0}'.format(binascii.hexlify(resp)))
 
     def _read_bytes(self, address, length):
         # Read a number of unsigned byte values starting from the provided address.
@@ -325,13 +331,15 @@ class BNO055(object):
             resp = self._serial_send(command)
             # Verify register read succeeded.
             if resp[0] != 0xBB:
-                raise RuntimeError('Register read error: 0x{0}'.format(binascii.hexlify(resp)))
+                raise RuntimeError(
+                    'Register read error: 0x{0}'.format(binascii.hexlify(resp)))
             # Read the returned bytes.
             length = resp[1]
             resp = bytearray(self._serial.read(length))
             logger.debug('Received: 0x{0}'.format(binascii.hexlify(resp)))
             if resp is None or len(resp) != length:
-                raise RuntimeError('Timeout waiting to read data, is the BNO055 connected?')
+                raise RuntimeError(
+                    'Timeout waiting to read data, is the BNO055 connected?')
             return resp
 
     def _read_byte(self, address):
@@ -543,7 +551,8 @@ class BNO055(object):
         """
         # Check that 22 bytes were passed in with calibration data.
         if data is None or len(data) != 22:
-            raise ValueError('Expected a list of 22 bytes for calibration data.')
+            raise ValueError(
+                'Expected a list of 22 bytes for calibration data.')
         # Switch to configuration mode, as mentioned in section 3.10.4 of datasheet.
         self._config_mode()
         # Set the 22 bytes of calibration data.
