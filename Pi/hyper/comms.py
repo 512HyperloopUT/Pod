@@ -4,9 +4,9 @@ import serial
 
 
 class WriteDir(Enum):
-    REVERSE = 2
+    EXTEND = 2
     NEUTRAL = 0
-    FORWARD = 1
+    RETRACT = 1
 
 
 class CommPort:
@@ -73,10 +73,10 @@ class CommPort:
         GPIO.output(26, GPIO.HIGH if (target_id & 0x10) != 0 else GPIO.LOW)
 
     def __write_dir(self, direction):
-        if direction == WriteDir.REVERSE:
+        if direction == WriteDir.EXTEND:
             GPIO.output(24, GPIO.HIGH)
             GPIO.output(25, GPIO.LOW)
-        elif direction == WriteDir.FORWARD:
+        elif direction == WriteDir.RETRACT:
             GPIO.output(24, GPIO.LOW)
             GPIO.output(25, GPIO.HIGH)
         else:
