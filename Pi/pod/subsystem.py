@@ -34,7 +34,7 @@ class LogSubsystem:
 		self.input_data = input_data
 
 	def run(self):
-		logger = logging.getlogger(input_data.team_id)
+		logger = logging.getLogger(input_data.team_id)
 		logger.setLevel(logging.INFO)
 
 		# create a file handler
