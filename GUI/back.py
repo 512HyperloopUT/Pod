@@ -100,9 +100,9 @@ def updateData(frame, newData):
     for i in range(len(measurementList)):
         frame.tree.set(i + 1, column="#1", value=newData[i])
         # TODO: set colors
-        if newData[i] > 8:
+        if newData[i] > 10000:
             frame.tree.item(i + 1, tags="red")
-        elif newData[i] > 5:
+        elif newData[i] > 9999:
             frame.tree.item(i + 1, tags="orange")
         else:
             frame.tree.item(i + 1, tags="normal")
@@ -138,6 +138,7 @@ def cmdCommand():
     """Function used to send commands to Pi"""
     try:
         command = mainFrame.cmd_entry.get()
+        mainFrame.cmd_entry.delete(0, 'end')
         mySocket.sendto('s' * 35 + ' cmd ' + command)
     except TypeError:
         mainFrame.complain('Not connected')
