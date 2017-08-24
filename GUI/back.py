@@ -13,6 +13,12 @@ All commands are prefaced by 35 's' characters... for reasons
     'time' 'n'  n being time in seconds
 - Send Command
     'cmd' 's'   s being a command to be parsed by someone else
+
+Warning are currently raised when status is on 3 and...
+
+- Velocity > 9000 cm/s
+- Ambient Temp > 100.0 Celcius
+- Current < 25000 mA
 """
 
 from Tkinter import *
@@ -110,8 +116,8 @@ class Frame(Tkinter.Frame):
         # TODO: Orientation/Flyheight and Voltmeter
         self.set_default_colors()
         if self.current_data[1] == 3:
-            if self.current_data[4] >= 90:
-                self.text_box.insert(END, "Velocity > 90\n")
+            if self.current_data[4] >= 9000:
+                self.text_box.insert(END, "Velocity > 9000\n")
                 self.tree.item(4 + 1, tags="red")
             if self.current_data[8] >= 1000:
                 self.text_box.insert(END, "Ambient > 1000\n")

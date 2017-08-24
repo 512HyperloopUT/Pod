@@ -28,8 +28,10 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
-status.log
+**/status.log
+**/log.csv
 __pycache__/
+**/*.pyc
 
 # PyCharm and IDEA
 .idea/*
