@@ -1,8 +1,8 @@
 import time
 import struct
 import os
-from hyper import quat, comms, udp
-from lib import bno055
+from hyper import comms, udp
+from lib import bno055, quat
 import spidev
 from RPi import GPIO
 
