@@ -11,9 +11,9 @@ class WriteDir(Enum):
 
 class CommPort:
     def __init__(self):
-        #self.ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE,
+        self.ser = serial.Serial(port="/dev/ttyACM0", baudrate=115200, parity=serial.PARITY_NONE,
                                  stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS)
-        #self.ser.isOpen()
+        self.ser.isOpen()
 
         GPIO.setmode(GPIO.BCM)
 
@@ -31,7 +31,7 @@ class CommPort:
         print("comms initialized")
 
     def __del__(self):
-        #self.ser.close()
+        self.ser.close()
         GPIO.cleanup()
         print("freed comm resources")
 
@@ -39,10 +39,9 @@ class CommPort:
         self.__reset()
         self.__set_type(False)
         self.__write_id(sensor_id)
-        #self.ser.flush()
+        self.ser.flush()
         self.__finish()
-        #return int(self.ser.readline())
-	return -1
+        return int(self.ser.readline())
 
     def writeDigitalActuator(self, out_id, direction):
         self.__reset()
