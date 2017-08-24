@@ -46,6 +46,7 @@ class EBrakeSubsystem:
         self.input_data = input_data
         self.l_ebr = io.Actuator(8, input_data.comm_port)
         self.r_ebr = io.Actuator(9, input_data.comm_port)
+        self.ebr_emag = io.DigitalOutput(13, input_data.comm_port)
 
     def run(self):
         pass
