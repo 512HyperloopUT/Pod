@@ -103,6 +103,10 @@ class Input:
         self.l_ebr_extension = self.l_ebr_pot.get()
         self.r_ebr_extension = self.r_ebr_pot.get()
 
+        # processing of data to be sent to GUI and SpaceX TODO: add other variable
+        self.battery_voltage = self.voltage * 1000
+        self.battery_current = self.battery_voltage * 1000
+
     def get_packed_data(self):
         """
         :return: The 34 byte telemetry frame of required data as specified by the SpaceX documentation.
