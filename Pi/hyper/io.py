@@ -16,11 +16,26 @@ class Input:
 
         self.team_id = 1
         self.status = 2
-        self.acceleration = 3
+        self.accelerationX = 0
+        self.accelerationY = 0
+        self.accelerationZ = 0
+
+        self.OriW = 0
+        self.OriX = 0
+        self.OriY = 0
+        self.OriZ = 0
 
     def update(self):
         self.duration = time.time() - self.start_time
+        self.accelerationX = self.imu.getAccX()
+        self.accelerationY = self.imu.getAccY()
+        self.accelerationZ = self.imu.getAccZ()
 
+        self.OriW = self.imu.getOriW()
+        self.OriX = self.imu.getOriX()
+        self.OriY = self.imu.getAccY()
+        self.OriZ = self.imu.getOriZ()
+        
     def isReady(self):
         # if input is ready to be updated
         # check comms

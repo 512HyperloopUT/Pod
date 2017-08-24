@@ -51,5 +51,6 @@ class LogSubsystem:
         self.logger.addHandler(self.handler)
 
     def run(self):
-        self.logger.info('\nStatus: ' + str(self.input_data.status) +
-                         '\nAcceleration: ' + str(self.input_data.acceleration))
+        self.logger.info("\nStatus: " + str(self.input_data.status) +
+                         "\nAcceleration(x,y,z): " + str(self.input_data.accelerationX) +str(self.input_data.accelerationY) + str(self.input_data.accelerationZ) +
+                         "\nOrientation(w,x,y,z): " + str(self.input_data.OriW) + str(self.input_data.OriX) + str(self.input_data.OriY) +str(self.input_data.OriZ))
