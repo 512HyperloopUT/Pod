@@ -11,7 +11,7 @@ if __name__ == "__main__":
         choice = input("choice: ")
         if choice == 'r':
             readID = int(input("readID: "))
-            print('read: ', comm_port.read(readID))
+            print('read: ', comm_port.readAnalog(readID))
         elif choice == 'w':
             writeID = int(input("writeID: "))
             direction = comms.WriteDir(int(input("dir: ")))

@@ -38,7 +38,7 @@ class CommPort:
     def readDigital(self, sensor_id):
         self.__reset()
         self.__set_type(False)
-        self.__set_dir(WriteDir.EXTEND)
+        self.__write_dir(WriteDir.EXTEND)
         self.__write_id(sensor_id)
         self.ser.flush()
         self.__finish()
@@ -47,7 +47,7 @@ class CommPort:
     def readAnalog(self, sensor_id):
         self.__reset()
         self.__set_type(False)
-        self.__set_dir(WriteDir.NEUTRAL)
+        self.__write_dir(WriteDir.NEUTRAL)
         self.__write_id(sensor_id)
         self.ser.flush()
         self.__finish()
