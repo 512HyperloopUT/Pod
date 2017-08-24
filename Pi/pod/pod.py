@@ -32,4 +32,6 @@ class Pod:
         print("- comms test passed")
         # cycle electromags
         # cycle actuators
+        print("starting pod...)
         self.loop()
+        print("safely exited pod")
