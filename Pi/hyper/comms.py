@@ -26,7 +26,7 @@ class CommPort:
         GPIO.setup(5, GPIO.OUT, initial=GPIO.LOW)  # id pin 0
         GPIO.setup(12, GPIO.OUT, initial=GPIO.LOW)  # id pin 1
         GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)  # id pin 2
-        GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)  # id pin 3
+        GPIO.setup(16, GPIO.OUT, initial=GPIO.LOW)  # id pin 3
         GPIO.setup(26, GPIO.OUT, initial=GPIO.LOW)  # id pin 4
         print("comms initialized")
 
@@ -69,7 +69,7 @@ class CommPort:
         GPIO.output(5, GPIO.HIGH if (target_id & 0x1) != 0 else GPIO.LOW)
         GPIO.output(12, GPIO.HIGH if (target_id & 0x2) != 0 else GPIO.LOW)
         GPIO.output(13, GPIO.HIGH if (target_id & 0x4) != 0 else GPIO.LOW)
-        GPIO.output(19, GPIO.HIGH if (target_id & 0x8) != 0 else GPIO.LOW)
+        GPIO.output(16, GPIO.HIGH if (target_id & 0x8) != 0 else GPIO.LOW)
         GPIO.output(26, GPIO.HIGH if (target_id & 0x10) != 0 else GPIO.LOW)
 
     def __write_dir(self, direction):
