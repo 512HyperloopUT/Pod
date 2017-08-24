@@ -67,11 +67,11 @@ const uint8_t digi_read_count = 6;
 const uint32_t digi_read_ports[] = {
 	PORT(Q), PORT(P), PORT(N), PORT(N),
 	PORT(C), PORT(B)
-}
+};
 const uint8_t digi_read_pins[] = {
 	PIN(0), PIN(4), PIN(5), PIN(4),
 	PIN(7), PIN(2)
-}
+};
 
 //Write pins
 const uint8_t actu_write_count = 13;
