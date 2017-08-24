@@ -7,7 +7,7 @@ class Pod:
         self.input_data = io.Input()
         self.subsystems = []
         self.subsystems.append(subsystem.TestSubsystem(self.input_data))
-        self.subsystems.append(subsystem.EmagSubsystem(self.input_data))
+        self.subsystems.append(subsystem.EMagSubsystem(self.input_data))
         self.subsystems.append(subsystem.PublishSubsystem(self.input_data))
 
     def loop(self):
