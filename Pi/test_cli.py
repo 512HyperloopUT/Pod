@@ -15,7 +15,7 @@ if __name__ == "__main__":
         elif choice == 'w':
             writeID = int(input("writeID: "))
             direction = comms.WriteDir(int(input("dir: ")))
-            comm_port.write(writeID, direction)
+            comm_port.writeDigitalActuator(writeID, direction)
         elif choice == 'q':
             break
         else:

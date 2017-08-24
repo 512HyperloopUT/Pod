@@ -52,9 +52,9 @@ class CommPort:
 
     def writeDigial(self, out_id, val):
         self.__reset()
-        self.set_type(True)
+        self.__set_type(True)
         self.__write_id(out_id)
-        self.__write_dir(FORWARD if val else NEUTRAL)
+        self.__write_dir(WriteDir.FORWARD if val else WriteDir.NEUTRAL)
         self.__finish()
 
     def __reset(self):
