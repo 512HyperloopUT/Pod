@@ -112,6 +112,27 @@ class IMUSensor():
             "\n\tcurrent accel: " + str(self.value[3]) + \
             "\n\tcurrent time: " + str(self.value[4])
 
+    def getAccX(self):
+            return self.value[3][0]
+
+    def getAccY(self):
+            return self.value[3][1]
+
+    def getAccZ(self):
+            return self.value[3][2]
+
+    def getOriW(self):
+            return self.value[2][0]
+
+    def getOriX(self):
+            return self.value[2][1]
+
+    def getOriY(self):
+            return self.value[2][2]
+
+    def getOriZ(self):
+            return self.value[2][3]
+
 
 class Actuator:
     def __init__(self, out_id, comm_port):
