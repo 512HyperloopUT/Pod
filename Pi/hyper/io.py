@@ -105,8 +105,7 @@ class IMUSensor():
         )
 
     def data_string(self):
-        return self.name + \
-            "\n\torientation: " + str(self.value[0]) + \
+        return "\n\torientation: " + str(self.value[0]) + \
             "\n\tvelocity: " + str(self.value[1]) + \
             "\n\tcurrent orientation: " + str(self.value[2]) + \
             "\n\tcurrent accel: " + str(self.value[3]) + \
