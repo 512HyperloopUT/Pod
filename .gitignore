@@ -29,7 +29,9 @@ compile_commands.json
 CTestTestfile.cmake
 
 status.log
+csv.log
 __pycache__/
+**/*.pyc
 
 # PyCharm and IDEA
 .idea/*

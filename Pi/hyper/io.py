@@ -11,7 +11,7 @@ class Input:
     def __init__(self):
         # input backends
         self.comm_port = comms.CommPort()
-        #self.imu = IMUSensor()
+        self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
         self.voltmeter = AnalogSensor(18, self.comm_port)
@@ -76,14 +76,14 @@ class Input:
 
     def update(self):
         self.duration = int(time.time() * 1000) - self.start_time
-        #self.accelerationX = self.imu.getAccX()
-        #self.accelerationY = self.imu.getAccY()
-        #self.accelerationZ = self.imu.getAccZ()
+        self.accelerationX = self.imu.getAccX()
+        self.accelerationY = self.imu.getAccY()
+        self.accelerationZ = self.imu.getAccZ()
 
-        #self.OriW = self.imu.getOriW()
-        #self.OriX = self.imu.getOriX()
-        #self.OriY = self.imu.getAccY()
-        #self.OriZ = self.imu.getOriZ()
+        self.OriW = self.imu.getOriW()
+        self.OriX = self.imu.getOriX()
+        self.OriY = self.imu.getAccY()
+        self.OriZ = self.imu.getOriZ()
 
         self.udp_port.update()
         self.emag_activated = self.udp_port.ebrake
