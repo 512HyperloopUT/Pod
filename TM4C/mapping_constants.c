@@ -74,28 +74,28 @@ const uint8_t digi_read_pins[] = {
 };
 
 //Write pins
-const uint8_t actu_write_count = 13;
+const uint8_t actu_write_count = 14;
 const uint32_t actu_forw_write_ports[] = {
 	PORT(M), PORT(N), PORT(Q), PORT(Q),
 	PORT(G), PORT(K), PORT(A), PORT(M),
 	PORT(M), PORT(P), PORT(G), PORT(L),
-	PORT(L)
+	PORT(L), PORT(Q)
 };
 const uint8_t actu_forw_write_pins[] = {
 	PIN(7), PIN(2), PIN(3), PIN(1),
 	PIN(1), PIN(5), PIN(4), PIN(1),
 	PIN(3), PIN(0), PIN(0), PIN(5),
-	PIN(1)
+	PIN(1), PIN(2)
 };
 const uint32_t actu_back_write_ports[] = {
 	PORT(P), PORT(N), PORT(P), PORT(M),
 	PORT(K), PORT(M), PORT(A), PORT(M),
 	PORT(H), PORT(P), PORT(L), PORT(L),
-	PORT(L)
+	PORT(L), PORT(Q)
 };
 const uint8_t actu_back_write_pins[] = {
 	PIN(5), PIN(3), PIN(3), PIN(6),
 	PIN(4), PIN(0), PIN(5), PIN(2),
 	PIN(2), PIN(1), PIN(4), PIN(0),
-	PIN(1)
+	PIN(1), PIN(2)
 };
