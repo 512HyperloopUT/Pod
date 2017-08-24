@@ -12,6 +12,7 @@ class TestSubsystem:
             self.printed = True
             print("hi there")
 
+
 class EMagSubsystem:
     def __init__(self, input_data):
         self.input_data = input_data
@@ -19,6 +20,7 @@ class EMagSubsystem:
 
     def run(self):
         self.emag.set(self.input_data.emag_activated)
+
 
 class PublishSubsystem:
     def __init__(self, input_data):
@@ -34,7 +36,7 @@ class LogSubsystem:
 		self.input_data = input_data
 
         self.logger = logging.getLogger(self.input_data.team_id)
-		self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.INFO)
 
         # create a file handler
         self.handler = logging.FileHandler('status.log')
