@@ -45,6 +45,11 @@ extern const uint8_t cmd_dir_pins[];
 extern const uint8_t picomm_port_count;
 extern const uint32_t picomm_ports[];
 
+//Digital read pins
+extern const uint8_t digi_read_count;
+extern const uint32_t digi_read_ports[];
+extern const uint8_t digi_read_pins[];
+
 //Write pins
 extern const uint8_t actu_write_count;
 extern const uint32_t actu_forw_write_ports[];

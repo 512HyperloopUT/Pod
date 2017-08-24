@@ -68,9 +68,15 @@ void ExecCmd(void) {
 			WriteActu(cmd, cmd_dir);
 		} else {
 			if (cmd != 31) {
-				//TODO Read the selected sensor
-				uint32_t adc_value = MapADCRead(cmd);
-				UARTprintf("%d\n", adc_value);
+				uint32_t read_val;
+				if (aux == 0) {
+					//TODO Read the selected sensor
+					read_val = MapADCRead(cmd);
+				} else {
+					//TODO Read the selected sensor
+					read_val = DigiReadPin(digi_read_ports[cmd], digi_read_pins[cmd]);
+				}
+				UARTprintf("%d\n", read_val);
 			}
 		}
 		/* Command has completed */

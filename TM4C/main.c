@@ -61,6 +61,8 @@ void ConfigureGPIO(void) {
     GPIOMassInit(cmd_type_ports, cmd_type_pins, cmd_type_width, PIN_IN);
 	/* aux bits */
     GPIOMassInit(cmd_dir_ports, cmd_dir_pins, cmd_dir_width, PIN_IN);
+	/* digi read */
+	GPIOMassInit(digi_read_ports, digi_read_pins, digi_read_count, PIN_IN);
 	/* actu */
     GPIOMassInit(actu_forw_write_ports, actu_forw_write_pins, actu_write_count, PIN_OUT);
     GPIOMassInit(actu_back_write_ports, actu_back_write_pins, actu_write_count, PIN_OUT);
