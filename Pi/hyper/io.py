@@ -3,6 +3,7 @@ import struct
 from hyper import quat, comms, udp
 from lib import bno055
 import spidev
+from Rpi import GPIO
 
 
 class Input:
@@ -176,17 +177,28 @@ class IMUSensor:
             return self.value[2][3]
 
 
-class SPISensor:
-    def __init__(self, bus, port):
-        # 0,0 or 1,1
-        spi = spidev.SpiDev()
-        spi.open(bus, port)
+class ThermoSensor:
+    def __init__(self, cs):
+        # 17 27
+        self.spi = spidev.SpiDev()
+        self.spi.open(0, 0)
+        self.cs = 17 if cs == 0 else 27
+        GPIO.setup(self.cs, GPIO.OUT, initial=GPIO.HIGH)
+        self.value = None
 
     def update(self):
-        pass
+        GPIO.output(self.cs, GPIO.LOW)
+        time.sleep(0.001)
+        v = self.spi.readbytes(2)
+        GPIO.output(self.cs, GPIO.HIGH)
+        if (v & 0x4) != 0:
+            # uh oh, no thermocouple attached!
+            self.value = None
+        v = v >> 3
+        self.value = v*0.25
 
     def data_string(self):
-        pass
+        return "spi sensor, degrees celsius: " + self.value
 
 
 class Actuator:
