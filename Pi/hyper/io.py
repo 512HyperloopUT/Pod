@@ -3,13 +3,13 @@ import struct
 from hyper import quat, comms, udp
 from lib import bno055
 import spidev
-from Rpi import GPIO
+from RPi import GPIO
 
 
 class Input:
     def __init__(self):
         self.comm_port = comms.CommPort()
-        self.imu = IMUSensor()
+        #self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
         self.start_time = time.time()
@@ -41,14 +41,14 @@ class Input:
 
     def update(self):
         self.duration = time.time() - self.start_time
-        self.accelerationX = self.imu.getAccX()
-        self.accelerationY = self.imu.getAccY()
-        self.accelerationZ = self.imu.getAccZ()
+        #self.accelerationX = self.imu.getAccX()
+        #self.accelerationY = self.imu.getAccY()
+        #self.accelerationZ = self.imu.getAccZ()
 
-        self.OriW = self.imu.getOriW()
-        self.OriX = self.imu.getOriX()
-        self.OriY = self.imu.getAccY()
-        self.OriZ = self.imu.getOriZ()
+        #self.OriW = self.imu.getOriW()
+        #self.OriX = self.imu.getOriX()
+        #self.OriY = self.imu.getAccY()
+        #self.OriZ = self.imu.getOriZ()
 
         self.udp_port.update()
         self.emag_activated = self.udp_port.ebrake
