@@ -7,6 +7,7 @@ from lib import bno055
 class Input:
     def __init__(self):
         self.comm_port = comms.CommPort()
+        self.imu = IMUSensor()
 
         self.start_time = time.time()
         self.duration = 0
@@ -31,31 +32,24 @@ class Input:
         return True
 
 
-class Sensor:
-    def __init__(self, name, sensor_id):
-        self.name = name
-        self.sensor_id = sensor_id
-
-
 class AnalogSensor(Sensor):
-    def __init__(self, name, sensor_id, comm_port):
-        super().__init__(name, sensor_id)
+    def __init__(self, in_id, comm_port):
+        self.in_id = in_id
         self.comm_port = comm_port
         self.value = 0
 
     def update(self):
-        self.value = self.comm_port.read(self.sensor_id)
+        self.value = self.comm_port.read(self.in_id)
 
     def data_string(self):
-        return "sensor " + self.sensor_id + ": " + str(self.value)
+        return "sensor " + self.in_id + ": " + str(self.value)
 
 
 class IMUSensor(Sensor):
     IMU_ACCEL_SMOOTHING = 10
     IMU_ORIEN_SMOOTHING = 0.7
 
-    def __init__(self, name, sensor_id):
-        super().__init__(name, sensor_id)
+    def __init__(self):
         self.bno = bno055.BNO055(serial_port='/dev/ttyAMA0', rst=18)
         if self.bno.begin() is not True:
             print("Error initializing device")

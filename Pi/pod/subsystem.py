@@ -29,11 +29,11 @@ class PublishSubsystem:
         pass
 
 
-class LogSystem:
-	def _init_(self, input_data)
+class LogSubsystem:
+	def _init_(self, input_data):
 		self.input_data = input_data
 
-	def run(self)
+	def run(self):
 		logger = logging.getlogger(input_data.team_id)
 		logger.setLevel(logging.INFO)
 
