@@ -25,8 +25,11 @@ class Pod:
                 running = False
 
     def start(self):
+        print("running tests...")
         if not self.input_data.isReady():
+            print("- comms test FAILED")
             return
+        print("- comms test passed")
         # cycle electromags
         # cycle actuators
         self.loop()
