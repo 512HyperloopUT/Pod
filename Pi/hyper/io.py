@@ -9,10 +9,25 @@ from RPi import GPIO
 
 class Input:
     def __init__(self):
+        # input backends
         self.comm_port = comms.CommPort()
         self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
+        self.voltmeter = Sensor(-1, comm_port)
+        self.ammeter = Sensor(-1, comm_port)
+        self.prox1 = Sensor(-1, comm_port)
+        self.prox2 = Sensor(-1, comm_port)
+        self.prox3 = Sensor(-1, comm_port)
+        self.prox4 = Sensor(-1, comm_port)
+        self.retro1 = Sensor(-1, comm_port)
+        self.retro2 = Sensor(-1, comm_port)
+        self.lf_lat_pot = Sensor(-1, comm_port)
+        self.rf_lat_pot = Sensor(-1, comm_port)
+        self.lb_lat_pot = Sensor(-1, comm_port)
+        self.rb_lat_pot = Sensor(-1, comm_port)
+
+        # useful inputs
         self.start_time = time.time()
         self.duration = 0
 
@@ -39,6 +54,13 @@ class Input:
         self.OriX = 0
         self.OriY = 0
         self.OriZ = 0
+
+        self.voltage = 0
+        self.amperage = 0
+        self.lf_lat_extension = 0
+        self.rf_lat_extension = 0
+        self.lb_lat_extension = 0
+        self.rb_lat_extension = 0
 
     def update(self):
         self.duration = time.time() - self.start_time
@@ -77,17 +99,19 @@ class Input:
         return True
 
 
-class AnalogSensor:
+class Sensor:
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
         self.comm_port = comm_port
         self.value = 0
 
     def update(self):
+        if self.in_id == -1:
+            return -1
         self.value = self.comm_port.read(self.in_id)
 
-    def data_string(self):
-        return "sensor " + self.in_id + ": " + str(self.value)
+    def get(self):
+        return self.value
 
 
 class IMUSensor:
@@ -108,8 +132,8 @@ class IMUSensor:
                       self.initial_rot, (0.0, 0.0, 0.0), time.time()]
 
     def update(self):
-        self.value = self.value[0:2] + [self.bno.read_quaternion(), self.bno.read_linear_acceleration(),
-                                        time.time()] + self.value[2:5]
+        self.value = self.value[0: 2] + [self.bno.read_quaternion(), self.bno.read_linear_acceleration(),
+                                         time.time()] + self.value[2: 5]
         # self.value[3] = tuple([round(x, 1) for x in self.value[3]])
 
         delta_t = self.value[4] - self.value[7]
