@@ -46,6 +46,9 @@ class Frame(Tkinter.Frame):
         self.cmd_button = Button(self.parent, text="Send Command", command=cmdCommand)
         self.reset_button = Button(self.parent, text="Reset TI Board", command=cmdReset)
         self.text_box = Text(self.parent)
+
+        self.current_data = defaultValues
+
         self.initialize_user_interface()
         self.init_data()
 
@@ -87,9 +90,19 @@ class Frame(Tkinter.Frame):
         button.pack()
 
     def check_warnings(self):
-        # TODO: Add logic for under what circumstances to display warnings
-        self.text_box.insert(END, "")
-
+        # TODO: Orientation/Flyheight and Voltmeter
+        for i in range(10):
+            self.tree.item(i + 1, tags="normal")
+        if self.current_data[1] == 3:
+            if self.current_data[4] >= 90:
+                self.text_box.insert(END, "Velocity > 90\n")
+                self.tree.item(4 + 1, tags="red")
+            if self.current_data[8] >= 100:
+                self.text_box.insert(END, "Ambient > 100\n")
+                self.tree.item(8 + 1, tags="red")
+            if self.current_data[6] < 25:
+                self.text_box.insert(END, "Current < 25\n")
+                self.tree.item(8 + 1, tags="red")
 
 def updateData(frame, newData):
     """
@@ -97,15 +110,9 @@ def updateData(frame, newData):
     :param frame: The Tkinter frame with a treeview to display the data.
     :param newData: List with numbers to be displayed.
     """
+    frame.current_data = newData
     for i in range(len(measurementList)):
         frame.tree.set(i + 1, column="#1", value=newData[i])
-        # TODO: set colors
-        if newData[i] > 10000:
-            frame.tree.item(i + 1, tags="red")
-        elif newData[i] > 9999:
-            frame.tree.item(i + 1, tags="orange")
-        else:
-            frame.tree.item(i + 1, tags="normal")
 
 
 def cmdStop():
