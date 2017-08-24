@@ -83,13 +83,13 @@ void ExecCmd(void) {
 
 void WriteActu(uint8_t port, uint8_t dir) {
 	if (dir == 0) {
-		DigiWritePin(actu_forw_write_ports[cmd], actu_forw_write_pins[cmd], 0);
-		DigiWritePin(actu_forw_write_ports[cmd], actu_back_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_forw_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_back_write_pins[cmd], 0);
 	} else if (dir == 1) {
-		DigiWritePin(actu_forw_write_ports[cmd], actu_back_write_pins[cmd], 0);
-		DigiWritePin(actu_forw_write_ports[cmd], actu_forw_write_pins[cmd], -1);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_back_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_forw_write_pins[cmd], -1);
 	} else if (dir == 2) {
-		DigiWritePin(actu_forw_write_ports[cmd], actu_forw_write_pins[cmd], 0);
-		DigiWritePin(actu_forw_write_ports[cmd], actu_back_write_pins[cmd], -1);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_forw_write_pins[cmd], 0);
+		DigiWritePin(actu_forw_write_pins[cmd], actu_back_write_pins[cmd], -1);
 	}
 }
