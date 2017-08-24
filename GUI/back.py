@@ -97,11 +97,11 @@ class Frame(Tkinter.Frame):
             if self.current_data[4] >= 90:
                 self.text_box.insert(END, "Velocity > 90\n")
                 self.tree.item(4 + 1, tags="red")
-            if self.current_data[8] >= 100:
-                self.text_box.insert(END, "Ambient > 100\n")
+            if self.current_data[8] >= 1000:
+                self.text_box.insert(END, "Ambient > 1000\n")
                 self.tree.item(8 + 1, tags="red")
-            if self.current_data[6] < 25:
-                self.text_box.insert(END, "Current < 25\n")
+            if self.current_data[6] < 25000:
+                self.text_box.insert(END, "Current < 25000\n")
                 self.tree.item(8 + 1, tags="red")
 
 def updateData(frame, newData):

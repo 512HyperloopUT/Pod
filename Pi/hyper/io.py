@@ -24,13 +24,13 @@ class Input:
 
         self.team_id = 1
         self.status = 2
-        self.acceleration = 3
-        self.position = 4
-        self.velocity = 5
-        self.battery_voltage = 6
-        self.battery_current = 7
-        self.battery_temperature = 8
-        self.pod_temperature = 9
+        self.acceleration = 3  # cm/s^2
+        self.position = 4  # cm
+        self.velocity = 5  # cm/s
+        self.battery_voltage = 6  # millivolts
+        self.battery_current = 7  # milliamps
+        self.battery_temperature = 8 # tenths of C
+        self.pod_temperature = 9 # tenths of C
         self.stripe_count = 10
 
         self.accelerationX = 0
