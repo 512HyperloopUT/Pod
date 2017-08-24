@@ -21,7 +21,7 @@ class Pod:
             self.input_data.update()
             for sub in self.subsystems:
                 sub.run()
-            if self.input_data.duration > 5:
+            if self.input_data.duration > 5000:
                 running = False
 
     def start(self):
