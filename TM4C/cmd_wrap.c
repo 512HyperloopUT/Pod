@@ -68,7 +68,7 @@ void ExecCmd(void) {
 			WriteActu(cmd, cmd_dir);
 		} else {
 			if (cmd != 31) {
-				uint32_t read_val;
+				uint32_t read_val = 0;
 				if (cmd_dir == 0) {
 					//TODO Read the selected sensor
 					read_val = MapADCRead(cmd);
