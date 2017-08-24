@@ -8,21 +8,19 @@ class Input:
     def __init__(self):
         self.comm_port = comms.CommPort()
 
-        self.ebrake_requested = False
-        self.ebrake_wait_time = -1
-
         self.start_time = time.time()
         self.duration = 0
+
+        self.emag_activated = False
 
         self.team_id = 1
         self.status = 2
         self.acceleration = 3
 
     def update(self):
-        # check for ebrake on UDP
         self.duration = time.time() - self.start_time
 
-    def isReady():
+    def isReady(self):
         # if input is ready to be updated
         # check comms
         if not self.comm_port.read(31) == 512:
@@ -117,10 +115,22 @@ class IMUSensor(Sensor):
 
 
 class Actuator:
-    def __init__(self, name, actu_id, comm_port):
-        self.name = name
-        self.actu_id = actu_id
+    def __init__(self, out_id, comm_port):
+        self.out_id = out_id
         self.comm_port = comm_port
 
     def set(self, val):
-        self.comm_port.write(self.actu_id, val)
+        if self.out_id == -1:
+            return
+        self.comm_port.writeDigitalActuator(self.out_id, val)
+
+
+class EMag:
+    def __init(self, out_id, comm_port):
+        self.out_id = out_id
+        self.comm_port = comm_port
+
+    def set(self, val):
+        if self.out_id == -1:
+            return
+        self.comm_port.writeDigial(self.out_id, val)

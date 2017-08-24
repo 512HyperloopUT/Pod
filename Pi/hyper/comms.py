@@ -43,11 +43,18 @@ class CommPort:
         self.__finish()
         return int(self.ser.readline())
 
-    def write(self, actuator_id, direction):
+    def writeDigitalActuator(self, out_id, direction):
         self.__reset()
         self.__set_type(True)
-        self.__write_id(actuator_id)
+        self.__write_id(out_id)
         self.__write_dir(direction)
+        self.__finish()
+
+    def writeDigial(self, out_id, val):
+        self.__reset()
+        self.set_type(True)
+        self.__write_id(out_id)
+        self.__write_dir(FORWARD if val else NEUTRAL)
         self.__finish()
 
     def __reset(self):
