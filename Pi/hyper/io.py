@@ -30,6 +30,8 @@ class Input:
         self.rf_lat_pot = Sensor(-1, comm_port)
         self.lb_lat_pot = Sensor(-1, comm_port)
         self.rb_lat_pot = Sensor(-1, comm_port)
+        self.l_ebr_pot = Sensor(-1, comm_port)
+        self.r_ebr_pot = Sensor(-1, comm_port)
 
         # useful inputs
         self.start_time = time.time()
@@ -69,6 +71,8 @@ class Input:
         self.rf_lat_extension = 0
         self.lb_lat_extension = 0
         self.rb_lat_extension = 0
+        self.l_ebr_extension = 0
+        self.r_ebr_extension = 0
 
     def update(self):
         self.duration = time.time() - self.start_time
@@ -96,6 +100,8 @@ class Input:
         self.rf_lat_extension = self.rf_lat_pot.get()
         self.lb_lat_extension = self.lb_lat_pot.get()
         self.rb_lat_extension = self.rb_lat_pot.get()
+        self.l_ebr_extension = self.l_ebr_pot.get()
+        self.r_ebr_extension = self.r_ebr_pot.get()
 
     def get_packed_data(self):
         """
