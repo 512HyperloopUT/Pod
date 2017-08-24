@@ -132,7 +132,8 @@ class Sensor:
 
     def update(self):
         if self.in_id == -1:
-            return -1
+            self.value = -1
+            return
         self.value = self.comm_port.read(self.in_id)
 
     def get(self):
