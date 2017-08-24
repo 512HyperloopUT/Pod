@@ -15,7 +15,8 @@ class Input:
         self.udp_port = udp.UDPClient()
 
         self.voltmeter = AnalogSensor(18, self.comm_port)
-        self.ammeter = AnalogSensor(19, self.comm_port)
+        self.ammeter_highcurrent = AnalogSensor(19, self.comm_port)
+        self.ammeter_lowcurrent = AnalogSensor(-1, self.comm_port)
         self.prox1 = DigitalSensor(0, self.comm_port)
         self.prox2 = DigitalSensor(1, self.comm_port)
         self.prox3 = DigitalSensor(2, self.comm_port)
@@ -91,7 +92,8 @@ class Input:
         self.user_command = self.udp_port.user_command
 
         self.voltage = self.voltmeter.get()
-        self.amperage = self.ammeter.get()
+        self.ammeter_lowcurrent = self.ammeter_lowcurrent.get()
+        self.ammeter_highcurrent = self.ammeter_highcurrent.get()
         self.lf_lev_extension = self.lf_lev_pot.get()
         self.rf_lev_extension = self.rf_lev_pot.get()
         self.lb_lev_extension = self.lb_lev_pot.get()
