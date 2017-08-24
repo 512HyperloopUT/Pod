@@ -1,6 +1,6 @@
 import time
 import struct
-from hyper import quat, comms
+from hyper import quat, comms, udp
 from lib import bno055
 import spidev
 
@@ -9,11 +9,14 @@ class Input:
     def __init__(self):
         self.comm_port = comms.CommPort()
         self.imu = IMUSensor()
+        self.udp_port = udp.UDPClient()
 
         self.start_time = time.time()
         self.duration = 0
 
         self.emag_activated = False
+        self.emag_timer = -1
+        self.user_command = None
 
         self.team_id = 1
         self.status = 2
@@ -45,6 +48,11 @@ class Input:
         self.OriX = self.imu.getOriX()
         self.OriY = self.imu.getAccY()
         self.OriZ = self.imu.getOriZ()
+
+        self.udp_port.update()
+        self.emag_activated = self.udp_port.ebrake
+        self.emag_timer = self.udp_port.timer
+        self.user_command = self.udp_port.user_command
 
     def get_packed_data(self):
         """
