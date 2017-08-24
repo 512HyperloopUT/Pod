@@ -52,5 +52,4 @@ class LogSubsystem:
 
     def run(self):
         self.logger.info('\nStatus:' + str(self.input_data.status) +
-                         '\nEbrake Requested:' + str(self.input_data.ebrake_requested) +
                          '\nAcceleration:)' + str(self.input_data.acceleration))

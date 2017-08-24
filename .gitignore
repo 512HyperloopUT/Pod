@@ -28,7 +28,8 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
-**/podex
+status.log
+__pycache__/
 
 # PyCharm and IDEA
 .idea/*
