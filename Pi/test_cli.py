@@ -11,7 +11,11 @@ if __name__ == "__main__":
         choice = input("choice: ")
         if choice == 'ra':
             readID = int(input("readID: "))
-            print('read: ', comm_port.readAnalog(readID))
+            val = comm_port.readAnalog(readID)
+            vout = (val * 5.0) / 1024
+            vin = vout / (7500 / (30000 + 7500))
+            vin = vin * .175
+            print('read: ', vin)
         elif choice == 'rd':
             readID = int(input("readID: "))
             print("read: ", comm_port.readDigital(readID))

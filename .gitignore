@@ -28,8 +28,8 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 
-status.log
-csv.log
+**/status.log
+**/log.csv
 __pycache__/
 **/*.pyc
 

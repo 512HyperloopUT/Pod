@@ -11,10 +11,10 @@ class Input:
     def __init__(self):
         # input backends
         self.comm_port = comms.CommPort()
-        self.imu = IMUSensor()
+        #self.imu = IMUSensor()
         self.udp_port = udp.UDPClient()
 
-        self.voltmeter = AnalogSensor(18, self.comm_port)
+        self.voltmeter = Voltmeter(18, self.comm_port)
         self.ammeter = AnalogSensor(19, self.comm_port)
         self.prox1 = DigitalSensor(0, self.comm_port)
         self.prox2 = DigitalSensor(1, self.comm_port)
@@ -76,14 +76,14 @@ class Input:
 
     def update(self):
         self.duration = int(time.time() * 1000) - self.start_time
-        self.accelerationX = self.imu.getAccX()
-        self.accelerationY = self.imu.getAccY()
-        self.accelerationZ = self.imu.getAccZ()
+        #self.accelerationX = self.imu.getAccX()
+        #self.accelerationY = self.imu.getAccY()
+        #self.accelerationZ = self.imu.getAccZ()
 
-        self.OriW = self.imu.getOriW()
-        self.OriX = self.imu.getOriX()
-        self.OriY = self.imu.getAccY()
-        self.OriZ = self.imu.getOriZ()
+        #self.OriW = self.imu.getOriW()
+        #self.OriX = self.imu.getOriX()
+        #self.OriY = self.imu.getAccY()
+        #self.OriZ = self.imu.getOriZ()
 
         self.udp_port.update()
         self.emag_activated = self.udp_port.ebrake
@@ -155,6 +155,25 @@ class AnalogSensor:
             self.value = -1
             return
         self.value = self.comm_port.readAnalog(self.in_id)
+
+    def get(self):
+        return self.value
+
+class Voltmeter:
+    def __init__(self, in_id, comm_port):
+        self.in_id = in_id
+        self.comm_port = comm_port
+        self.value = 0
+
+    def update(self):
+        if self.in_id == -1:
+             self.value = -1
+             return
+        val = self.comm_port.readAnalog(self.in_id)
+        vout = (val * 5.0) / 1024.0
+        vin = vout / (7500 / (30000 + 7500))
+        vin = vin * .175
+        self.value = vin
 
     def get(self):
         return self.value
