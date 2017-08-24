@@ -30,7 +30,7 @@ class PublishSubsystem:
 
 
 class LogSubsystem:
-	def _init_(self, input_data):
+	def __init__(self, input_data):
 		self.input_data = input_data
 
 	def run(self):
