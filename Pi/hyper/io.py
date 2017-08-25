@@ -13,8 +13,8 @@ class Input:
         self.comm_port = comms.CommPort()
         self.udp_port = udp.UDPClient()
 
-        self.voltmeter = AnalogSensor(18, self.comm_port)
-        self.ammeter_highcurrent = AnalogSensor(19, self.comm_port)
+        self.voltmeter = AnalogSensor(19, self.comm_port)
+        self.ammeter_highcurrent = AnalogSensor(18, self.comm_port)
         self.ammeter_lowcurrent = AnalogSensor(-1, self.comm_port)
         self.prox1 = DigitalSensor(0, self.comm_port)
         self.prox2 = DigitalSensor(1, self.comm_port)
