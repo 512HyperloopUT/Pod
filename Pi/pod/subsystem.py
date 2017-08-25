@@ -98,14 +98,11 @@ class LogSubsystem:
         with open('log.csv', 'w', newline='') as csvfile:
             csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             self.csv_writer = csv_writer
-            csv_writer.writerow(['time', 'status', 'x-acceleration', 'y-acceleration', 'z-acceleration',
-                                 'w-orientation','x-orientation', 'y-orientation', 'z-orientation', 'voltage',
-                                 'current'])
+            csv_writer.writerow(['time', 'status', 'voltage', 'current'])
 
     def run(self):
         i = self.input_data
-        data_row = [i.duration, i.status, i.accelerationX, i.accelerationY, i.accelerationZ,
-                    i.OriW, i.OriX, i.OriY, i.OriZ, i.voltage, i.amperage_highcurrent]
+        data_row = [i.duration, i.status, i.voltage, i.amperage_highcurrent]
         with open('log.csv', 'a', newline='') as csvfile:
             csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             csv_writer.writerow(data_row)
