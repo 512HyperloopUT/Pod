@@ -12,6 +12,7 @@ class Input:
         # input backends
         self.comm_port = comms.CommPort()
         self.udp_port = udp.UDPClient()
+        self.start_time = int(time.time() * 1000)
 
         self.voltmeter = AnalogSensor(19, self.comm_port)
         self.ammeter_highcurrent = AnalogSensor(18, self.comm_port)
@@ -44,8 +45,7 @@ class Input:
         self.pod_temperature = 9  # tenths of C
         self.stripe_count = 10
 
-        # useful inputs
-        self.start_time = int(time.time() * 1000)
+        # sensor inputs
         self.duration = 0
 
         self.emag_activated = False
@@ -66,14 +66,24 @@ class Input:
         self.l_ebr_extension = 0
         self.r_ebr_extension = 0
 
+        # outputs
+        self.lev_extended = False
+        self.lat_extended = False
+
+    def updateFTA():
+        self.lev_extended = False
+        self.lat_extended = False
+        pass
+
+    def updateFTB():
+        pass
+
+    def updateFTC():
+        pass
+
     def update(self):
-        self.duration = int(time.time() * 1000) - self.start_time
 
-        self.udp_port.update()
-        self.emag_activated = self.udp_port.ebrake
-        self.emag_timer = self.udp_port.timer
-        self.user_command = self.udp_port.user_command
-
+        # SENSOR DATA
         self.voltage = self.voltmeter.get()
         self.amperage_highcurrent = self.ammeter_highcurrent.get()
         self.amperage_lowcurrent = self.ammeter_lowcurrent.get()
@@ -91,6 +101,19 @@ class Input:
         # processing of data to be sent to GUI and SpaceX TODO: add other variable
         self.battery_voltage = self.voltage * 1000
         self.battery_current = self.amperage_highcurrent * 1000
+
+        # CONTROL VARIABLES
+        self.duration = int(time.time() * 1000) - self.start_time
+
+        self.udp_port.update()
+        self.emag_activated = self.udp_port.ebrake
+        self.emag_timer = self.udp_port.timer
+        self.user_command = self.udp_port.user_command
+
+        updateFTA()
+        # updateFTB()
+        # updateFTC()
+        # return
 
     def get_packed_data(self):
         """
