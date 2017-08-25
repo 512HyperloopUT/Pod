@@ -2,7 +2,7 @@ import logging
 import csv
 from socket import socket, AF_INET, SOCK_DGRAM
 
-from hyper import io
+from hyper import io, comms
 
 
 # HARDWARE SUBSYSTEMS
