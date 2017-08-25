@@ -12,7 +12,7 @@ class Pod:
         self.subsystems.append(subsystem.EBrakeSubsystem(self.input_data))
         self.subsystems.append(subsystem.BatterySubsystem(self.input_data))
         self.subsystems.append(subsystem.TestSubsystem(self.input_data))
-        self.subsystems.append(subsystem.PublishSubsystem(self.input_data))
+        #self.subsystems.append(subsystem.PublishSubsystem(self.input_data))
         self.subsystems.append(subsystem.LogSubsystem(self.input_data))
 
     def loop(self):

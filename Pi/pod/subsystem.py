@@ -30,9 +30,9 @@ class LateralSubsystem:
 
     def run(self):
         if self.input_data.lf_lat_extension > 900 and not self.input_data.lev_extended:
-            self.lf_lat.set(WriteDir.RETRACT)
+            self.lf_lat.set(comms.WriteDir.RETRACT)
         elif self.input_data.lf_lat_extension < 1700 and self.input_data.lev_extended:
-            self.lf_lat.set(WriteDir.EXTEND)
+            self.lf_lat.set(comms.WriteDir.EXTEND)
         # 3 more actuators
 
 
