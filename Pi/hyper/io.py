@@ -110,9 +110,9 @@ class Input:
         self.emag_timer = self.udp_port.timer
         self.user_command = self.udp_port.user_command
 
-        updateFTA()
-        # updateFTB()
-        # updateFTC()
+        self.updateFTA()
+        # self.updateFTB()
+        # self.updateFTC()
         # return
 
     def get_packed_data(self):
