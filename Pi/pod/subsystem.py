@@ -32,13 +32,8 @@ class LateralSubsystem:
         if self.input_data.lf_lat_extension > 900 and not self.input_data.lev_extended:
             self.lf_lat.set(WriteDir.RETRACT)
         elif self.input_data.lf_lat_extension < 1700 and self.input_data.lev_extended:
-            self.lf_lat.set(WriteDir.RETRACT)
-    self.rf_lat.set(
-        WriteDir.EXTEND if self.input_data.lev_extended else WriteDir.RETRACT)
-    self.lb_lat.set(
-        WriteDir.EXTEND if self.input_data.lev_extended else WriteDir.RETRACT)
-    self.rb_lat.set(
-        WriteDir.EXTEND if self.input_data.lev_extended else WriteDir.RETRACT)
+            self.lf_lat.set(WriteDir.EXTEND)
+        # 3 more actuators
 
 
 class BrakeSubsystem:
