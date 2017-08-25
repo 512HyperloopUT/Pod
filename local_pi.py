@@ -43,6 +43,7 @@ def update_data():
         data_list = [input_pi.battery_current]
         for i in range(len(measurementList)):
             main_frame.client_tree.set(i + 1, column="#1", value=data_list[i])
+        time.sleep(.5)
 
 if __name__ == "__main__":
     threading.Thread(target=update_data).start()
