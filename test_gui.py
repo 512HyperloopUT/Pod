@@ -8,7 +8,7 @@ measurementList = ("E-Brake Potentiometer", "Height", "Velocity", "Acceleration"
 defaultValues = "0" * len(measurementList)
 
 IP_INFO = ('', '')  # This will update after first batch of data is recieved.
-PORT = 3002  # If you change this change in gui.py as well.
+PORT = 3000  # If you change this change in gui.py as well.
 
 hostName = gethostbyname('0.0.0.0')
 socketA = socket(AF_INET, SOCK_DGRAM)
