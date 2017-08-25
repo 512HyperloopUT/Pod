@@ -107,6 +107,7 @@ class PublishSubsystem():
 class LogSubsystem:
     def __init__(self, input_data):
         self.input_data = input_data
+        self.last_time = input_data.duration
         with open('log.csv', 'w', newline='') as csvfile:
             csv_writer = csv.writer(
                 csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -114,9 +115,11 @@ class LogSubsystem:
             csv_writer.writerow(['time', 'status', 'voltage', 'current'])
 
     def run(self):
-        i = self.input_data
-        data_row = [i.duration, i.status, i.voltage, i.amperage_highcurrent]
-        with open('log.csv', 'a', newline='') as csvfile:
-            csv_writer = csv.writer(
-                csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            csv_writer.writerow(data_row)
+        if self.input_data.duration - self.last_time >= 100:
+            self.last_time = self.input_data.duration
+            i = self.input_data
+            data_row = [i.duration, i.status, i.voltage, i.amperage_highcurrent]
+            with open('log.csv', 'a', newline='') as csvfile:
+                csv_writer = csv.writer(
+                    csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                csv_writer.writerow(data_row)
