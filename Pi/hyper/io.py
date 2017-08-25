@@ -70,15 +70,15 @@ class Input:
         self.lev_extended = False
         self.lat_extended = False
 
-    def updateFTA():
+    def updateFTA(self):
         self.lev_extended = False
         self.lat_extended = False
         pass
 
-    def updateFTB():
+    def updateFTB(self):
         pass
 
-    def updateFTC():
+    def updateFTC(self):
         pass
 
     def update(self):
