@@ -81,15 +81,22 @@ class PublishSubsystem():
         self.podinput = podinput
         self.gui_socket = socket(AF_INET, SOCK_DGRAM)
         self.last_send = self.podinput.duration
+        self.is_sending_required = True
 
         self.SERVER_IP = '192.168.0.1'
         self.PORT = 3000
 
     def run(self):
-        if self.podinput.duration - self.last_send >= 500:
+        if self.podinput.duration - self.last_send >= 200:
             self.last_send = self.podinput.duration
-            self.gui_socket.sendto(
-                self.podinput.get_packed_data(), (self.SERVER_IP, self.PORT))
+            if self.is_sending_required:
+                self.gui_socket.sendto(self.podinput.get_packed_data(), (self.SERVER_IP, self.PORT))
+            else:
+                # TODO: fill in this
+                payload_array = []  # FIXME: wrap str() over everything
+                payload = ('r' * 35) + ' ' + ' '.join(payload_array)
+                self.gui_socket.sendto(payload, (self.SERVER_IP, self.PORT))
+            self.is_sending_required = not self.is_sending_required  # flip flop
 
 
 class LogSubsystem:
