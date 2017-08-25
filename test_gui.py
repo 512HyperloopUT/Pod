@@ -4,14 +4,14 @@ from tkinter import *
 from tkinter.ttk import *
 import time
 
-measurementList = ("E-Brake Potentiometer", "Height", "Velocity", "Acceleration", "Distance Traveled")
+measurementList = ["Current"]
 defaultValues = "0" * len(measurementList)
 
 IP_INFO = ('', '')  # This will update after first batch of data is recieved.
 PORT = 3000  # If you change this change in gui.py as well.
 
 hostName = gethostbyname('0.0.0.0')
-socketA = socket(AF_INET, SOCK_DGRAM)
+socketA = socket(AF_PACKET, SOCK_RAW)
 socketA.bind((hostName, PORT))
 
 class ServerFrame(Frame):
@@ -48,12 +48,14 @@ class ServerFrame(Frame):
 
 
 def get_ip():
+    # Just remove if causing problems and replace with return ''
     s = socket(AF_INET, SOCK_DGRAM)
     s.connect(('192.0.0.8', 1027))
     return s.getsockname()[0]
 
 def send_command():
     command = main_frame.command_box.get()
+    command = ('s' * 35) + ' ' + command
     try:
         socketA.sendto(command.encode(), IP_INFO)
     except TypeError:
