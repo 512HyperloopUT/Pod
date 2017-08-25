@@ -117,41 +117,30 @@ class DigitalSensor:
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
         self.comm_port = comm_port
-        self.value = False
-
-    def update(self):
-        if self.in_id == -1:
-            self.value = -1
-            return
-        self.value = self.comm_port.readDigital(self.in_id)
 
     def get(self):
-        return self.value
+        if self.in_id == -1:
+            return -1
+        return self.comm_port.readDigital(self.in_id)
 
 
 class AnalogSensor:
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
         self.comm_port = comm_port
-        self.value = 0
-
-    def update(self):
-        if self.in_id == -1:
-            self.value = -1
-            return
-        self.value = self.comm_port.readAnalog(self.in_id)
 
     def get(self):
-        return self.value
+        if self.in_id == -1:
+            return -1
+        return self.comm_port.readAnalog(self.in_id)
 
 
 class Voltmeter:
     def __init__(self, in_id, comm_port):
         self.in_id = in_id
         self.comm_port = comm_port
-        self.value = 0
 
-    def update(self):
+    def get(self):
         if self.in_id == -1:
             self.value = -1
             return
@@ -159,10 +148,7 @@ class Voltmeter:
         vout = (val * 5.0) / 1024.0
         vin = vout / (7500 / (30000 + 7500))
         vin = vin * .175
-        self.value = vin
-
-    def get(self):
-        return self.value
+        return vin
 
 
 class ThermoSensor:
@@ -183,9 +169,6 @@ class ThermoSensor:
         lines = f.readlines()
         f.close()
         return lines
-
-    def update(self):
-        pass
 
     def data_string(self):
         return "spi sensor, degrees celsius: " + str(self.value)
