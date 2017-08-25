@@ -33,14 +33,6 @@ class Input:
         self.l_ebr_pot = AnalogSensor(10, self.comm_port)
         self.r_ebr_pot = AnalogSensor(9, self.comm_port)
 
-        # useful inputs
-        self.start_time = int(time.time() * 1000)
-        self.duration = 0
-
-        self.emag_activated = False
-        self.emag_timer = -1
-        self.user_command = None
-
         self.team_id = 1
         self.status = 2
         self.acceleration = 3  # cm/s^2
@@ -51,6 +43,14 @@ class Input:
         self.battery_temperature = 8  # tenths of C
         self.pod_temperature = 9  # tenths of C
         self.stripe_count = 10
+
+        # useful inputs
+        self.start_time = int(time.time() * 1000)
+        self.duration = 0
+
+        self.emag_activated = False
+        self.emag_timer = -1
+        self.user_command = None
 
         self.voltage = 0
         self.amperage_highcurrent = 0
