@@ -63,7 +63,8 @@ class Input:
         self.OriZ = 0
 
         self.voltage = 0
-        self.amperage = 0
+        self.amperage_highcurrent = 0
+        self.amperage_lowcurrent = 0
         self.lf_lev_extension = 0
         self.rf_lev_extension = 0
         self.lb_lev_extension = 0
@@ -92,8 +93,8 @@ class Input:
         self.user_command = self.udp_port.user_command
 
         self.voltage = self.voltmeter.get()
-        self.ammeter_highcurrent = self.ammeter_highcurrent.get()
-        self.ammeter_lowcurrent = self.ammeter_lowcurrent.get()
+        self.amperage_highcurrent = self.ammeter_highcurrent.get()
+        self.amperage_lowcurrent = self.ammeter_lowcurrent.get()
         self.lf_lev_extension = self.lf_lev_pot.get()
         self.rf_lev_extension = self.rf_lev_pot.get()
         self.lb_lev_extension = self.lb_lev_pot.get()
