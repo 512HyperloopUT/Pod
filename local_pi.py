@@ -1,3 +1,7 @@
+"""
+This file is intended to be run on the pi itself and both draws input data from the Input class and displays them in
+a GUI on the pi itself. A monitor will need to be attached and the pi must be booted to Desktop instead of CLI.
+"""
 from Pi.hyper.io import *
 from tkinter import *
 from tkinter.ttk import *
